@@ -68,3 +68,4 @@ func _on_Area2D_Interact_body_exited(body):
 	if 'NPC_Template' in body.name:
 		interactable = false
 		current_interaction = 'none'
+		get_tree().call_group('interact_NPC', 'hide_dialogue')
