@@ -7,4 +7,5 @@ func save_player_node(position):
 	Player.position = position
 	
 func load_player_node():
-	move_child(Player, 3)
+	call_deferred("move_child", Player, 3)
+#	move_child(Player, 3)
