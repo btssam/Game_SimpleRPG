@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://UI/Dialogue/Message_Frame.png" type="Texture" id=1]
 [ext_resource path="res://UI/Message_BG.png" type="Texture" id=2]
@@ -6,8 +6,24 @@
 [ext_resource path="res://UI/Dialogue/Faceset.png" type="Texture" id=4]
 [ext_resource path="res://UI/Dialogue/Message_Frame_FG.png" type="Texture" id=5]
 
+[sub_resource type="Animation" id=1]
+resource_name = "scrolling_text"
+length = 3.0
+step = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("BG/Text:percent_visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 1.0 ]
+}
+
 [node name="Popup_Dialogue" type="Popup"]
-visible = true
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
@@ -32,6 +48,8 @@ theme = ExtResource( 3 )
 text = "Testasfddsafdfsafdsafsdafa test test
 Test
 Test"
+autowrap = true
+percent_visible = 0.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -51,6 +69,7 @@ scale = Vector2( 3.2, 3.2 )
 texture = ExtResource( 4 )
 hframes = 4
 vframes = 4
+frame = 8
 
 [node name="FrameFG" type="TextureRect" parent="."]
 margin_right = 1024.0
@@ -60,3 +79,6 @@ expand = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/scrolling_text = SubResource( 1 )
