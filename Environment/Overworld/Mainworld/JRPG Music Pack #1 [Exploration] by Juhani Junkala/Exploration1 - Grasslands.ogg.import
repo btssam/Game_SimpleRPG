@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Exploration1 - Grasslands.ogg-4cc39f438dfc1da484c0a001f46cd05b.oggstr"
+
+[deps]
+
+source_file="res://Environment/Overworld/Mainworld/JRPG Music Pack #1 [Exploration] by Juhani Junkala/Exploration1 - Grasslands.ogg"
+dest_files=[ "res://.import/Exploration1 - Grasslands.ogg-4cc39f438dfc1da484c0a001f46cd05b.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

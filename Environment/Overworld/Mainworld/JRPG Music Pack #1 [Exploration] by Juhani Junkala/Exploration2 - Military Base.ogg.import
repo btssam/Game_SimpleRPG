@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Exploration2 - Military Base.ogg-338da3b108624b3aa91aad5629cbb3cc.oggstr"
+
+[deps]
+
+source_file="res://Environment/Overworld/Mainworld/JRPG Music Pack #1 [Exploration] by Juhani Junkala/Exploration2 - Military Base.ogg"
+dest_files=[ "res://.import/Exploration2 - Military Base.ogg-338da3b108624b3aa91aad5629cbb3cc.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

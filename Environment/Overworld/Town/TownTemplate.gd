@@ -1,7 +1,7 @@
 extends Node2D
 
 onready var main_node = get_tree().get_root().get_node("Main")
-var next_positon = Vector2(512, 384)
+var next_positon = Vector2(496, 384)
 
 
 func _on_Area2D_Change_Level_body_entered(body):

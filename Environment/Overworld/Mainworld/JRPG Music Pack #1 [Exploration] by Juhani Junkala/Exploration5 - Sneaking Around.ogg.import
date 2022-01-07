@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Exploration5 - Sneaking Around.ogg-6d616e9ae61c55717b458b7b11e847b4.oggstr"
+
+[deps]
+
+source_file="res://Environment/Overworld/Mainworld/JRPG Music Pack #1 [Exploration] by Juhani Junkala/Exploration5 - Sneaking Around.ogg"
+dest_files=[ "res://.import/Exploration5 - Sneaking Around.ogg-6d616e9ae61c55717b458b7b11e847b4.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
