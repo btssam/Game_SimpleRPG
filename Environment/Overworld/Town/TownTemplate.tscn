@@ -228,10 +228,10 @@ tile_data = PoolIntArray( 0, 536870912, 0, 1, 536870919, 0, 2, 536870919, 0, 3, 
 stream = ExtResource( 4 )
 autoplay = true
 
-[node name="Area2D_Change_Level" type="Area2D" parent="."]
+[node name="Area2D_To_Overworld" type="Area2D" parent="."]
 position = Vector2( 512, 16 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D_Change_Level"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D_To_Overworld"]
 shape = SubResource( 10 )
 
 [node name="NPC_Template" parent="." instance=ExtResource( 6 )]
@@ -242,4 +242,4 @@ scale = Vector2( 1.6, 2.2 )
 position = Vector2( 384, 192 )
 scale = Vector2( 1.6, 2.2 )
 
-[connection signal="body_entered" from="Area2D_Change_Level" to="." method="_on_Area2D_Change_Level_body_entered"]
+[connection signal="body_entered" from="Area2D_To_Overworld" to="." method="_on_Area2D_To_Overworld_body_entered"]
