@@ -5,6 +5,7 @@ onready var Player = $PC_OW_Template
 
 var town_node = "res://Environment/Overworld/Town/TownTemplate.tscn"
 var overworld_node = "res://Environment/Overworld/Mainworld/Overworld_Template.tscn"
+var battle_node = "res://Environment/Battlefield/Battlefield_Template.tscn"
 
 func switch_scene(from_scene, to_scene):
 	if from_scene == "town":
@@ -18,6 +19,10 @@ func switch_scene(from_scene, to_scene):
 			var town = load(town_node).instance()
 			Player.position = Vector2(512, 96)
 			load_scene(town)
+		if to_scene == "battle":
+			var battle = load(battle_node).instance()
+			Player.position = Vector2(800, 512)
+			load_scene(battle)
 
 func load_scene(scene_name):
 	call_deferred("add_child", scene_name)
