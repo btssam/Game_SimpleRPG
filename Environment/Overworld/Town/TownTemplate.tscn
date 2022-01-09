@@ -230,6 +230,7 @@ autoplay = true
 
 [node name="Area2D_To_Overworld" type="Area2D" parent="."]
 position = Vector2( 512, 16 )
+collision_layer = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D_To_Overworld"]
 shape = SubResource( 10 )
