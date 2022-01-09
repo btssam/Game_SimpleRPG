@@ -3,6 +3,7 @@ extends KinematicBody2D
 var speed = 2
 var motion = Vector2()
 var interactable = false
+var running = false
 var current_interaction
 
 func _ready():
@@ -20,6 +21,9 @@ func update_movement():
 		$AnimationPlayer.play("walk_left")
 		motion.x = -speed
 		motion.y = 0
+		if Input.is_action_pressed("run"):
+			$AnimationPlayer.play("walk_left", -1 , 2.0)
+			motion.x = -2 * speed
 	elif Input.is_action_just_released("left"):
 		$AnimationPlayer.play("idle_left")
 		motion.x = 0
@@ -29,6 +33,9 @@ func update_movement():
 		$AnimationPlayer.play("walk_right")
 		motion.x = speed
 		motion.y = 0
+		if Input.is_action_pressed("run"):
+			$AnimationPlayer.play("walk_right", -1 , 2.0)
+			motion.x =  2 * speed
 	elif Input.is_action_just_released("right"):
 		$AnimationPlayer.play("idle_right")
 		motion.x = 0
@@ -38,6 +45,9 @@ func update_movement():
 		$AnimationPlayer.play("walk_up")
 		motion.y = -speed
 		motion.x = 0
+		if Input.is_action_pressed("run"):
+			$AnimationPlayer.play("walk_up", -1 , 2.0)
+			motion.y = -2 *speed
 	elif Input.is_action_just_released("up"):
 		$AnimationPlayer.play("idle_up")
 		motion.x = 0
@@ -47,6 +57,9 @@ func update_movement():
 		$AnimationPlayer.play("walk_down")
 		motion.y = speed
 		motion.x = 0
+		if Input.is_action_pressed("run"):
+			$AnimationPlayer.play("walk_down", -1 , 2.0)
+			motion.y = 2 *speed
 	elif Input.is_action_just_released("down"):
 		$AnimationPlayer.play("idle_down")
 		motion.x = 0
