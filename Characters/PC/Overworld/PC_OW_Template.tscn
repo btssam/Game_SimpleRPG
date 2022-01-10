@@ -138,6 +138,7 @@ extents = Vector2( 9.5, 14 )
 extents = Vector2( 19, 28 )
 
 [node name="PC_OW_Template" type="KinematicBody2D" groups=[
+"battle_check_group",
 "interact_NPC",
 ]]
 collision_mask = 6
@@ -172,7 +173,6 @@ shape = SubResource( 10 )
 [node name="Delta_Position1" type="Timer" parent="."]
 wait_time = 0.5
 one_shot = true
-autostart = true
 
 [node name="Delta_Position2" type="Timer" parent="."]
 wait_time = 0.5

@@ -18,7 +18,6 @@ var on_overworld = false
 var battling = false
 
 func _ready():
-#	preload("res://Characters/PC/Battle/PC_battle.gd").new()
 	$AnimationPlayer.play("idle_down")
 	
 	
@@ -104,6 +103,10 @@ func _on_Area2D_Interact_body_exited(body):
 
 
 #check for battles
+func start_timer():
+	print('timer start')
+	$Delta_Position1.start()
+
 func _on_Delta_Position1_timeout():
 	previous_position = position
 	$Delta_Position2.start()
@@ -114,7 +117,6 @@ func _on_Delta_Position2_timeout():
 	check_for_battle()
 	
 func check_for_battle():
-#	if get_parent().has_child("Overworld_Template"):
 	var x_displacement = abs(current_position.x - previous_position.x)
 	var y_displacement = abs(current_position.y - previous_position.y)
 	print(x_displacement, ", ", y_displacement)

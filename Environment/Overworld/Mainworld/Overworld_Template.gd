@@ -1,5 +1,8 @@
 extends Node2D
 
+func _ready():
+	print('overworld _ready')
+	get_tree().call_group("battle_check_group", "start_timer")
 
 var from_scene = "overworld"
 var to_scene = ""
