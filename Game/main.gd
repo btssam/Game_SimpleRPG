@@ -1,5 +1,8 @@
 extends Node
 
+func _ready():
+	pass
+
 
 onready var Player = $PC_OW_Template
 
@@ -23,6 +26,7 @@ func switch_scene(from_scene, to_scene):
 			var battle = load(battle_node).instance()
 			Player.position = Vector2(800, 512)
 			load_scene(battle)
+			remove_child($Overworld_Template)
 
 func load_scene(scene_name):
 	call_deferred("add_child", scene_name)

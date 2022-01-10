@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Action2 - Army Approaching.ogg-4af39caa8b753e1569bfd0e8c686a02c.oggstr"
+
+[deps]
+
+source_file="res://Environment/Battlefield/JRPG Music Pack #5 [Action] by Juhani Junkala (1)/Action2 - Army Approaching.ogg"
+dest_files=[ "res://.import/Action2 - Army Approaching.ogg-4af39caa8b753e1569bfd0e8c686a02c.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

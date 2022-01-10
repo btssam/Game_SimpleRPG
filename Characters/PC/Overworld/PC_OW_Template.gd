@@ -104,7 +104,6 @@ func _on_Area2D_Interact_body_exited(body):
 
 #check for battles
 func start_timer():
-	print('timer start')
 	$Delta_Position1.start()
 
 func _on_Delta_Position1_timeout():
@@ -119,7 +118,6 @@ func _on_Delta_Position2_timeout():
 func check_for_battle():
 	var x_displacement = abs(current_position.x - previous_position.x)
 	var y_displacement = abs(current_position.y - previous_position.y)
-	print(x_displacement, ", ", y_displacement)
 	var displacement = x_displacement + y_displacement
 	steps_since_last += displacement
 	if steps_since_last > 600 or Input.is_action_pressed("test_key"):
@@ -127,4 +125,8 @@ func check_for_battle():
 			battling = true
 	else:
 		$Delta_Position1.start()
-		
+
+func reset_battle_check():
+	$Delta_Position1.stop()
+	$Delta_Position2.stop()
+	steps_since_last = 0
