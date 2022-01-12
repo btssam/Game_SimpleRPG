@@ -1,28 +1,27 @@
 extends KinematicBody2D
 
-
-
-
+#movemeent
 var motion = Vector2()
 var running = false
 var speed = 2
 
+#npc check
 var interactable = false
 var current_interaction
 
+#battle check
 var steps_since_last = 0
 var current_position = Vector2()
 var previous_position = Vector2()
-
-var on_overworld = false
-var battling = false
 var next_battle_counter = 0
+var battling = false
+
 
 func _ready():
 	$AnimationPlayer.play("idle_down")
 	get_next_battle_counter()
-	
-	
+
+
 func _physics_process(delta):
 	update_movement()
 	move_and_collide(motion)
@@ -89,8 +88,6 @@ func check_for_interaction(current_interaction):
 	if Input.is_action_just_pressed("interact"):
 		if interactable:
 			get_tree().call_group("interact_NPC", "pass_body_to_dialogue", current_interaction)
-		else:
-			print('cant interact')
 		
 func _on_Area2D_Interact_body_entered(body):
 	if 'NPC_Template' in body.name:
@@ -111,7 +108,6 @@ func start_timer():
 func _on_Delta_Position1_timeout():
 	previous_position = position
 	$Delta_Position2.start()
-
 
 func _on_Delta_Position2_timeout(): #get delta of position (displacement) and use to determine if battle
 	current_position = position
@@ -134,6 +130,12 @@ func check_for_battle():
 		$Delta_Position1.start()
 
 func reset_battle_check():
-	$Delta_Position1.stop()
-	$Delta_Position2.stop()
 	steps_since_last = 0
+	$Delta_Position1.start()
+	battling = false
+	
+
+
+#Battling code
+func battle_loop():
+	pass

@@ -9,7 +9,14 @@ var number_of_units = 0
 func _ready():
 	get_random_number_of_units()
 	add_enemies()
+	
+func _input(event):
+	if event.is_action_pressed("interact"):
+		close_scene()
 
+
+
+#spawn enemies
 func get_random_number_of_units():
 	randomize()
 	number_of_units = randi()%3 + 1
@@ -35,4 +42,8 @@ func change_position():
 			enemy_list[i].position = Vector2(224, 341 + 85 * i)
 		if number_of_units == 1:
 			enemy_list[i].position = Vector2(224, 384)
-	
+
+#respond to input
+func close_scene():
+	get_tree().call_group("level_switching", "switch_scene", "battle", "overworld")
+	get_tree().call_group("battle_check_group", "reset_battle_check")
