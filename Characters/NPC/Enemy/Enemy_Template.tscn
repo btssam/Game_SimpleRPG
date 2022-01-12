@@ -5,6 +5,7 @@
 [node name="Enemy_Template1" type="Node2D"]
 
 [node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 2, 2 )
 texture = ExtResource( 1 )
 hframes = 3
 vframes = 3

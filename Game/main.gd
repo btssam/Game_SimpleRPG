@@ -30,5 +30,4 @@ func switch_scene(from_scene, to_scene):
 
 func load_scene(scene_name):
 	call_deferred("add_child", scene_name)
-	call_deferred("move_child", Player, 3) #so that the Player is above the BG
 
