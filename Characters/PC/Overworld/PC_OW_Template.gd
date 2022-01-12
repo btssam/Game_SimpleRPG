@@ -16,9 +16,11 @@ var previous_position = Vector2()
 
 var on_overworld = false
 var battling = false
+var next_battle_counter = 0
 
 func _ready():
 	$AnimationPlayer.play("idle_down")
+	get_next_battle_counter()
 	
 	
 func _physics_process(delta):
@@ -111,18 +113,23 @@ func _on_Delta_Position1_timeout():
 	$Delta_Position2.start()
 
 
-func _on_Delta_Position2_timeout():
+func _on_Delta_Position2_timeout(): #get delta of position (displacement) and use to determine if battle
 	current_position = position
 	check_for_battle()
 	
+func get_next_battle_counter(): #how many steps until next battle
+	randomize()
+	next_battle_counter = randi() % 900 + 1 + 100
+
 func check_for_battle():
 	var x_displacement = abs(current_position.x - previous_position.x)
 	var y_displacement = abs(current_position.y - previous_position.y)
 	var displacement = x_displacement + y_displacement
 	steps_since_last += displacement
-	if steps_since_last > 600 or Input.is_action_pressed("test_key"):
+	if steps_since_last > next_battle_counter or Input.is_action_pressed("test_key"):
 			get_tree().call_group("level_switching", "switch_scene", 'overworld', 'battle')
 			battling = true
+			get_next_battle_counter()
 	else:
 		$Delta_Position1.start()
 

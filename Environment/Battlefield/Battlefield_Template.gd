@@ -16,9 +16,9 @@ func get_random_number_of_units():
 	number_of_units = 2
 	return number_of_units
 	
-func get_random_unity():
-	randomize()
-	return randi()%4 + 1
+#func get_random_unit():
+#	randomize()
+#	return randi()%4 + 1
 
 func add_enemies():
 	for i in range(0, number_of_units):
@@ -35,10 +35,4 @@ func change_position():
 			enemy_list[i].position = Vector2(224, 341 + 85 * i)
 		if number_of_units == 1:
 			enemy_list[i].position = Vector2(224, 384)
-	
-func add_enemy():
-	print('add_enemy')
-	var enemy = load(enemy_node).instance()
-	call_deferred("add_child", enemy)
-	call_deferred("change_position")
 	
