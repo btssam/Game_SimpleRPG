@@ -13,6 +13,7 @@ func _ready():
 func get_random_number_of_units():
 	randomize()
 	number_of_units = randi()%3 + 1
+	number_of_units = 2
 	return number_of_units
 	
 func get_random_unity():
@@ -28,7 +29,12 @@ func add_enemies():
 
 func change_position():
 	for i in range(0, number_of_units):
-		enemy_list[i].position = Vector2(224, 256 + 128 * i)
+		if number_of_units == 3:
+			enemy_list[i].position = Vector2(224, 256 + 128 * i)
+		if number_of_units == 2:
+			enemy_list[i].position = Vector2(224, 341 + 85 * i)
+		if number_of_units == 1:
+			enemy_list[i].position = Vector2(224, 384)
 	
 func add_enemy():
 	print('add_enemy')
