@@ -5,10 +5,12 @@ var enemy = load(enemy_node).instance()
 
 var enemy_list = []
 var number_of_units = 0
+var turn_order = []
 
 func _ready():
 	get_random_number_of_units()
 	add_enemies()
+#	get_turn_order()
 	
 func _input(event):
 	if event.is_action_pressed("interact"):
@@ -33,6 +35,7 @@ func add_enemies():
 		call_deferred("add_child", enemy)
 		enemy_list.push_back(enemy)
 		call_deferred('change_position')
+		print('enemies_added')
 
 func change_position():
 	for i in range(0, number_of_units):
@@ -47,3 +50,8 @@ func change_position():
 func close_scene():
 	get_tree().call_group("level_switching", "switch_scene", "battle", "overworld")
 	get_tree().call_group("battle_check_group", "reset_battle_check")
+
+#battle code
+#func get_turn_order():
+#	turn_order = enemy_list.push_front($PC_OW_Template)
+#	print(turn_order)
