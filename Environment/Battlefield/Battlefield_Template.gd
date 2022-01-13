@@ -13,9 +13,10 @@ func _ready():
 #	get_turn_order()
 	
 func _input(event):
-	if event.is_action_pressed("interact"):
+	if event.is_action_pressed("test_key"):
 		close_scene()
-
+	if event.is_action_pressed("interact"):
+		open_command_popup()
 
 
 #spawn enemies
@@ -55,3 +56,7 @@ func close_scene():
 #func get_turn_order():
 #	turn_order = enemy_list.push_front($PC_OW_Template)
 #	print(turn_order)
+
+func open_command_popup():
+	print('open command popup')
+	get_tree().call_group("battle_group", "open_commands_popup")
