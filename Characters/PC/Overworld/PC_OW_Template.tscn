@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Characters/PC/PC_Spritesheet.png" type="Texture" id=1]
 [ext_resource path="res://Characters/PC/Overworld/PC_OW_Template.gd" type="Script" id=2]
+[ext_resource path="res://UI/Battle/Popup_Commands.tscn" type="PackedScene" id=3]
 
 [sub_resource type="Animation" id=1]
 resource_name = "idle_down"
@@ -178,6 +179,11 @@ one_shot = true
 [node name="Delta_Position2" type="Timer" parent="."]
 wait_time = 0.5
 one_shot = true
+
+[node name="Popup_Commands" parent="." instance=ExtResource( 3 )]
+visible = true
+margin_left = -41.0
+margin_right = -11.0
 
 [connection signal="body_entered" from="Area2D_Interact" to="." method="_on_Area2D_Interact_body_entered"]
 [connection signal="body_exited" from="Area2D_Interact" to="." method="_on_Area2D_Interact_body_exited"]

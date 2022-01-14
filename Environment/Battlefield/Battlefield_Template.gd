@@ -58,5 +58,8 @@ func close_scene():
 #	print(turn_order)
 
 func open_command_popup():
+#	var commands_popup = preload("res://UI/Battle/Popup_Commands.tscn").instance()
+#	var player_node = get_tree().get_root().get_node("Main/PC_OW_Template")
+#	player_node.add_child(commands_popup)
 	print('open command popup')
 	get_tree().call_group("battle_group", "open_commands_popup")

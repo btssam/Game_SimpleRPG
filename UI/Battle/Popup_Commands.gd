@@ -8,12 +8,13 @@ extends Popup
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	get_parent().position = self.position
+#	print(get_parent().position)
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+## Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
-#	pass
+#	 get_parent().position = self.position
 
 func open_commands_popup():
 	print('open command popup2')
