@@ -1,0 +1,40 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://UI/Battle/Command_Card.gd" type="Script" id=1]
+[ext_resource path="res://UI/Battle/battle_theme.tres" type="Theme" id=2]
+[ext_resource path="res://UI/System_Frame.png" type="Texture" id=3]
+[ext_resource path="res://UI/ModernDOS8x16.ttf" type="DynamicFontData" id=4]
+
+[sub_resource type="DynamicFont" id=1]
+size = 8
+font_data = ExtResource( 4 )
+
+[node name="Command_Card" type="Sprite" groups=[
+"battle_group",
+]]
+script = ExtResource( 1 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 30.0
+margin_bottom = 30.0
+color = Color( 0.105882, 0.105882, 0.105882, 0.713726 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="TextureRect"]
+margin_left = 3.0
+margin_top = 2.0
+margin_right = 27.0
+margin_bottom = 10.0
+theme = ExtResource( 2 )
+custom_fonts/font = SubResource( 1 )
+text = "Attack"

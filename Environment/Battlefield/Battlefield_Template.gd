@@ -36,7 +36,6 @@ func add_enemies():
 		call_deferred("add_child", enemy)
 		enemy_list.push_back(enemy)
 		call_deferred('change_position')
-		print('enemies_added')
 
 func change_position():
 	for i in range(0, number_of_units):
@@ -58,8 +57,4 @@ func close_scene():
 #	print(turn_order)
 
 func open_command_popup():
-#	var commands_popup = preload("res://UI/Battle/Popup_Commands.tscn").instance()
-#	var player_node = get_tree().get_root().get_node("Main/PC_OW_Template")
-#	player_node.add_child(commands_popup)
-	print('open command popup')
 	get_tree().call_group("battle_group", "open_commands_popup")
