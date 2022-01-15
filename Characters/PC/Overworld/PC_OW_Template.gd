@@ -16,6 +16,9 @@ var previous_position = Vector2()
 var next_battle_counter = 0
 var battling = false
 
+#battle code
+onready var popup = $Popup_Commands
+
 
 func _ready():
 	$AnimationPlayer.play("idle_down")
@@ -26,6 +29,7 @@ func _physics_process(delta):
 	update_movement()
 	move_and_collide(motion)
 	check_for_interaction(current_interaction)
+	popup.rect_global_position = self.position - Vector2(60, 0) #move popup
 
 
 #overworld movement

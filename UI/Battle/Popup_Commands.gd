@@ -8,7 +8,9 @@ extends Popup
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	get_parent().position = self.position
+	pass
+#	print(get_parent().position)
+#	call_deferred("popup")
 #	print(get_parent().position)
 
 
