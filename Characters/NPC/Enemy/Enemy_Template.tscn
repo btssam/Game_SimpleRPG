@@ -35,5 +35,4 @@ scale = Vector2( 3, 3 )
 texture = ExtResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Selector"]
-autoplay = "blink"
 anims/blink = SubResource( 1 )

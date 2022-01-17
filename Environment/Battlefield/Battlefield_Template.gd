@@ -5,7 +5,8 @@ var enemy = load(enemy_node).instance()
 
 var enemy_list = []
 var number_of_units = 0
-var turn_order = []
+var current_target = 0
+#var turn_order = []
 
 func _ready():
 	get_random_number_of_units()
@@ -23,7 +24,6 @@ func _input(event):
 func get_random_number_of_units():
 	randomize()
 	number_of_units = randi()%3 + 1
-	number_of_units = 2
 	return number_of_units
 	
 #func get_random_unit():
@@ -58,3 +58,10 @@ func close_scene():
 
 func open_command_popup():
 	get_tree().call_group("battle_group", "open_commands_popup")
+
+func select_target():
+	print('select a target')
+	for i in range(0, number_of_units):
+		var children_list = enemy_list[current_target].get_children()
+		var selector = children_list[1]
+		selector.visible = true

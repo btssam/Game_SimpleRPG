@@ -61,6 +61,7 @@ __meta__ = {
 }
 
 [node name="Selector" type="Sprite" parent="TextureRect/Label"]
+visible = false
 position = Vector2( 55, 7.5 )
 texture = ExtResource( 5 )
 
