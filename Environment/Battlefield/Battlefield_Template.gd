@@ -21,14 +21,18 @@ func _ready():
 func _input(event):
 	if event.is_action_pressed("test_key"):
 		close_scene()
-	if event.is_action_pressed("interact"):
-		open_command_popup()
+		
+	if not isSelectingTarget:
+		if event.is_action_pressed("interact"):
+			open_command_popup()
 	
 	if isSelectingTarget:
 		if event.is_action_pressed("up"):
 			change_target("up")
 		if event.is_action_pressed("down"):
 			change_target("down")
+		if event.is_action_pressed("interact"):
+			return_target()
 			
 	if isSelectingSkill:
 		if event.is_action_pressed("up"):
@@ -79,6 +83,10 @@ func close_scene():
 func open_command_popup():
 	get_tree().call_group("battle_group", "open_commands_popup")
 	isSelectingSkill = true
+	
+#select command
+func change_skill(direction):
+	print('move option ' + direction)
 
 #select a target
 func select_target():
@@ -100,9 +108,7 @@ func change_target(direction):
 			current_target += 1
 			enable_selector_sprite()
 	print(enemy_list[current_target])
-	
-func change_skill(direction):
-	print('move option ' + direction)
+
 	
 func enable_selector_sprite():
 	var children_list = enemy_list[current_target].get_children()
@@ -117,3 +123,9 @@ func disable_selector_sprite():
 	var animationPlayer = children_list[2]
 	selector.visible = false
 	animationPlayer.stop()
+	
+func return_target():
+	print(current_target)
+	isSelectingTarget = false
+	disable_selector_sprite()
+	get_tree().call_group("battle_group", "hasSelected")

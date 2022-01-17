@@ -22,3 +22,6 @@ func open_commands_popup():
 func select_a_target():
 	if isSelecting:
 		get_tree().call_group("battle_group", "select_target")
+
+func hasSelected():
+	isSelecting = false
