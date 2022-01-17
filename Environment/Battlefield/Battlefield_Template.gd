@@ -5,8 +5,12 @@ var enemy = load(enemy_node).instance()
 
 var enemy_list = []
 var number_of_units = 0
-var current_target = 0
 #var turn_order = []
+
+var isSelectingSkill = false
+
+var isSelectingTarget = false
+var current_target = 0
 
 func _ready():
 	get_random_number_of_units()
@@ -18,6 +22,20 @@ func _input(event):
 		close_scene()
 	if event.is_action_pressed("interact"):
 		open_command_popup()
+	
+	if isSelectingTarget:
+		if event.is_action_pressed("up"):
+			change_target("up")
+		if event.is_action_pressed("down"):
+			change_target("down")
+			
+	if isSelectingSkill:
+		if event.is_action_pressed("up"):
+			change_skill("up")
+		if event.is_action_pressed("down"):
+			change_skill("down")
+	
+	
 
 
 #spawn enemies
@@ -58,10 +76,22 @@ func close_scene():
 
 func open_command_popup():
 	get_tree().call_group("battle_group", "open_commands_popup")
+	isSelectingSkill = true
+	print(isSelectingSkill)
+	print(isSelectingTarget)
 
 func select_target():
+	isSelectingSkill = false
+	isSelectingTarget = true
 	print('select a target')
-	for i in range(0, number_of_units):
-		var children_list = enemy_list[current_target].get_children()
-		var selector = children_list[1]
-		selector.visible = true
+	var children_list = enemy_list[current_target].get_children()
+	var selector = children_list[1]
+	var animationPlayer = children_list[2]
+	selector.visible = true
+	animationPlayer.play('blink')
+
+func change_target(direction):
+	print('move target ' + direction)
+	
+func change_skill(direction):
+	print('move option ' + direction)
