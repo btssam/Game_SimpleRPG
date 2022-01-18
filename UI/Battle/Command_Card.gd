@@ -27,8 +27,11 @@ func open_commands_popup():
 			disable_selector_sprite()
 			hide()
 			isVisible = false
-			isSelecting = true
-			select_a_target()
+			if current_selection == 0:
+				isSelecting = true
+				select_a_target()
+			else:
+				get_tree().call_group("battle_group", "close_scene")
 		
 func select_a_target():
 	get_tree().call_group("battle_group", "select_target")
@@ -44,7 +47,6 @@ func change_current_selection(direction):
 			current_selection -= 1
 			get_nodes()
 			enable_selector_sprite()
-			print(current_selection)
 	elif direction == 'down':
 		if current_selection < number_of_selections - 1:
 			get_nodes()
@@ -52,7 +54,6 @@ func change_current_selection(direction):
 			current_selection += 1
 			get_nodes()
 			enable_selector_sprite()
-			print(current_selection)
 	
 func get_nodes():
 	var children_list = get_children()
@@ -60,8 +61,6 @@ func get_nodes():
 	var command_children_list = commands_list[current_selection].get_children()
 	selector_sprite = command_children_list[0]
 	animation_player = command_children_list[1]
-	print(selector_sprite)
-	print(animation_player)
 
 func enable_selector_sprite():
 	selector_sprite.visible = true
