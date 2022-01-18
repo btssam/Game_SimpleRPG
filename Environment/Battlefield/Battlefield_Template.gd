@@ -86,17 +86,15 @@ func open_command_popup():
 	
 #select command
 func change_skill(direction):
-	print('move option ' + direction)
+	get_tree().call_group("battle_group", "change_current_selection", direction)
 
 #select a target
 func select_target():
 	isSelectingSkill = false
 	isSelectingTarget = true
-	print('select a target')
 	enable_selector_sprite()
 
 func change_target(direction):
-	print('move target ' + direction)
 	if direction == 'up':
 		if current_target > 0:
 			disable_selector_sprite()
@@ -107,7 +105,6 @@ func change_target(direction):
 			disable_selector_sprite()
 			current_target += 1
 			enable_selector_sprite()
-	print(enemy_list[current_target])
 
 	
 func enable_selector_sprite():
