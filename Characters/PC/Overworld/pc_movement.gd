@@ -10,7 +10,7 @@ var speed = 2
 var battling = false
 
 func _ready():
-	pass
+	$AnimationPlayer.play("idle_down")
 
 func _physics_process(delta):
 	update_movement()

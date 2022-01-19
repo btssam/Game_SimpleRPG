@@ -1,6 +1,6 @@
 extends "res://Environment/Battlefield/Scripts/battlefield_targeting.gd"
 #also extends:
-#initalize_*.gd
+# battlefield_initialize.gd
 
 
 
