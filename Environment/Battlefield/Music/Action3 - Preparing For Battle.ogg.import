@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Action3 - Preparing For Battle.ogg-d9de49448dec5886df50c3f25825e855.oggstr"
+
+[deps]
+
+source_file="res://Environment/Battlefield/Music/Action3 - Preparing For Battle.ogg"
+dest_files=[ "res://.import/Action3 - Preparing For Battle.ogg-d9de49448dec5886df50c3f25825e855.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

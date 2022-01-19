@@ -1,11 +1,9 @@
-extends Node
+extends "res://Environment/Battlefield/Scripts/battlefield_initalize.gd"
 
 var isSelectingTarget = false
 var current_target = 0
 var isSelectingSkill = false
-var number_of_units = 0
-
-var enemy_list = []
+#var current_skill = 0
 
 func select_target():
 	isSelectingSkill = false
@@ -44,3 +42,5 @@ func return_target():
 	isSelectingTarget = false
 	disable_selector_sprite()
 	get_tree().call_group("battle_group", "hasSelected")
+	
+
