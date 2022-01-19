@@ -40,15 +40,15 @@ func process_command(): #callback #should be called process_command
 				get_tree().call_group("battle_group", "close_scene")
 				
 		
-func select_a_target():
+func select_a_target(): #to battlefield_targeting
 	get_tree().call_group("battle_group", "select_target")
 
-func hasSelected(): #callback
+func hasSelected(): #callback from battlefield_targeting
 	isSelecting = false
-	set_skill()
-
-func set_skill():
 	get_tree().call_group("battle_group", "get_skill", current_selection)
+
+#func set_skill(): #to battlefield_selecting_skill
+#	get_tree().call_group("battle_group", "get_skill", current_selection)
 
 func change_current_selection(direction):
 	if direction == 'up':
