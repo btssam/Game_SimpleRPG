@@ -1,9 +1,5 @@
-extends KinematicBody2D
+extends "res://Characters/PC/Overworld/pc_movement.gd"
 
-#movemeent
-var motion = Vector2()
-var running = false
-var speed = 2
 
 #npc check
 var interactable = false
@@ -14,7 +10,6 @@ var steps_since_last = 0
 var current_position = Vector2()
 var previous_position = Vector2()
 var next_battle_counter = 0
-var battling = false
 
 #battle code
 #onready var popup = $Popup_Commands
@@ -26,66 +21,12 @@ func _ready():
 
 
 func _physics_process(delta):
-	update_movement()
-	move_and_collide(motion)
+#	update_movement()
+#	move_and_collide(motion)
 	check_for_interaction(current_interaction)
 #	popup.rect_global_position = self.position - Vector2(60, 0) #move popup
 
 
-#overworld movement
-func update_movement():
-	if not battling:
-		if Input.is_action_pressed("left"):
-			$AnimationPlayer.play("walk_left")
-			motion.x = -speed
-			motion.y = 0
-			if Input.is_action_pressed("run"):
-				$AnimationPlayer.play("walk_left", -1 , 2.0)
-				motion.x = -2 * speed
-		elif Input.is_action_just_released("left"):
-			$AnimationPlayer.play("idle_left")
-			motion.x = 0
-			motion.y = 0
-			
-		elif Input.is_action_pressed("right"):
-			$AnimationPlayer.play("walk_right")
-			motion.x = speed
-			motion.y = 0
-			if Input.is_action_pressed("run"):
-				$AnimationPlayer.play("walk_right", -1 , 2.0)
-				motion.x =  2 * speed
-		elif Input.is_action_just_released("right"):
-			$AnimationPlayer.play("idle_right")
-			motion.x = 0
-			motion.y = 0
-			
-		elif Input.is_action_pressed("up"):
-			$AnimationPlayer.play("walk_up")
-			motion.y = -speed
-			motion.x = 0
-			if Input.is_action_pressed("run"):
-				$AnimationPlayer.play("walk_up", -1 , 2.0)
-				motion.y = -2 *speed
-		elif Input.is_action_just_released("up"):
-			$AnimationPlayer.play("idle_up")
-			motion.x = 0
-			motion.y = 0
-			
-		elif Input.is_action_pressed("down"):
-			$AnimationPlayer.play("walk_down")
-			motion.y = speed
-			motion.x = 0
-			if Input.is_action_pressed("run"):
-				$AnimationPlayer.play("walk_down", -1 , 2.0)
-				motion.y = 2 *speed
-		elif Input.is_action_just_released("down"):
-			$AnimationPlayer.play("idle_down")
-			motion.x = 0
-			motion.y = 0
-	else:
-		motion.x = 0
-		motion.y = 0
-		$AnimationPlayer.play("idle_left")
 
 #check for interaction, like NPCs
 func check_for_interaction(current_interaction):
