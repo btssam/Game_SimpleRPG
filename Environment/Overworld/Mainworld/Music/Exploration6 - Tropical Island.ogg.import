@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Exploration6 - Tropical Island.ogg-d6f8d3f490c09b05193dd11d155f346a.oggstr"
+
+[deps]
+
+source_file="res://Environment/Overworld/Mainworld/Music/Exploration6 - Tropical Island.ogg"
+dest_files=[ "res://.import/Exploration6 - Tropical Island.ogg-d6f8d3f490c09b05193dd11d155f346a.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

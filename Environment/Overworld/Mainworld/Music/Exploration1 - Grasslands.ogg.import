@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Exploration1 - Grasslands.ogg-3bd7e655e6f32684fde7337fa95f232a.oggstr"
+
+[deps]
+
+source_file="res://Environment/Overworld/Mainworld/Music/Exploration1 - Grasslands.ogg"
+dest_files=[ "res://.import/Exploration1 - Grasslands.ogg-3bd7e655e6f32684fde7337fa95f232a.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Town1 - Home Town.ogg-ea293acd76b7996843f0510825d5c2d2.oggstr"
+
+[deps]
+
+source_file="res://Environment/Overworld/Town/Music/Town1 - Home Town.ogg"
+dest_files=[ "res://.import/Town1 - Home Town.ogg-ea293acd76b7996843f0510825d5c2d2.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

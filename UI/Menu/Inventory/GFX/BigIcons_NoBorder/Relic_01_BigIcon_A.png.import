@@ -1,0 +1,34 @@
+[remap]
+
+importer="texture"
+type="StreamTexture"
+path="res://.import/Relic_01_BigIcon_A.png-3770d49d27aec8ae643e32ed24e41a1f.stex"
+metadata={
+"vram_texture": false
+}
+
+[deps]
+
+source_file="res://UI/Menu/Inventory/GFX/BigIcons_NoBorder/Relic_01_BigIcon_A.png"
+dest_files=[ "res://.import/Relic_01_BigIcon_A.png-3770d49d27aec8ae643e32ed24e41a1f.stex" ]
+
+[params]
+
+compress/mode=0
+compress/lossy_quality=0.7
+compress/hdr_mode=0
+compress/bptc_ldr=0
+compress/normal_map=0
+flags/repeat=0
+flags/filter=false
+flags/mipmaps=false
+flags/anisotropic=false
+flags/srgb=2
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/HDR_as_SRGB=false
+process/invert_color=false
+stream=false
+size_limit=0
+detect_3d=true
+svg/scale=1.0

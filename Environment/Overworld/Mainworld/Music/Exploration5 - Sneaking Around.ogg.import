@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Exploration5 - Sneaking Around.ogg-29bde3ad876f238c0e967fccc0b5ec0d.oggstr"
+
+[deps]
+
+source_file="res://Environment/Overworld/Mainworld/Music/Exploration5 - Sneaking Around.ogg"
+dest_files=[ "res://.import/Exploration5 - Sneaking Around.ogg-29bde3ad876f238c0e967fccc0b5ec0d.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -2,9 +2,9 @@
 
 [ext_resource path="res://Characters/NPC/Friendly/NPC_Template_2.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Environment/Overworld/Town/Town_Template.gd" type="Script" id=2]
-[ext_resource path="res://Environment/Overworld/Town/TownTileSet.tres" type="TileSet" id=3]
+[ext_resource path="res://Environment/Overworld/Town/Tiles/TownTileSet.tres" type="TileSet" id=3]
 [ext_resource path="res://Characters/NPC/Friendly/NPC_Template.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Environment/Overworld/Town/JRPG Music Pack #2 [Towns] by Juhani Junkala/Town1 - Home Town.ogg" type="AudioStream" id=5]
+[ext_resource path="res://Environment/Overworld/Town/Music/Town1 - Home Town.ogg" type="AudioStream" id=5]
 [ext_resource path="res://Environment/Overworld/Spirtesheets/Town B1.png" type="Texture" id=6]
 [ext_resource path="res://Environment/Overworld/Spirtesheets/Town A5.png" type="Texture" id=7]
 
