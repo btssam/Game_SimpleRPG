@@ -16,7 +16,7 @@ func _ready():
 	hide()
 
 
-func open_commands_popup(): #callback
+func open_commands_popup(): #callback #should be called process_command
 	get_nodes()
 	
 	if not isSelecting:

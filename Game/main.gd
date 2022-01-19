@@ -1,6 +1,6 @@
 extends Node
 
-onready var Player = $PC_OW_Template
+onready var Player = $PC_Template
 
 var town_node = "res://Environment/Overworld/Town/Town_Template.tscn"
 var overworld_node = "res://Environment/Overworld/Mainworld/Overworld_Template.tscn"
