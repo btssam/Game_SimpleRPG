@@ -1,8 +1,7 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Characters/PC/PC_Spritesheet.png" type="Texture" id=1]
 [ext_resource path="res://Characters/PC/pc_template.gd" type="Script" id=2]
-[ext_resource path="res://UI/Battle/Command_Card.tscn" type="PackedScene" id=3]
 
 [sub_resource type="Animation" id=1]
 resource_name = "idle_down"
@@ -142,6 +141,7 @@ extents = Vector2( 19, 28 )
 "battle_check_group",
 "interact_NPC",
 ]]
+scale = Vector2( 1.6, 2.2 )
 collision_mask = 6
 script = ExtResource( 2 )
 
@@ -178,9 +178,6 @@ one_shot = true
 [node name="Delta_Position2" type="Timer" parent="."]
 wait_time = 0.5
 one_shot = true
-
-[node name="Command_Card" parent="." instance=ExtResource( 3 )]
-position = Vector2( -79, -30 )
 
 [connection signal="body_entered" from="Area2D_Interact" to="." method="_on_Area2D_Interact_body_entered"]
 [connection signal="body_exited" from="Area2D_Interact" to="." method="_on_Area2D_Interact_body_exited"]

@@ -16,5 +16,4 @@ script = ExtResource( 3 )
 
 [node name="PC_Template" parent="." instance=ExtResource( 2 )]
 position = Vector2( 512, 384 )
-scale = Vector2( 1.6, 2.2 )
 z_index = 1
