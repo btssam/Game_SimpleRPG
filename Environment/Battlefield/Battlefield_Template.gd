@@ -1,17 +1,17 @@
-extends Node2D
+extends "res://Environment/Battlefield/Scripts/targeting.gd"
 
 var enemy_node = "res://Characters/NPC/Enemy/Enemy_Template.tscn"
 var enemy = load(enemy_node).instance()
 
-var enemy_list = []
-var number_of_units = 0
+
+
 #var turn_order = []
 
-var isSelectingSkill = false
+
 #var current_skill = 0
 
-var isSelectingTarget = false
-var current_target = 0
+
+
 
 func _ready():
 	get_random_number_of_units()
@@ -88,41 +88,3 @@ func open_command_popup():
 func change_skill(direction):
 	get_tree().call_group("battle_group", "change_current_selection", direction)
 
-#select a target
-func select_target():
-	isSelectingSkill = false
-	isSelectingTarget = true
-	enable_selector_sprite()
-
-func change_target(direction):
-	if direction == 'up':
-		if current_target > 0:
-			disable_selector_sprite()
-			current_target -= 1
-			enable_selector_sprite()
-	elif direction == 'down':
-		if current_target < number_of_units - 1:
-			disable_selector_sprite()
-			current_target += 1
-			enable_selector_sprite()
-
-	
-func enable_selector_sprite():
-	var children_list = enemy_list[current_target].get_children()
-	var selector = children_list[1]
-	var animationPlayer = children_list[2]
-	selector.visible = true
-	animationPlayer.play('blink')
-
-func disable_selector_sprite():
-	var children_list = enemy_list[current_target].get_children()
-	var selector = children_list[1]
-	var animationPlayer = children_list[2]
-	selector.visible = false
-	animationPlayer.stop()
-	
-func return_target():
-	print(current_target)
-	isSelectingTarget = false
-	disable_selector_sprite()
-	get_tree().call_group("battle_group", "hasSelected")

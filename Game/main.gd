@@ -22,7 +22,7 @@ func switch_scene(from_scene, to_scene):
 			var battle = load(battle_node).instance()
 			Player.position = Vector2(800, 512)
 			load_scene(battle)
-			remove_child($Overworld_Template) #bc this is being called from the player, otherwise it is just queued free itself
+			remove_child($Overworld_Template) #bc this is being called from the player, otherwise it is just queued free itself. should possible to just free all from here for consistency
 	
 	if from_scene == "battle":
 		if to_scene == "overworld":
