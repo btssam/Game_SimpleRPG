@@ -43,3 +43,10 @@ func reset_battle_check():
 	steps_since_last = 0
 	$Delta_Position1.start()
 	battling = false
+	print('reset_battle_check')
+	
+func stop_battle_check():
+	steps_since_last = 0
+	$Delta_Position1.stop()
+	battling = false
+	print('stop_battle_check')

@@ -5,7 +5,7 @@ var isVisible = false
 var isSelecting = false
 
 var current_selection = 0
-var number_of_selections = 2
+var number_of_selections = 4
 #var current_open_cards = 0
 
 var selector_sprite
@@ -31,8 +31,14 @@ func open_commands_popup(): #callback
 			if current_selection == 0: #attack
 				isSelecting = true
 				select_a_target()
-			else: #flee
+			elif current_selection == 1: #skill
+				print('no skills')
+			elif current_selection == 2: #item
+				print('no items')
+			elif current_selection == 3: #flee
+				current_selection = 0
 				get_tree().call_group("battle_group", "close_scene")
+				
 		
 func select_a_target():
 	get_tree().call_group("battle_group", "select_target")
