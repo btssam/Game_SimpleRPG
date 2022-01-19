@@ -26,7 +26,7 @@ func _input(event):
 
 #open commands
 func open_command_popup():
-	get_tree().call_group("battle_group", "open_commands_popup")
+	get_tree().call_group("battle_group", "process_command")
 #	print($"../PC_Template/Command_Card")
 #	$"../PC_Template/Command_Card".show()     I could use this to acces the command_card
 #   											rather than use a group call.

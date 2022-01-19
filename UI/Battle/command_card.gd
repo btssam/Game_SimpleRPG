@@ -16,7 +16,7 @@ func _ready():
 	hide()
 
 
-func open_commands_popup(): #callback #should be called process_command
+func process_command(): #callback #should be called process_command
 	get_nodes()
 	
 	if not isSelecting:
@@ -47,20 +47,19 @@ func hasSelected(): #callback
 	isSelecting = false
 	set_skill()
 
+func set_skill():
+	get_tree().call_group("battle_group", "get_skill", current_selection)
+
 func change_current_selection(direction):
 	if direction == 'up':
 		if current_selection > 0 :
-			get_nodes()
 			disable_selector_sprite()
 			current_selection -= 1
-			get_nodes()
 			enable_selector_sprite()
 	elif direction == 'down':
 		if current_selection < number_of_selections - 1:
-			get_nodes()
 			disable_selector_sprite()
 			current_selection += 1
-			get_nodes()
 			enable_selector_sprite()
 	
 func get_nodes(): #get the selector and animator of current selection(label node)
@@ -71,12 +70,11 @@ func get_nodes(): #get the selector and animator of current selection(label node
 	animation_player = command_children_list[1]
 
 func enable_selector_sprite():
+	get_nodes()
 	selector_sprite.visible = true
 	animation_player.play('blink')
 	
 func disable_selector_sprite():
+	get_nodes()
 	selector_sprite.visible = false
 	animation_player.stop()
-
-func set_skill():
-	get_tree().call_group("battle_group", "get_skill", current_selection)
