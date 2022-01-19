@@ -21,7 +21,3 @@ volume_db = 1.0
 autoplay = true
 
 [node name="BattleUI" parent="." instance=ExtResource( 4 )]
-margin_left = 588.17
-margin_top = 554.945
-margin_right = 588.17
-margin_bottom = 554.945
