@@ -1,9 +1,7 @@
-extends "res://Characters/PC/Overworld/pc_movement.gd"
+extends "res://Characters/PC/Overworld/pc_interaction.gd"
+#also extends:
+# pc_interaction.gd
 
-
-#npc check
-var interactable = false
-var current_interaction
 
 #battle check
 var steps_since_last = 0
@@ -12,7 +10,6 @@ var previous_position = Vector2()
 var next_battle_counter = 0
 
 #battle code
-#onready var popup = $Popup_Commands
 
 
 func _ready():
@@ -21,29 +18,11 @@ func _ready():
 
 
 func _physics_process(delta):
-#	update_movement()
-#	move_and_collide(motion)
-	check_for_interaction(current_interaction)
-#	popup.rect_global_position = self.position - Vector2(60, 0) #move popup
+	pass
 
+#func _input(event):
+#	pass
 
-
-#check for interaction, like NPCs
-func check_for_interaction(current_interaction):
-	if Input.is_action_just_pressed("interact"):
-		if interactable:
-			get_tree().call_group("interact_NPC", "pass_body_to_dialogue", current_interaction)
-		
-func _on_Area2D_Interact_body_entered(body):
-	if 'NPC_Template' in body.name:
-		interactable = true
-		current_interaction = body.name #get name of interacted NPC
-
-func _on_Area2D_Interact_body_exited(body):
-	if 'NPC_Template' in body.name:
-		interactable = false
-		current_interaction = 'none'
-		get_tree().call_group('interact_NPC', 'hide_dialogue')
 
 
 #check for battles
