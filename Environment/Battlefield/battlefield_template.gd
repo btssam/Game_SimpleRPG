@@ -51,3 +51,14 @@ func open_command_popup():
 func change_skill(direction):
 	get_tree().call_group("battle_group", "change_current_selection", direction)
 
+#respond_to_skill
+func get_skill(skill):
+	current_skill = skill
+	print("skill recieved:" + str(current_skill))
+	respond_to_skill(current_skill, current_target)
+	
+func respond_to_skill(skill, target):
+	if skill == 0:
+		print('attempt to lower hp')
+		enemy_list[target].hp -= 1
+		print(enemy_list[target].hp)

@@ -3,7 +3,7 @@ extends "res://Environment/Battlefield/Scripts/battlefield_initalize.gd"
 var isSelectingTarget = false
 var current_target = 0
 var isSelectingSkill = false
-#var current_skill = 0
+var current_skill = 0
 
 func select_target():
 	isSelectingSkill = false
