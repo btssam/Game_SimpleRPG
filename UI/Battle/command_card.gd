@@ -31,6 +31,7 @@ func process_command(): #callback #should be called process_command
 			if current_selection == 0: #attack
 				isSelecting = true
 				select_a_target()
+				isSelecting = false #this is added, but should not be needed in new version
 			elif current_selection == 1: #skill
 				print('no skills')
 			elif current_selection == 2: #item
@@ -43,12 +44,9 @@ func process_command(): #callback #should be called process_command
 func select_a_target(): #to battlefield_targeting
 	get_tree().call_group("battle_group", "select_target")
 
-func hasSelected(): #callback from battlefield_targeting
-	isSelecting = false
-	get_tree().call_group("battle_group", "get_skill", current_selection)
-
-#func set_skill(): #to battlefield_selecting_skill
-#	get_tree().call_group("battle_group", "get_skill", current_selection)
+#func hasSelected(): #callback from battlefield_targeting
+#	isSelecting = false  #this is not done in new versions
+#	get_tree().call_group("battle_group", "get_skill", current_selection) #to battlefield_selecting_skill
 
 func change_current_selection(direction):
 	if direction == 'up':
@@ -69,7 +67,7 @@ func get_nodes(): #get the selector and animator of current selection(label node
 	selector_sprite = command_children_list[0]
 	animation_player = command_children_list[1]
 
-func enable_selector_sprite():
+func enable_selector_sprite(): #must rename thise two functions, as the same name is in battlefield_targeting
 	get_nodes()
 	selector_sprite.visible = true
 	animation_player.play('blink')

@@ -1,4 +1,4 @@
-extends "res://Environment/Battlefield/Scripts/battlefield_selecting_skill.gd"
+extends "res://Environment/Battlefield/Scripts/battlefield_command_card.gd"
 #also extends:
 # battlefield_initialize.gd
 # battlefield_targeting
@@ -23,3 +23,6 @@ func close_scene():
 	get_tree().call_group("level_switching", "switch_scene", "battle", "overworld")
 	get_tree().call_group("battle_check_group", "reset_battle_check")
 
+
+
+#battlefield_command_card

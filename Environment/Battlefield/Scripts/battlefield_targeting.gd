@@ -6,6 +6,7 @@ var current_target = 0
 var isSelectingSkill = false
 var current_skill = 0
 
+var current_selection = 0
 
 func _ready():
 	pass
@@ -13,8 +14,9 @@ func _ready():
 func _input(event):
 	if not isSelectingTarget:
 		if event.is_action_pressed("interact"):
+			print('trying')
 			open_command_popup()
-	
+
 	elif isSelectingTarget:
 		if event.is_action_pressed("up"):
 			change_target("up")
@@ -22,6 +24,14 @@ func _input(event):
 			change_target("down")
 		if event.is_action_pressed("interact"):
 			return_target()
+
+
+	#selecting skills
+	if isSelectingSkill:
+		if event.is_action_pressed("up"):
+			change_skill("up")
+		if event.is_action_pressed("down"):
+			change_skill("down")
 
 
 #open commands
@@ -69,5 +79,23 @@ func return_target():
 	print(current_target)
 	isSelectingTarget = false
 	disable_selector_sprite()
-	get_tree().call_group("battle_group", "hasSelected")
+	get_skill()
 	
+
+
+#selecting skills
+#select command
+func change_skill(direction):
+	get_tree().call_group("battle_group", "change_current_selection", direction)
+
+#respond_to_skill
+func get_skill():
+	current_skill = current_selection
+	print("skill recieved:" + str(current_skill))
+	respond_to_skill()
+	
+func respond_to_skill():
+	if current_skill == 0: #attack
+		print('attempt to lower hp')
+		enemy_list[current_target].hp -= 1
+		print(enemy_list[current_target].hp)
