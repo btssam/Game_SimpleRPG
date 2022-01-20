@@ -19,7 +19,7 @@ func _ready():
 
 
 func _input(event):
-	if not isSelectingTarget and not isSelectingSkill: #and not isSelectingSkill
+	if not isSelectingTarget: #and not isSelectingSkill
 		if event.is_action_pressed("interact"):
 			process_command()
 #			isSelectingSkill = true
@@ -50,9 +50,12 @@ func process_command(): #callback #should be called process_command
 #				isSelectingTarget = false #this is added, but should not be needed in new version
 			elif current_selection == 1: #skill
 				print('no skills')
+				isSelectingSkill = false
 			elif current_selection == 2: #item
 				print('no items')
+				isSelectingSkill = false
 			elif current_selection == 3: #flee
+				isSelectingSkill = false
 				current_selection = 0
 				get_tree().call_group("battle_group", "close_scene")
 

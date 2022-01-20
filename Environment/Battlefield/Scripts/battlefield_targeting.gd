@@ -35,7 +35,7 @@ func select_target():
 	print('pick a target')
 	isSelectingSkill = false
 #	yield(get_tree().create_timer(0.5), "timeout") #testing
-	isSelectingTarget = true
+	set_deferred("isSelectingTarget", true ) # isSelectingTarget = true
 	enable_selector_sprite()
 
 func change_target(direction):
