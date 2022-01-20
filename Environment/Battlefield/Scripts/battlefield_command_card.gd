@@ -1,17 +1,13 @@
 extends "res://Environment/Battlefield/Scripts/battlefield_targeting.gd"
-#currently this script is unused
 
 
 onready var command_card = $BattleUI/Command_Card
-
-var cardIsVisible =  false
-#var isSelectingSkill = false
-
-#var current_selection = 0
-var number_of_selections = 4
-
 var card_selector_sprite
 var card_animation_player
+
+var cardIsVisible =  false
+
+var number_of_selections = 4
 
 
 func _ready():
@@ -19,10 +15,9 @@ func _ready():
 
 
 func _input(event):
-	if not isSelectingTarget: #and not isSelectingSkill
+	if not isSelectingTarget:
 		if event.is_action_pressed("interact"):
 			process_command()
-#			isSelectingSkill = true
 	
 	if isSelectingSkill:
 		if event.is_action_pressed("up"):
@@ -31,7 +26,7 @@ func _input(event):
 			change_skill("down")
 
 
-func process_command(): #callback #should be called process_command
+func process_command():
 	get_card_nodes()
 
 	if not isSelectingTarget:
@@ -45,9 +40,7 @@ func process_command(): #callback #should be called process_command
 			command_card.hide()
 			cardIsVisible = false
 			if current_selection == 0: #attack
-				print('trying to attack')
-				select_target()
-#				isSelectingTarget = false #this is added, but should not be needed in new version
+				select_target()    # see battlefield_targeting
 			elif current_selection == 1: #skill
 				print('no skills')
 				isSelectingSkill = false
@@ -57,20 +50,18 @@ func process_command(): #callback #should be called process_command
 			elif current_selection == 3: #flee
 				isSelectingSkill = false
 				current_selection = 0
-				get_tree().call_group("battle_group", "close_scene")
+				get_tree().call_group("battle_group", "close_scene") #currently in template
 
 
 func change_skill(direction):
 	
 	if direction == 'up':
 		if current_selection > 0 :
-			print('selection up')
 			disable_card_selector_sprite()
 			current_selection -= 1
 			enable_card_selector_sprite()
 	elif direction == 'down':
 		if current_selection < number_of_selections - 1:
-			print('selection down')
 			disable_card_selector_sprite()
 			current_selection += 1
 			enable_card_selector_sprite()
@@ -82,7 +73,7 @@ func get_card_nodes(): #get the selector and animator of current selection(label
 	card_selector_sprite = command_children_list[0]
 	card_animation_player = command_children_list[1]
 
-func enable_card_selector_sprite(): #must rename thise two functions, as the same name is in battlefield_targeting
+func enable_card_selector_sprite():
 	get_card_nodes()
 	card_selector_sprite.visible = true
 	card_animation_player.play('blink')

@@ -8,8 +8,6 @@ var current_skill = 0
 
 var current_selection = 0
 
-func _ready():
-	pass
 
 func _input(event):
 
@@ -22,24 +20,13 @@ func _input(event):
 			return_target()
 
 
-#	#selecting skills
-#	if isSelectingSkill: #handled by command_card. comment me out
-#		if event.is_action_pressed("up"):
-#			change_skill("up")
-#		if event.is_action_pressed("down"):
-#			change_skill("down")
-
-
 #targeting an enemy
-func select_target():
-	print('pick a target')
+func select_target():   #used by battlefield_command_card
 	isSelectingSkill = false
-#	yield(get_tree().create_timer(0.5), "timeout") #testing
-	set_deferred("isSelectingTarget", true ) # isSelectingTarget = true
+	set_deferred("isSelectingTarget", true )
 	enable_selector_sprite()
 
 func change_target(direction):
-	print('change_target')
 	if direction == 'up':
 		if current_target > 0:
 			disable_selector_sprite()
@@ -50,7 +37,6 @@ func change_target(direction):
 			disable_selector_sprite()
 			current_target += 1
 			enable_selector_sprite()
-
 	
 func enable_selector_sprite():
 	var children_list = enemy_list[current_target].get_children()
@@ -67,22 +53,13 @@ func disable_selector_sprite():
 	animationPlayer.stop()
 	
 func return_target():
-	print(current_target)
 	isSelectingTarget = false
 	disable_selector_sprite()
 	get_skill()
-	
-
-
-#selecting skills
-#select command
-func change_skill(direction):
-	get_tree().call_group("battle_group", "change_current_selection", direction)
 
 #respond_to_skill
 func get_skill():
 	current_skill = current_selection
-	print("skill recieved:" + str(current_skill))
 	respond_to_skill()
 	
 func respond_to_skill():
