@@ -16,6 +16,7 @@ func _ready():
 	hide()
 
 
+
 func process_command(): #callback #should be called process_command
 	get_nodes()
 	

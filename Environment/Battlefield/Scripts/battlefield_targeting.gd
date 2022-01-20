@@ -12,12 +12,8 @@ func _ready():
 	pass
 
 func _input(event):
-	if not isSelectingTarget:
-		if event.is_action_pressed("interact"):
-			print('trying')
-			open_command_popup()
 
-	elif isSelectingTarget:
+	if isSelectingTarget:
 		if event.is_action_pressed("up"):
 			change_target("up")
 		if event.is_action_pressed("down"):
@@ -26,29 +22,24 @@ func _input(event):
 			return_target()
 
 
-	#selecting skills
-	if isSelectingSkill:
-		if event.is_action_pressed("up"):
-			change_skill("up")
-		if event.is_action_pressed("down"):
-			change_skill("down")
+#	#selecting skills
+#	if isSelectingSkill: #handled by command_card. comment me out
+#		if event.is_action_pressed("up"):
+#			change_skill("up")
+#		if event.is_action_pressed("down"):
+#			change_skill("down")
 
-
-#open commands
-func open_command_popup():
-	get_tree().call_group("battle_group", "process_command")
-#	print($"../PC_Template/Command_Card")
-#	$"../PC_Template/Command_Card".show()     I could use this to acces the command_card
-#   											rather than use a group call.
-	isSelectingSkill = true
 
 #targeting an enemy
 func select_target():
+	print('pick a target')
 	isSelectingSkill = false
+#	yield(get_tree().create_timer(0.5), "timeout") #testing
 	isSelectingTarget = true
 	enable_selector_sprite()
 
 func change_target(direction):
+	print('change_target')
 	if direction == 'up':
 		if current_target > 0:
 			disable_selector_sprite()
