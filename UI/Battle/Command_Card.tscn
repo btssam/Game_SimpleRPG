@@ -1,12 +1,8 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://UI/Battle/battle_theme.tres" type="Theme" id=2]
 [ext_resource path="res://UI/GFX/System_Frame.png" type="Texture" id=3]
-[ext_resource path="res://UI/Fonts/ModernDOS8x16.ttf" type="DynamicFontData" id=4]
 [ext_resource path="res://UI/GFX/Selector.png" type="Texture" id=5]
-
-[sub_resource type="DynamicFont" id=1]
-font_data = ExtResource( 4 )
 
 [sub_resource type="Animation" id=2]
 resource_name = "blink"
@@ -100,7 +96,6 @@ margin_right = 75.0
 margin_bottom = 26.0
 rect_scale = Vector2( 0.4, 0.4 )
 theme = ExtResource( 2 )
-custom_fonts/font = SubResource( 1 )
 text = "Attack"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -121,7 +116,6 @@ margin_right = 75.0
 margin_bottom = 30.5
 rect_scale = Vector2( 0.4, 0.4 )
 theme = ExtResource( 2 )
-custom_fonts/font = SubResource( 1 )
 text = "Skill"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -142,7 +136,6 @@ margin_right = 75.0
 margin_bottom = 35.5
 rect_scale = Vector2( 0.4, 0.4 )
 theme = ExtResource( 2 )
-custom_fonts/font = SubResource( 1 )
 text = "Item
 "
 __meta__ = {
@@ -164,7 +157,6 @@ margin_right = 75.0
 margin_bottom = 40.5
 rect_scale = Vector2( 0.4, 0.4 )
 theme = ExtResource( 2 )
-custom_fonts/font = SubResource( 1 )
 text = "Flee"
 __meta__ = {
 "_edit_use_anchors_": false
