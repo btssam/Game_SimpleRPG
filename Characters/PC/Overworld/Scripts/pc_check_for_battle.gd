@@ -1,4 +1,4 @@
-extends "res://Characters/PC/Overworld/pc_interaction.gd"
+extends "res://Characters/PC/Overworld/Scripts/pc_interaction.gd"
 
 
 #battle check

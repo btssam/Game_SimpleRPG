@@ -1,4 +1,4 @@
-extends "res://Characters/PC/Overworld/pc_movement.gd"
+extends "res://Characters/PC/Overworld/Scripts/pc_movement.gd"
 
 
 #npc check

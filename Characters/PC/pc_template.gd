@@ -1,4 +1,4 @@
-extends "res://Characters/PC/Overworld/pc_check_for_battle.gd"
+extends "res://Characters/PC/Overworld/Scripts/pc_check_for_battle.gd"
 #also extends:
 # pc_interaction.gd
 # pc_momvement.gd

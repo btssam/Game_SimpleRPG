@@ -1,22 +1,40 @@
 extends Control
 
+
+var isCurrentlyInteracting = false
+var isDialogueFinished = false
+
+
 func _ready():
 	pass
 
 func print_dialogue(body):
-	if body == "NPC_Template":
-		$Popup_Dialogue/Frame/Sprite.frame = 12
-		$Popup_Dialogue/BG/Text.text = """I have blue hair.
-		Ever heard of it?
-		It is unnatural."""
-		$Popup_Dialogue.popup_centered()
-		$Popup_Dialogue/AnimationPlayer.play("scrolling_text")
-	if body == 'NPC_Template_2':
-		$Popup_Dialogue/Frame/Sprite.frame = 8
-		$Popup_Dialogue/BG/Text.text = """I have purple hair.
-		With it, I intimidate the masses. They think I know eldritch magic."""
-		$Popup_Dialogue.popup_centered()
-		$Popup_Dialogue/AnimationPlayer.play("scrolling_text")
+	if isCurrentlyInteracting == false and isDialogueFinished == false:
+		isCurrentlyInteracting = true
+		if body == "NPC_Template":
+			$Popup_Dialogue/Frame/Sprite.frame = 12
+			$Popup_Dialogue/BG/Text.text = """I have blue hair.
+			Ever heard of it?
+			It is unnatural."""
+			$Popup_Dialogue.popup_centered()
+			$Popup_Dialogue/AnimationPlayer.play("scrolling_text")
+		if body == 'NPC_Template_2':
+			$Popup_Dialogue/Frame/Sprite.frame = 8
+			$Popup_Dialogue/BG/Text.text = """I have purple hair.
+			With it, I intimidate the masses. They think I know eldritch magic."""
+			$Popup_Dialogue.popup_centered()
+			$Popup_Dialogue/AnimationPlayer.play("scrolling_text")
+		yield($Popup_Dialogue/AnimationPlayer, "animation_finished")
+		isCurrentlyInteracting = false
+		isDialogueFinished = true
+	elif isCurrentlyInteracting == true and isDialogueFinished == false:
+		isCurrentlyInteracting = false
+		hide_dialogue()
+	elif isDialogueFinished == true:
+		isDialogueFinished = false
+		isCurrentlyInteracting = false
+		hide_dialogue()
+		
 	
 func hide_dialogue():
 	$Popup_Dialogue.hide()

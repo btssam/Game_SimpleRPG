@@ -24,7 +24,6 @@ tracks/0/keys = {
 }
 
 [node name="Popup_Dialogue" type="Popup"]
-visible = true
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
