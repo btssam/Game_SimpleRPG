@@ -92,10 +92,6 @@ anchor_bottom = 1.0
 margin_bottom = -84.0
 rect_scale = Vector2( 1, 2 )
 theme = SubResource( 2 )
-text = "PC 1: HP 10/10
-PC 2: HP 10/10
-George McCool: HP 1000/1000
-PC 4"
 autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false

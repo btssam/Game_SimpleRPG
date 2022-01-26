@@ -1,9 +1,8 @@
 
 extends Node2D
 
-###initalize
+###initialize
 var enemy_node = "res://Characters/NPC/Enemy/Enemy_Template.tscn"
-var enemy = load(enemy_node).instance()
 
 var number_of_units = 0
 var enemy_list = []
@@ -35,6 +34,7 @@ var number_of_selections = 4
 
 ###updating UI
 onready var enemyStats = get_node("BattleUI/Battle_Bottom_UI/Enemies_Stats/Label")
+onready var PCStats = get_node("BattleUI/Battle_Bottom_UI/PCs_Stats/Label")
 
 
 
@@ -45,13 +45,14 @@ var isPlayersTurn = true
 
 
 func _ready():
-	####initalize
+	####initialize
 	get_random_number_of_units()
 	add_enemies()
 	###command card
 	command_card.hide()
 	###UI_update
-	initalize_UI()
+	initialize_enemy_UI()
+	initialize_PC_UI()
 	###turn_ordering
 	initialize_turn_order()
 
@@ -85,7 +86,7 @@ func _input(event):
 
 
 
-###initalize
+###initialize
 #spawn enemies
 func get_random_number_of_units():
 	randomize()
@@ -165,9 +166,8 @@ func get_skill():
 	
 func respond_to_skill():
 	if current_skill == 0: #attack
-		print('attempt to lower hp')
 		enemy_list[current_target].hp -= 1
-		update_UI()
+		update_enemy_UI()
 	isPlayersTurn = false
 
 
@@ -200,6 +200,7 @@ func process_command():
 				elif current_selection == 3: #flee
 					isSelectingSkill = false
 					current_selection = 0
+					player.hp = 15
 					close_scene()
 
 
@@ -245,35 +246,41 @@ func disable_card_selector_sprite():
 func close_scene():
 	get_tree().call_group("level_switching", "switch_scene", "battle", "overworld")
 	get_tree().call_group("battle_check_group", "reset_battle_check")
+	player.hp = 15
+	current_selection = 0
 
 
 
 
 ###updating UI
-func initalize_UI():
+func initialize_enemy_UI():
 	for i in range(0, number_of_units):
-		print(enemy_list[i].hp)
 		enemyStats.text += 'Enemy ' + str(i + 1) + ': ' + str(enemy_list[i].hp) + '\n'
 	
-func update_UI():
+func update_enemy_UI():
 	var newText = ''
 	for i in range(0, number_of_units):
-		print(enemy_list[i].hp)
 		newText += 'Enemy ' + str(i + 1) + ': ' + str(enemy_list[i].hp) + '\n'
 	enemyStats.text = newText
 
+func initialize_PC_UI():
+	PCStats.text += 'Player 1: ' + str(player.hp) + '\n'    #need to integrate multiple PC's
+	
+
+func update_PC_UI():
+	var newText = ''
+	newText = 'Player 1: ' + str(player.hp) + '\n'    #need to integrate multiple PC's
+	PCStats.text = newText
+	PCStats.text = newText
 
 
 ###turn ordering
 func initialize_turn_order():
-	print(enemy_list)
-	print(player)
 	randomize()
 	var randomized_list = enemy_list.duplicate()
 	randomized_list.shuffle()
 	randomized_list.push_front(player)
 	turn_order = randomized_list
-	print(turn_order)
 	act_in_order()
 
 func act_in_order():
@@ -292,13 +299,11 @@ func shift_turn_order():
 			turn_order[i] = turn_order[i+1]
 		else:
 			turn_order[i] = first_unit
-	print('shift_turn_order')
-	print(turn_order)
 
 #enemy_AI
 func enemy_attack():
-	print('enemy_attack!')
 	player.hp -= 1
-	print('player hp = ' + str(player.hp))
+	update_PC_UI()
+	yield(get_tree().create_timer(1.0), "timeout")
 	shift_turn_order()
 	act_in_order()
