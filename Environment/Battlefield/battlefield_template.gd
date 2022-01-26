@@ -276,7 +276,6 @@ func update_PC_UI():
 	var newText = ''
 	newText = 'Player 1: ' + str(player.hp) + '\n'    #need to integrate multiple PC's
 	PCStats.text = newText
-	PCStats.text = newText
 
 func initialize_log():
 	UILog.text = ''
@@ -325,7 +324,8 @@ func shift_turn_order():
 #enemy_AI
 func enemy_attack():
 	player.hp -= 1
-	update_PC_UI()
+	get_tree().call_group("battle_group", "check_for_death")
+	call_deferred("update_PC_UI")
 	get_animation_player()
 	enemyAnimationPlayer.play('attack')
 	yield(enemyAnimationPlayer, 'animation_finished')

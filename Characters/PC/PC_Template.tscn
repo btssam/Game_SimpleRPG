@@ -139,6 +139,7 @@ extents = Vector2( 19, 28 )
 
 [node name="PC_Template" type="KinematicBody2D" groups=[
 "battle_check_group",
+"battle_group",
 "interact_NPC",
 ]]
 scale = Vector2( 1.6, 2.2 )
