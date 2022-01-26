@@ -3,6 +3,9 @@ extends "res://Characters/PC/Overworld/pc_check_for_battle.gd"
 # pc_interaction.gd
 # pc_momvement.gd
 
+###combat stats
+export var hp = 15
+
 
 func _ready():
 	pass

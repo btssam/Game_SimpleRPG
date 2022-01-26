@@ -41,6 +41,7 @@ onready var enemyStats = get_node("BattleUI/Battle_Bottom_UI/Enemies_Stats/Label
 ###turn ordering
 var turn_order = []
 onready var player = get_node("../PC_Template")
+var isPlayersTurn = true
 
 
 func _ready():
@@ -59,23 +60,24 @@ func _ready():
 
 func _input(event):
 	###targeting
-	if isSelectingTarget:
-		if event.is_action_pressed("up"):
-			change_target("up")
-		if event.is_action_pressed("down"):
-			change_target("down")
-		if event.is_action_pressed("interact"):
-			return_target()
+	if isPlayersTurn:
+		if isSelectingTarget:
+			if event.is_action_pressed("up"):
+				change_target("up")
+			if event.is_action_pressed("down"):
+				change_target("down")
+			if event.is_action_pressed("interact"):
+				return_target()
 	###commandcard
-	if not isSelectingTarget:
-		if event.is_action_pressed("interact"):
-			process_command()
+		if not isSelectingTarget:
+			if event.is_action_pressed("interact"):
+				process_command()
 	
-	if isSelectingSkill:
-		if event.is_action_pressed("up"):
-			change_skill("up")
-		if event.is_action_pressed("down"):
-			change_skill("down")
+		if isSelectingSkill:
+			if event.is_action_pressed("up"):
+				change_skill("up")
+			if event.is_action_pressed("down"):
+				change_skill("down")
 	
 	###other
 	if event.is_action_pressed("test_key"):
@@ -153,6 +155,8 @@ func return_target():
 	isSelectingTarget = false
 	disable_selector_sprite()
 	get_skill()
+	shift_turn_order()
+	act_in_order()
 
 #respond_to_skill
 func get_skill():
@@ -164,6 +168,7 @@ func respond_to_skill():
 		print('attempt to lower hp')
 		enemy_list[current_target].hp -= 1
 		update_UI()
+	isPlayersTurn = false
 
 
 
@@ -171,30 +176,31 @@ func respond_to_skill():
 ####commandcard
 
 func process_command():
-	get_card_nodes()
+	if isPlayersTurn:
+		get_card_nodes()
 
-	if not isSelectingTarget:
-		if not cardIsVisible:
-			command_card.show()
-			cardIsVisible = true
-			isSelectingSkill = true
-			enable_card_selector_sprite()
-		else:
-			disable_card_selector_sprite()
-			command_card.hide()
-			cardIsVisible = false
-			if current_selection == 0: #attack
-				select_target()
-			elif current_selection == 1: #skill
-				print('no skills')
-				isSelectingSkill = false
-			elif current_selection == 2: #item
-				print('no items')
-				isSelectingSkill = false
-			elif current_selection == 3: #flee
-				isSelectingSkill = false
-				current_selection = 0
-				close_scene()
+		if not isSelectingTarget:
+			if not cardIsVisible:
+				command_card.show()
+				cardIsVisible = true
+				isSelectingSkill = true
+				enable_card_selector_sprite()
+			else:
+				disable_card_selector_sprite()
+				command_card.hide()
+				cardIsVisible = false
+				if current_selection == 0: #attack
+					select_target()
+				elif current_selection == 1: #skill
+					print('no skills')
+					isSelectingSkill = false
+				elif current_selection == 2: #item
+					print('no items')
+					isSelectingSkill = false
+				elif current_selection == 3: #flee
+					isSelectingSkill = false
+					current_selection = 0
+					close_scene()
 
 
 func change_skill(direction):
@@ -268,3 +274,29 @@ func initialize_turn_order():
 	randomized_list.push_front(player)
 	turn_order = randomized_list
 	print(turn_order)
+	act_in_order()
+
+func act_in_order():
+	if turn_order[0].name == "PC_Template":
+		print('players turn')
+		isPlayersTurn = true
+	else:
+		print('enemys turn')
+		isPlayersTurn = false
+
+func shift_turn_order():
+	var first_unit = turn_order[0]
+	for i in range(0, turn_order.size()):
+		if i + 1 < turn_order.size():
+			turn_order[i] = turn_order[i+1]
+		else:
+			turn_order[i] = first_unit
+	print('shift_turn_order')
+	print(turn_order)
+
+#enemy_AI
+func enemy_attack():
+	player.hp -= 1
+	print(player.hp)
+	shift_turn_order()
+	act_in_order()
