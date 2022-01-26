@@ -37,15 +37,25 @@ var number_of_selections = 4
 onready var enemyStats = get_node("BattleUI/Battle_Bottom_UI/Enemies_Stats/Label")
 
 
+
+###turn ordering
+var turn_order = []
+onready var player = get_node("../PC_Template")
+
+
 func _ready():
 	####initalize
 	get_random_number_of_units()
 	add_enemies()
-#	get_turn_order()
 	###command card
 	command_card.hide()
 	###UI_update
 	initalize_UI()
+	###turn_ordering
+	initialize_turn_order()
+
+
+
 
 func _input(event):
 	###targeting
@@ -102,10 +112,6 @@ func change_position():
 			enemy_list[i].position = Vector2(224, 384)
 
 
-#battle code
-#func get_turn_order():
-#	turn_order = enemy_list.push_front($PC_OW_Template)
-#	print(turn_order)
 
 
 
@@ -249,3 +255,16 @@ func update_UI():
 		print(enemy_list[i].hp)
 		newText += 'Enemy ' + str(i + 1) + ': ' + str(enemy_list[i].hp) + '\n'
 	enemyStats.text = newText
+
+
+
+###turn ordering
+func initialize_turn_order():
+	print(enemy_list)
+	print(player)
+	randomize()
+	var randomized_list = enemy_list.duplicate()
+	randomized_list.shuffle()
+	randomized_list.push_front(player)
+	turn_order = randomized_list
+	print(turn_order)
