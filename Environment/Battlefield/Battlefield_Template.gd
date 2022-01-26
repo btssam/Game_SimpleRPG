@@ -33,6 +33,10 @@ var cardIsVisible =  false
 var number_of_selections = 4
 
 
+###updating UI
+onready var enemyStats = get_node("BattleUI/Battle_Bottom_UI/Enemies_Stats/Label")
+
+
 func _ready():
 	####initalize
 	get_random_number_of_units()
@@ -40,6 +44,8 @@ func _ready():
 #	get_turn_order()
 	###command card
 	command_card.hide()
+	###UI_update
+	initalize_UI()
 
 func _input(event):
 	###targeting
@@ -230,6 +236,16 @@ func close_scene():
 
 
 
-func update_UI():
+
+###updating UI
+func initalize_UI():
 	for i in range(0, number_of_units):
 		print(enemy_list[i].hp)
+		enemyStats.text += 'Enemy ' + str(i + 1) + ': ' + str(enemy_list[i].hp) + '\n'
+	
+func update_UI():
+	var newText = ''
+	for i in range(0, number_of_units):
+		print(enemy_list[i].hp)
+		newText += 'Enemy ' + str(i + 1) + ': ' + str(enemy_list[i].hp) + '\n'
+	enemyStats.text = newText
