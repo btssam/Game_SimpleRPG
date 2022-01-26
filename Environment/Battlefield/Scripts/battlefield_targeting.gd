@@ -66,4 +66,4 @@ func respond_to_skill():
 	if current_skill == 0: #attack
 		print('attempt to lower hp')
 		enemy_list[current_target].hp -= 1
-		print(enemy_list[current_target].hp)
+		get_tree().call_group("battle_group", "update_UI")
