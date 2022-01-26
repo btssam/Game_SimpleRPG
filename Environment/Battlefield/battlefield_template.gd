@@ -283,6 +283,7 @@ func act_in_order():
 	else:
 		print('enemys turn')
 		isPlayersTurn = false
+		enemy_attack()
 
 func shift_turn_order():
 	var first_unit = turn_order[0]
@@ -296,7 +297,8 @@ func shift_turn_order():
 
 #enemy_AI
 func enemy_attack():
+	print('enemy_attack!')
 	player.hp -= 1
-	print(player.hp)
+	print('player hp = ' + str(player.hp))
 	shift_turn_order()
 	act_in_order()
