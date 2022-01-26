@@ -43,6 +43,8 @@ var turn_order = []
 onready var player = get_node("../PC_Template")
 var isPlayersTurn = true
 
+var enemyAnimationPlayer
+
 
 func _ready():
 	####initialize
@@ -304,6 +306,13 @@ func shift_turn_order():
 func enemy_attack():
 	player.hp -= 1
 	update_PC_UI()
-	yield(get_tree().create_timer(1.0), "timeout")
+	get_animation_player()
+	enemyAnimationPlayer.play('attack')
+	yield(enemyAnimationPlayer, 'animation_finished')
 	shift_turn_order()
 	act_in_order()
+
+
+func get_animation_player():
+	var children_list = turn_order[0].get_children()
+	enemyAnimationPlayer = children_list[2]
