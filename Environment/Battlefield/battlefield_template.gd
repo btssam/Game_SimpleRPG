@@ -35,6 +35,8 @@ var number_of_selections = 4
 ###updating UI
 onready var enemyStats = get_node("BattleUI/Battle_Bottom_UI/Enemies_Stats/Label")
 onready var PCStats = get_node("BattleUI/Battle_Bottom_UI/PCs_Stats/Label")
+onready var UILog = get_node("BattleUI/Battle_Bottom_UI/Log/Label")
+var logArray = []
 
 
 
@@ -55,6 +57,7 @@ func _ready():
 	###UI_update
 	initialize_enemy_UI()
 	initialize_PC_UI()
+	initialize_log()
 	###turn_ordering
 	initialize_turn_order()
 
@@ -194,10 +197,10 @@ func process_command():
 				if current_selection == 0: #attack
 					select_target()
 				elif current_selection == 1: #skill
-					print('no skills')
+					update_log('You have no skills.')
 					isSelectingSkill = false
 				elif current_selection == 2: #item
-					print('no items')
+					update_log('You have no items.')
 					isSelectingSkill = false
 				elif current_selection == 3: #flee
 					isSelectingSkill = false
@@ -275,6 +278,23 @@ func update_PC_UI():
 	PCStats.text = newText
 	PCStats.text = newText
 
+func initialize_log():
+	UILog.text = ''
+
+func update_log(message):
+	logArray.push_front(message + '\n')
+	var currentText = ''
+	if logArray.size() <= 6:
+		for i in range(0, logArray.size()):
+			currentText += logArray[i]
+	else:
+		for i in range(0, logArray.size()):
+				if logArray.size() < 6:
+					logArray[i] = logArray[i+1]
+				currentText += logArray[i]
+		logArray.pop_back()
+	UILog.text = currentText
+	
 
 ###turn ordering
 func initialize_turn_order():
@@ -287,10 +307,10 @@ func initialize_turn_order():
 
 func act_in_order():
 	if turn_order[0].name == "PC_Template":
-		print('players turn')
+		update_log("It is the player's turn!")
 		isPlayersTurn = true
 	else:
-		print('enemys turn')
+		update_log("It is the enemy's turn!")
 		isPlayersTurn = false
 		enemy_attack()
 
