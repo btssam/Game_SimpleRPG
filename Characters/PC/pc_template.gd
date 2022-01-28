@@ -160,13 +160,17 @@ func check_for_battle():
 		$Delta_Position1.start()
 
 func reset_battle_check():
+	print('reset battle check')
 	steps_since_last = 0
+	$Delta_Position2.stop()
 	$Delta_Position1.start()
 	battling = false
 	
 func stop_battle_check():
+	print('stop battle check')
 	steps_since_last = 0
 	$Delta_Position1.stop()
+	$Delta_Position2.stop()
 	battling = false
 
 
