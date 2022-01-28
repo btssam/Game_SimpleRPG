@@ -70,4 +70,5 @@ func update_movement():
 	else:
 		motion.x = 0
 		motion.y = 0
-		$AnimationPlayer.play("idle_left")
+		$AnimationPlayer.stop()
+		$Sprite.frame = 37

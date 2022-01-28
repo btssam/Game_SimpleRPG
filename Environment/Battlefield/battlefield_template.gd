@@ -204,8 +204,6 @@ func process_command():
 					isSelectingSkill = false
 				elif current_selection == 3: #flee
 					isSelectingSkill = false
-					current_selection = 0
-					player.hp = 15
 					close_scene()
 
 
@@ -251,7 +249,7 @@ func disable_card_selector_sprite():
 func close_scene():
 	get_tree().call_group("level_switching", "switch_scene", "battle", "overworld")
 	get_tree().call_group("battle_check_group", "reset_battle_check")
-	player.hp = 15
+	player.hp = player.maxhp
 	current_selection = 0
 
 
