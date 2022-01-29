@@ -262,4 +262,23 @@ collision_layer = 16
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D_To_Town"]
 shape = SubResource( 11 )
 
+[node name="Area2D_Edges" type="Area2D" parent="."]
+collision_layer = 2
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D_Edges"]
+build_mode = 1
+polygon = PoolVector2Array( 0.206604, 3.70454, 1022.25, 1.68866, 1021.25, 73.2522, 1.21457, 66.1966 )
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="Area2D_Edges"]
+position = Vector2( 66.0359, -1.26993 )
+rotation = 1.57216
+build_mode = 1
+polygon = PoolVector2Array( 0.206604, 3.70454, 1022.25, 1.68866, 1021.25, 73.2522, 1.21457, 66.1966 )
+
+[node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="Area2D_Edges"]
+position = Vector2( 1024.83, 2.53983 )
+rotation = 1.57216
+build_mode = 1
+polygon = PoolVector2Array( 0.206604, 3.70454, 1022.25, 1.68866, 1021.25, 73.2522, 1.21457, 66.1966 )
+
 [connection signal="body_entered" from="Area2D_To_Town" to="." method="_on_Area2D_To_Town_body_entered"]

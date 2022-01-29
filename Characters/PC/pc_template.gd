@@ -1,31 +1,18 @@
 extends KinematicBody2D
-#also extends:
-# pc_interaction.gd
-# pc_momvement.gd
-
 
 ###movement
 var motion = Vector2()
 var running = false
 var speed = 2
-
-
-
 ###npc check
 var interactable = false
 var current_interaction
-
-
-
-
 ###battle check
 var battling = false
 var steps_since_last = 0
 var current_position = Vector2()
 var previous_position = Vector2()
 var next_battle_counter = 0
-
-
 ###combat stats
 export var hp = 6
 export var maxhp = 6
@@ -40,12 +27,10 @@ func _ready():
 	#battle check
 	get_next_battle_counter()
 
-
 func _physics_process(delta):
 	#movement
 	update_movement()
 	move_and_collide(motion) #could I call these on _input instead? Didn't seem to work initially
-
 
 func _input(event):
 	#npc interaction
@@ -57,10 +42,11 @@ func _process(delta):
 	pass
 
 
-###movement
 
+###movement
 func update_movement():
 	if not battling:
+		
 		if Input.is_action_pressed("left"):
 			$AnimatedSprite.play("walk_left")
 			$AnimatedSprite.speed_scale = 1
@@ -72,7 +58,6 @@ func update_movement():
 		elif Input.is_action_just_released("left"):
 			$AnimatedSprite.stop()
 			$AnimatedSprite.frame = 1
-#			$Sprite.frame = 37 #idle_left
 			motion.x = 0
 			motion.y = 0
 			
@@ -117,6 +102,7 @@ func update_movement():
 			$AnimatedSprite.frame = 1
 			motion.x = 0
 			motion.y = 0
+			
 	else: #in battle
 		motion.x = 0
 		motion.y = 0
@@ -124,7 +110,6 @@ func update_movement():
 			$AnimatedSprite.stop()
 			$AnimatedSprite.animation = "walk_left"
 			$AnimatedSprite.frame = 1
-
 
 
 ###check for interaction, like NPCs
@@ -140,8 +125,11 @@ func _on_Area2D_Interact_body_exited(body):
 		get_tree().call_group('interact_NPC', 'hide_dialogue')
 
 
-
 ###check for battles
+func get_next_battle_counter(): #how many steps (pixels) until next battle
+	randomize()
+	next_battle_counter = randi() % 900 + 1 + 100 #100 to 1000
+	
 func start_timer():
 	$Delta_Position1.start()
 
@@ -149,13 +137,9 @@ func _on_Delta_Position1_timeout():
 	previous_position = position
 	$Delta_Position2.start()
 
-func _on_Delta_Position2_timeout(): #get delta of position (displacement) and use to determine if battle
+func _on_Delta_Position2_timeout(): #get delta of position (displacement between two point) and use to determine if battle
 	current_position = position
 	check_for_battle()
-	
-func get_next_battle_counter(): #how many steps until next battle
-	randomize()
-	next_battle_counter = randi() % 900 + 1 + 100
 
 func check_for_battle():
 	var x_displacement = abs(current_position.x - previous_position.x)
@@ -169,33 +153,27 @@ func check_for_battle():
 	else:
 		$Delta_Position1.start()
 
-func reset_battle_check():
+func reset_battle_check(): #return from battle
 	$AnimatedSprite.stop()
 	$AnimatedSprite.animation = "walk_down"
 	$AnimatedSprite.frame = 1
 	isDead = false
-	print('reset battle check')
+	battling = false
 	steps_since_last = 0
 	$Delta_Position2.stop()
 	$Delta_Position1.start()
-	battling = false
 	
 func stop_battle_check():
-	print('stop battle check')
+	battling = false
 	steps_since_last = 0
 	$Delta_Position1.stop()
 	$Delta_Position2.stop()
-	battling = false
-
 
 
 ###Battling code
-func battle_loop():
-	pass
-
 func check_for_death():
 	if hp <= 0:
 		hp = 0
-		get_tree().call_group("battle_group", "update_log", "I dead")
+		get_tree().call_group("battle_group", "update_log", "You have died!")
 		isDead = true
 		$AnimatedSprite.play("dying")
