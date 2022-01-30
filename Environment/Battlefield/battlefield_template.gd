@@ -203,7 +203,6 @@ func get_target_nodes():
 	target_selector_sprite = children_list[1]
 	target_animation_player = children_list[2]
 
-	
 func return_target():
 	isSelectingTarget = false
 	disable_selector_sprite()
@@ -217,8 +216,6 @@ func get_command():
 		enemy_list[current_target].hp -= 1
 		update_enemy_UI()
 	isPlayersTurn = false
-
-
 
 
 ###other
@@ -254,15 +251,10 @@ func initialize_log():
 func update_log(message):
 	logArray.push_front(message + '\n')
 	var currentText = ''
-	if logArray.size() <= 6:
-		for i in range(0, logArray.size()):
-			currentText += logArray[i]
-	else:
-		for i in range(0, logArray.size()):
-				if logArray.size() < 6:
-					logArray[i] = logArray[i+1]
-				currentText += logArray[i]
+	if logArray.size () > 6: #check if log is too long
 		logArray.pop_back()
+	for i in range(0, logArray.size()):
+		currentText += logArray[i]
 	UILog.text = currentText
 
 
