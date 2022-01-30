@@ -87,8 +87,9 @@ func get_random_unit():
 func add_enemies():
 	for i in range(0, number_of_units):
 		var enemy = load(enemy_node).instance()
-		var enemy_children_list = enemy.get_children()
-		var enemy_sprite = enemy_children_list[0]
+#		var enemy_children_list = enemy.get_children()
+#		var enemy_sprite = enemy_children_list[0]
+		var enemy_sprite = enemy.get_node("Sprite")
 		enemy_sprite.frame = get_random_unit()
 		call_deferred("add_child", enemy)
 		enemy_list.push_back(enemy)
@@ -145,11 +146,14 @@ func change_command(direction):
 			enable_card_selector_sprite()
 
 func get_card_nodes(): #get the selector and animator of current selection(label node)
-	var children_list = command_card.get_children()
-	var commands_list = children_list[1].get_children()
-	var command_children_list = commands_list[current_selection].get_children()
-	card_selector_sprite = command_children_list[0]
-	card_animation_player = command_children_list[1]
+#	var children_list = command_card.get_children()
+#	var commands_list = children_list[1].get_children()
+	var commands_list = command_card.get_node("TextureRect").get_children()
+#	var command_children_list = commands_list[current_selection].get_children()
+#	card_selector_sprite = command_children_list[0]
+#	card_animation_player = command_children_list[1]
+	card_selector_sprite = commands_list[current_selection].get_node("Selector")
+	card_animation_player = commands_list[current_selection].get_node("AnimationPlayer")
 
 func enable_card_selector_sprite():
 	get_card_nodes()
@@ -192,9 +196,11 @@ func disable_selector_sprite():
 	target_animation_player.stop()
 
 func get_target_nodes():
-	var children_list = enemy_list[current_target].get_children()
-	target_selector_sprite = children_list[1]
-	target_animation_player = children_list[2]
+#	var children_list = enemy_list[current_target].get_children()
+#	target_selector_sprite = children_list[1]
+	target_selector_sprite = enemy_list[current_target].get_node("Selector")
+#	target_animation_player = children_list[2]
+	target_animation_player = enemy_list[current_target].get_node("AnimationPlayer")
 
 func return_target():
 	isSelectingTarget = false
@@ -282,13 +288,8 @@ func enemy_attack():
 	player.hp -= 1
 	get_tree().call_group("battle_group", "check_for_death")
 	call_deferred("update_PC_UI") #else player goes to -1
-	get_animation_player()
+	enemyAnimationPlayer = turn_order[0].get_node("AnimationPlayer")
 	enemyAnimationPlayer.play('attack')
 	yield(enemyAnimationPlayer, 'animation_finished')
 	shift_turn_order()
 	act_in_order()
-
-
-func get_animation_player():
-	var children_list = turn_order[0].get_children()
-	enemyAnimationPlayer = children_list[2]

@@ -4,6 +4,22 @@
 [ext_resource path="res://UI/GFX/System_Frame.png" type="Texture" id=3]
 [ext_resource path="res://UI/GFX/Selector.png" type="Texture" id=5]
 
+[sub_resource type="Animation" id=1]
+resource_name = "blink"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Selector:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
 [sub_resource type="Animation" id=2]
 resource_name = "blink"
 loop = true
@@ -37,22 +53,6 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=4]
-resource_name = "blink"
-loop = true
-tracks/0/type = "value"
-tracks/0/path = NodePath("Selector:visible")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ true, false ]
-}
-
-[sub_resource type="Animation" id=5]
 resource_name = "blink"
 loop = true
 tracks/0/type = "value"
@@ -107,7 +107,7 @@ position = Vector2( 55, 7.5 )
 texture = ExtResource( 5 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="TextureRect/Attack"]
-anims/blink = SubResource( 2 )
+anims/blink = SubResource( 1 )
 
 [node name="Skill" type="Label" parent="TextureRect"]
 margin_left = 3.0
@@ -127,7 +127,7 @@ position = Vector2( 55, 7.5 )
 texture = ExtResource( 5 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="TextureRect/Skill"]
-anims/blink = SubResource( 3 )
+anims/blink = SubResource( 2 )
 
 [node name="Item" type="Label" parent="TextureRect"]
 margin_left = 3.0
@@ -148,7 +148,7 @@ position = Vector2( 55, 7.5 )
 texture = ExtResource( 5 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="TextureRect/Item"]
-anims/blink = SubResource( 4 )
+anims/blink = SubResource( 3 )
 
 [node name="Flee" type="Label" parent="TextureRect"]
 margin_left = 3.0
@@ -168,4 +168,4 @@ position = Vector2( 55, 7.5 )
 texture = ExtResource( 5 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="TextureRect/Flee"]
-anims/blink = SubResource( 5 )
+anims/blink = SubResource( 4 )
