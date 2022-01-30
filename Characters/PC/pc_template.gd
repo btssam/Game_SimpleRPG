@@ -16,7 +16,7 @@ var next_battle_counter = 0
 ###combat stats
 export var hp = 6
 export var maxhp = 6
-export var isDead = false
+var isDead = false
 
 
 

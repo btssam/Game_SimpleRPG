@@ -5,7 +5,7 @@ onready var Player = $PC_Template
 var town_node = "res://Environment/Overworld/Town/Town_Template.tscn"
 var overworld_node = "res://Environment/Overworld/Mainworld/Overworld_Template.tscn"
 var battle_node = "res://Environment/Battlefield/Battlefield_Template.tscn"
-var gameover_node = "res://Game/Game Over.tscn"
+var gameover_node = "res://Game/Game_Over.tscn"
 var current_scene = "town"
 
 
