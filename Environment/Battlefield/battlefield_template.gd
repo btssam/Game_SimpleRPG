@@ -81,14 +81,6 @@ func get_random_number_of_units():
 func get_random_unit():
 	randomize()
 	var random_enemy = randi()%6 #0-5
-	if random_enemy == 2: #my sprite sheet is bad, needs edited. so I just manually assign here
-		random_enemy = 3
-	elif random_enemy == 3:
-		random_enemy = 4
-	elif random_enemy == 4:
-		random_enemy = 6
-	elif random_enemy == 5:
-		random_enemy = 7
 	return random_enemy
 
 func add_enemies():
