@@ -263,7 +263,7 @@ func initialize_turn_order():
 	randomize()
 	var randomized_list = enemy_list.duplicate()
 	randomized_list.shuffle()
-	randomized_list.push_front(player)
+	randomized_list.push_front(player) #Shouldn't necessarily be first, just for testing. Can fix by moving this line up
 	turn_order = randomized_list
 	act_in_order()
 
@@ -277,7 +277,7 @@ func act_in_order():
 		enemy_attack()
 
 func shift_turn_order():
-	var first_unit = turn_order[0]
+	var first_unit = turn_order[0] #move the turn order forward once someone goes
 	for i in range(0, turn_order.size()):
 		if i + 1 < turn_order.size():
 			turn_order[i] = turn_order[i+1]
@@ -288,7 +288,7 @@ func shift_turn_order():
 func enemy_attack():
 	player.hp -= 1
 	get_tree().call_group("battle_group", "check_for_death")
-	call_deferred("update_PC_UI")
+	call_deferred("update_PC_UI") #else player goes to -1
 	get_animation_player()
 	enemyAnimationPlayer.play('attack')
 	yield(enemyAnimationPlayer, 'animation_finished')
