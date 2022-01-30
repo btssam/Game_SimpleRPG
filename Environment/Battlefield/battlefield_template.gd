@@ -2,54 +2,37 @@ extends Node2D
 
 ###initialize
 var enemy_node = "res://Characters/NPC/Enemy/Enemy_Template.tscn"
-
 var number_of_units = 0
 var enemy_list = []
-#var random_enemy = 0
-
-#var turn_order = []
-
-
-
 ###targeting
 var isSelectingTarget = false
 var current_target = 0
 var isSelectingSkill = false
 var current_skill = 0
-
 var current_selection = 0
-
-
-
-#command card
+###command card
 onready var command_card = $BattleUI/Command_Card
 var card_selector_sprite
 var card_animation_player
-
 var cardIsVisible =  false
-
 var number_of_selections = 4
-
-
 ###updating UI
 onready var enemyStats = get_node("BattleUI/Battle_Bottom_UI/Enemies_Stats/Label")
 onready var PCStats = get_node("BattleUI/Battle_Bottom_UI/PCs_Stats/Label")
 onready var UILog = get_node("BattleUI/Battle_Bottom_UI/Log/Label")
 var logArray = []
-
-
-
 ###turn ordering
 var turn_order = []
 onready var player = get_node("../PC_Template")
 var isPlayersTurn = true
-
 var enemyAnimationPlayer
+
 
 
 func _ready():
 	####initialize
 	get_random_number_of_units()
+	get_random_unit()
 	add_enemies()
 	###command card
 	command_card.hide()
@@ -59,9 +42,6 @@ func _ready():
 	initialize_log()
 	###turn_ordering
 	initialize_turn_order()
-
-
-
 
 func _input(event):
 	###targeting
@@ -74,7 +54,7 @@ func _input(event):
 			if event.is_action_pressed("interact"):
 				return_target()
 	###commandcard
-		if not isSelectingTarget:
+		elif not isSelectingTarget:
 			if event.is_action_pressed("interact"):
 				process_command()
 	
@@ -83,8 +63,7 @@ func _input(event):
 				change_skill("up")
 			if event.is_action_pressed("down"):
 				change_skill("down")
-	
-	###other
+	###testing
 	if event.is_action_pressed("test_key"):
 			close_scene()
 
@@ -96,15 +75,26 @@ func get_random_number_of_units():
 	randomize()
 	number_of_units = randi()%3 + 1
 	return number_of_units
-	
-#func get_random_unit():
-#	randomize()
-#	random_enemy = randi()%4 + 1
-#	return random_enemy
+
+func get_random_unit():
+	randomize()
+	var random_enemy = randi()%6 #0-5
+	if random_enemy == 2: #my sprite sheet is bad, needs edited. so I just manually assign here
+		random_enemy = 3
+	elif random_enemy == 3:
+		random_enemy = 4
+	elif random_enemy == 4:
+		random_enemy = 6
+	elif random_enemy == 5:
+		random_enemy = 7
+	return random_enemy
 
 func add_enemies():
 	for i in range(0, number_of_units):
 		var enemy = load(enemy_node).instance()
+		var enemy_children_list = enemy.get_children()
+		var enemy_sprite = enemy_children_list[0]
+		enemy_sprite.frame = get_random_unit()
 		call_deferred("add_child", enemy)
 		enemy_list.push_back(enemy)
 		call_deferred('change_position')
@@ -119,11 +109,7 @@ func change_position():
 			enemy_list[i].position = Vector2(224, 384)
 
 
-
-
-
 ###targeting
-
 #targeting an enemy
 func select_target():
 	isSelectingSkill = false
@@ -176,9 +162,7 @@ func respond_to_skill():
 
 
 
-
 ####commandcard
-
 func process_command():
 	if isPlayersTurn:
 		get_card_nodes()
@@ -205,9 +189,7 @@ func process_command():
 					isSelectingSkill = false
 					close_scene()
 
-
 func change_skill(direction):
-	
 	if direction == 'up':
 		if current_selection > 0 :
 			disable_card_selector_sprite()
@@ -237,13 +219,6 @@ func disable_card_selector_sprite():
 	card_animation_player.stop()
 
 
-
-
-
-
-
-
-
 ###other
 func close_scene():
 	get_tree().call_group("level_switching", "switch_scene", "battle", "overworld")
@@ -252,13 +227,11 @@ func close_scene():
 	current_selection = 0
 
 
-
-
 ###updating UI
 func initialize_enemy_UI():
 	for i in range(0, number_of_units):
 		enemyStats.text += 'Enemy ' + str(i + 1) + ': ' + str(enemy_list[i].hp) + '\n'
-	
+
 func update_enemy_UI():
 	var newText = ''
 	for i in range(0, number_of_units):
@@ -267,7 +240,6 @@ func update_enemy_UI():
 
 func initialize_PC_UI():
 	PCStats.text += 'Player 1: ' + str(player.hp) + '\n'    #need to integrate multiple PC's
-	
 
 func update_PC_UI():
 	var newText = ''
@@ -290,7 +262,7 @@ func update_log(message):
 				currentText += logArray[i]
 		logArray.pop_back()
 	UILog.text = currentText
-	
+
 
 ###turn ordering
 func initialize_turn_order():

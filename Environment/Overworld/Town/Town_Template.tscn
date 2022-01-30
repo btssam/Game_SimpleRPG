@@ -226,6 +226,7 @@ tile_data = PoolIntArray( 0, 536870912, 0, 1, 536870919, 0, 2, 536870919, 0, 3, 
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )
+volume_db = -3.0
 autoplay = true
 
 [node name="Area2D_To_Overworld" type="Area2D" parent="."]

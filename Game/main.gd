@@ -6,6 +6,16 @@ var town_node = "res://Environment/Overworld/Town/Town_Template.tscn"
 var overworld_node = "res://Environment/Overworld/Mainworld/Overworld_Template.tscn"
 var battle_node = "res://Environment/Battlefield/Battlefield_Template.tscn"
 
+
+func _input(event):
+	if event.is_action_pressed("mute_music"):
+		if $Town_Template:
+			$Town_Template/AudioStreamPlayer.playing = !$Town_Template/AudioStreamPlayer.playing
+		elif $Battlefield_Template:
+			$Battlefield_Template/AudioStreamPlayer.playing = !$Battlefield_Template/AudioStreamPlayer.playing
+		elif $Overworld_Template:
+			$Overworld_Template/AudioStreamPlayer.playing = !$Overworld_Template/AudioStreamPlayer.playing
+
 # need to add a spawn_point argument for positioning
 func switch_scene(from_scene, to_scene): 
 	if from_scene == "town":
