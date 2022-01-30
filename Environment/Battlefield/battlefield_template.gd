@@ -113,7 +113,8 @@ func change_position():
 #targeting an enemy
 func select_target():
 	isSelectingSkill = false
-	set_deferred("isSelectingTarget", true )
+	isSelectingTarget = true
+#	set_deferred("isSelectingTarget", true )
 	enable_selector_sprite()
 
 func change_target(direction):

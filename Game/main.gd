@@ -15,6 +15,9 @@ func _input(event):
 			$Battlefield_Template/AudioStreamPlayer.playing = !$Battlefield_Template/AudioStreamPlayer.playing
 		elif $Overworld_Template:
 			$Overworld_Template/AudioStreamPlayer.playing = !$Overworld_Template/AudioStreamPlayer.playing
+	if event.is_action_pressed("ui_cancel"):
+		print('closing')
+		get_tree().quit()
 
 # need to add a spawn_point argument for positioning
 func switch_scene(from_scene, to_scene): 
