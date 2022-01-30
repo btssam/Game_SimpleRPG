@@ -46,28 +46,29 @@ func _ready():
 	initialize_turn_order()
 
 func _input(event):
-	###targeting
-	if isPlayersTurn:
-		if isSelectingTarget:
-			if event.is_action_pressed("up"):
-				change_target("up")
-			if event.is_action_pressed("down"):
-				change_target("down")
-			if event.is_action_pressed("interact"):
-				return_target()
-	###commandcard
-		elif not isSelectingTarget:
-			if event.is_action_pressed("interact"):
-				process_command()
-	
-		if isSelectingCommand:
-			if event.is_action_pressed("up"):
-				change_command("up")
-			if event.is_action_pressed("down"):
-				change_command("down")
-	###testing
-	if event.is_action_pressed("test_key"):
-			close_scene()
+	if not player.isDead: #can't do anything when dead. ultimately should isTeamDead
+		###targeting
+		if isPlayersTurn:
+			if isSelectingTarget:
+				if event.is_action_pressed("up"):
+					change_target("up")
+				if event.is_action_pressed("down"):
+					change_target("down")
+				if event.is_action_pressed("interact"):
+					return_target()
+		###commandcard
+			elif not isSelectingTarget:
+				if event.is_action_pressed("interact"):
+					process_command()
+		
+			if isSelectingCommand:
+				if event.is_action_pressed("up"):
+					change_command("up")
+				if event.is_action_pressed("down"):
+					change_command("down")
+		###testing
+		if event.is_action_pressed("test_key"):
+				close_scene()
 
 
 

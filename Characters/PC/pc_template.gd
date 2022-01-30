@@ -16,7 +16,7 @@ var next_battle_counter = 0
 ###combat stats
 export var hp = 6
 export var maxhp = 6
-var isDead = false
+export var isDead = false
 
 
 
@@ -177,3 +177,7 @@ func check_for_death():
 		get_tree().call_group("battle_group", "update_log", "You have died!")
 		isDead = true
 		$AnimatedSprite.play("dying")
+		yield($AnimatedSprite, "animation_finished")
+		print('done dying')
+		get_tree().call_group("level_switching", "switch_scene", 'battle', 'gameover')
+		

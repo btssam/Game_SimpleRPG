@@ -5,6 +5,7 @@ onready var Player = $PC_Template
 var town_node = "res://Environment/Overworld/Town/Town_Template.tscn"
 var overworld_node = "res://Environment/Overworld/Mainworld/Overworld_Template.tscn"
 var battle_node = "res://Environment/Battlefield/Battlefield_Template.tscn"
+var gameover_node = "res://Game/Game Over.tscn"
 var current_scene = "town"
 
 
@@ -51,6 +52,20 @@ func switch_scene(from_scene, to_scene):
 			load_scene(overworld)
 			remove_child($Battlefield_Template)
 			current_scene = "overworld"
+		if to_scene == "gameover":
+			var gameover = load(gameover_node).instance()
+			Player.position = Vector2(512, 384)
+			load_scene(gameover)
+			remove_child($Battlefield_Template)
+			current_scene = "gameover"
+			
+	if from_scene == "gameover":
+		if to_scene == "town":
+			var town = load(town_node).instance()
+			Player.position = Vector2(512, 384)
+			load_scene(town)
+			remove_child($Game_Over)
+			current_scene = "town"
 
 func load_scene(scene_name):
 	call_deferred("add_child", scene_name)
