@@ -7,9 +7,11 @@ var enemy_list = []
 ###targeting
 var isSelectingTarget = false
 var current_target = 0
-var isSelectingSkill = false
-var current_skill = 0
+var isSelectingCommand = false
+var current_command = 0
 var current_selection = 0
+var target_selector_sprite
+var target_animation_player
 ###command card
 onready var command_card = $BattleUI/Command_Card
 var card_selector_sprite
@@ -58,11 +60,11 @@ func _input(event):
 			if event.is_action_pressed("interact"):
 				process_command()
 	
-		if isSelectingSkill:
+		if isSelectingCommand:
 			if event.is_action_pressed("up"):
-				change_skill("up")
+				change_command("up")
 			if event.is_action_pressed("down"):
-				change_skill("down")
+				change_command("down")
 	###testing
 	if event.is_action_pressed("test_key"):
 			close_scene()
@@ -109,60 +111,6 @@ func change_position():
 			enemy_list[i].position = Vector2(224, 384)
 
 
-###targeting
-#targeting an enemy
-func select_target():
-	isSelectingSkill = false
-	isSelectingTarget = true
-#	set_deferred("isSelectingTarget", true )
-	enable_selector_sprite()
-
-func change_target(direction):
-	if direction == 'up':
-		if current_target > 0:
-			disable_selector_sprite()
-			current_target -= 1
-			enable_selector_sprite()
-	elif direction == 'down':
-		if current_target < number_of_units - 1:
-			disable_selector_sprite()
-			current_target += 1
-			enable_selector_sprite()
-	
-func enable_selector_sprite():
-	var children_list = enemy_list[current_target].get_children()
-	var selector = children_list[1]
-	var animationPlayer = children_list[2]
-	selector.visible = true
-	animationPlayer.play('blink')
-
-func disable_selector_sprite():
-	var children_list = enemy_list[current_target].get_children()
-	var selector = children_list[1]
-	var animationPlayer = children_list[2]
-	selector.visible = false
-	animationPlayer.stop()
-	
-func return_target():
-	isSelectingTarget = false
-	disable_selector_sprite()
-	get_skill()
-	shift_turn_order()
-	act_in_order()
-
-#respond_to_skill
-func get_skill():
-	current_skill = current_selection
-	respond_to_skill()
-	
-func respond_to_skill():
-	if current_skill == 0: #attack
-		enemy_list[current_target].hp -= 1
-		update_enemy_UI()
-	isPlayersTurn = false
-
-
-
 ####commandcard
 func process_command():
 	if isPlayersTurn:
@@ -172,25 +120,26 @@ func process_command():
 			if not cardIsVisible:
 				command_card.show()
 				cardIsVisible = true
-				isSelectingSkill = true
+				isSelectingCommand = true
 				enable_card_selector_sprite()
 			else:
 				disable_card_selector_sprite()
 				command_card.hide()
 				cardIsVisible = false
+				current_command = current_selection  #do this here so dif. skills may target differently
 				if current_selection == 0: #attack
 					select_target()
 				elif current_selection == 1: #skill
 					update_log('You have no skills.')
-					isSelectingSkill = false
+					isSelectingCommand = false
 				elif current_selection == 2: #item
 					update_log('You have no items.')
-					isSelectingSkill = false
+					isSelectingCommand = false
 				elif current_selection == 3: #flee
-					isSelectingSkill = false
+					isSelectingCommand = false
 					close_scene()
 
-func change_skill(direction):
+func change_command(direction):
 	if direction == 'up':
 		if current_selection > 0 :
 			disable_card_selector_sprite()
@@ -218,6 +167,58 @@ func disable_card_selector_sprite():
 	get_card_nodes()
 	card_selector_sprite.visible = false
 	card_animation_player.stop()
+
+
+###targeting
+#targeting an enemy
+func select_target():
+	isSelectingCommand = false
+	isSelectingTarget = true #I at one point needed to use set_deferred
+	enable_selector_sprite()
+
+func change_target(direction):
+	if direction == 'up':
+		if current_target > 0:
+			disable_selector_sprite()
+			current_target -= 1
+			enable_selector_sprite()
+	elif direction == 'down':
+		if current_target < number_of_units - 1:
+			disable_selector_sprite()
+			current_target += 1
+			enable_selector_sprite()
+	
+func enable_selector_sprite():
+	get_target_nodes()
+	target_selector_sprite.visible = true
+	target_animation_player.play('blink')
+
+func disable_selector_sprite():
+	get_target_nodes()
+	target_selector_sprite.visible = false
+	target_animation_player.stop()
+
+func get_target_nodes():
+	var children_list = enemy_list[current_target].get_children()
+	target_selector_sprite = children_list[1]
+	target_animation_player = children_list[2]
+
+	
+func return_target():
+	isSelectingTarget = false
+	disable_selector_sprite()
+	get_command()
+	shift_turn_order()
+	act_in_order()
+
+#respond_to_command
+func get_command():
+	if current_command == 0: #attack
+		enemy_list[current_target].hp -= 1
+		update_enemy_UI()
+	isPlayersTurn = false
+
+
 
 
 ###other

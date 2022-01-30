@@ -1,22 +1,23 @@
 extends Node
 
+#levelswitching
 onready var Player = $PC_Template
-
 var town_node = "res://Environment/Overworld/Town/Town_Template.tscn"
 var overworld_node = "res://Environment/Overworld/Mainworld/Overworld_Template.tscn"
 var battle_node = "res://Environment/Battlefield/Battlefield_Template.tscn"
+var current_scene = "town"
 
 
 func _input(event):
+	###for testing
 	if event.is_action_pressed("mute_music"):
-		if $Town_Template:
+		if current_scene == "town":
 			$Town_Template/AudioStreamPlayer.playing = !$Town_Template/AudioStreamPlayer.playing
-		elif $Battlefield_Template:
+		elif current_scene == "battle":
 			$Battlefield_Template/AudioStreamPlayer.playing = !$Battlefield_Template/AudioStreamPlayer.playing
-		elif $Overworld_Template:
+		elif current_scene == "overworld":
 			$Overworld_Template/AudioStreamPlayer.playing = !$Overworld_Template/AudioStreamPlayer.playing
 	if event.is_action_pressed("ui_cancel"):
-		print('closing')
 		get_tree().quit()
 
 # need to add a spawn_point argument for positioning
@@ -27,6 +28,7 @@ func switch_scene(from_scene, to_scene):
 			Player.position = Vector2(496, 368)
 			load_scene(overworld)
 			remove_child($Town_Template)
+			current_scene = "overworld"
 			
 	if from_scene == "overworld":
 		if to_scene == "town":
@@ -34,11 +36,13 @@ func switch_scene(from_scene, to_scene):
 			Player.position = Vector2(512, 96)
 			load_scene(town)
 			remove_child($Overworld_Template)
+			current_scene = "town"
 		if to_scene == "battle":
 			var battle = load(battle_node).instance()
 			Player.position = Vector2(800, 512)
 			load_scene(battle)
 			remove_child($Overworld_Template)
+			current_scene = "battle"
 	
 	if from_scene == "battle":
 		if to_scene == "overworld":
@@ -46,7 +50,7 @@ func switch_scene(from_scene, to_scene):
 			Player.position = Vector2(500, 500)
 			load_scene(overworld)
 			remove_child($Battlefield_Template)
-
+			current_scene = "overworld"
 
 func load_scene(scene_name):
 	call_deferred("add_child", scene_name)
