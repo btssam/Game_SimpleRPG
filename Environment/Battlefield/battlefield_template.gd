@@ -33,6 +33,7 @@ onready var main_node = get_node("..")
 ###enemy death
 var targetable_enemy_list = []
 var targetable_number_of_units
+onready var victoryNode = get_node("BattleUI/Victory_Popup")
 
 func _ready():
 	####initialize
@@ -313,3 +314,5 @@ func check_enemy_death():
 			print(targetable_enemy_list)
 			targetable_number_of_units -= 1
 			print(targetable_number_of_units)
+	if targetable_number_of_units <= 0:
+		victoryNode.visible = true
