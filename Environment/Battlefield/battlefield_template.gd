@@ -34,6 +34,7 @@ onready var main_node = get_node("..")
 var targetable_enemy_list = []
 var targetable_number_of_units
 onready var victoryNode = get_node("BattleUI/Victory_Popup")
+var isVictorious = false
 
 func _ready():
 	####initialize
@@ -50,6 +51,9 @@ func _ready():
 	initialize_turn_order()
 
 func _input(event):
+	if isVictorious:
+		if event.is_action_pressed("interact"):
+			close_scene()
 	if not player_node.isDead: #can't do anything when dead. ultimately should be isTeamDead
 		###targeting
 		if isPlayersTurn:
@@ -232,17 +236,18 @@ func close_scene():
 	player_node.reset_battle_check()
 	player_node.hp = player_node.maxhp
 	current_selection = 0
+	isVictorious = false
 
 
 ###updating UI
 func initialize_enemy_UI():
 	for i in range(0, number_of_units):
-		enemyStats.text += 'Enemy ' + str(i + 1) + ': ' + str(enemy_list[i].hp) + '\n'
+		enemyStats.text += enemy_list[i].enemy_name + ': ' + str(enemy_list[i].hp) + '\n'
 
 func update_enemy_UI():
 	var newText = ''
 	for i in range(0, number_of_units):
-		newText += 'Enemy ' + str(i + 1) + ': ' + str(enemy_list[i].hp) + '\n'
+		newText += enemy_list[i].enemy_name + ': ' + str(enemy_list[i].hp) + '\n'
 	enemyStats.text = newText
 
 func initialize_PC_UI():
@@ -276,13 +281,14 @@ func initialize_turn_order():
 	act_in_order()
 
 func act_in_order():
-	if turn_order[0].name == "PC_Template":
-		update_log("It is the player's turn!")
-		isPlayersTurn = true
-	else:
-		update_log("It is the enemy's turn!")
-		isPlayersTurn = false
-		enemy_attack()
+	if not isVictorious:
+		if turn_order[0].name == "PC_Template":
+				update_log("It is the player's turn!")
+				isPlayersTurn = true
+		else:
+			update_log("It is " + turn_order[0].enemy_name + "'s turn!")
+			isPlayersTurn = false
+			enemy_attack()
 
 func shift_turn_order():
 	var first_unit = turn_order[0] #move the turn order forward once someone goes
@@ -304,15 +310,17 @@ func enemy_attack():
 	act_in_order()
 
 func check_enemy_death():
-	for i in range(0, number_of_units):
-		if enemy_list[i].hp <= 0:
-			enemy_list[i].hp = 0
-			print(enemy_list[i].enemy_name + " " + str(i+1) + " has perished!")
-			turn_order.erase(enemy_list[i])
-			print(turn_order)
-			targetable_enemy_list.erase(enemy_list[i])
-			print(targetable_enemy_list)
+	for i in range(0, targetable_number_of_units):
+		if targetable_enemy_list[i-1].hp <= 0:
+			targetable_enemy_list[i-1].hp = 0
+			update_log(targetable_enemy_list[i].enemy_name +  " has perished!")
+			turn_order.erase(targetable_enemy_list[i-1])
+			targetable_enemy_list.erase(targetable_enemy_list[i-1])
+			current_target = 0
 			targetable_number_of_units -= 1
-			print(targetable_number_of_units)
+#			if targetable_number_of_units < 0:
+#				targetable_number_of_units = 0
 	if targetable_number_of_units <= 0:
 		victoryNode.visible = true
+		isVictorious = true
+		update_log('You are victorious!')

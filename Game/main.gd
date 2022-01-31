@@ -38,13 +38,13 @@ func switch_scene(from_scene, to_scene):
 			var town = load(town_node).instance()
 			player_node.position = Vector2(512, 96)
 			load_scene(town)
-			remove_child($Overworld_Template)
+			call_deferred("remove_child", $Overworld_Template)
 			current_scene = "town"
 		if to_scene == "battle":
 			var battle = load(battle_node).instance()
 			player_node.position = Vector2(800, 512)
 			load_scene(battle)
-			remove_child($Overworld_Template)
+			call_deferred("remove_child", $Overworld_Template)
 			current_scene = "battle"
 	
 	if from_scene == "battle":
@@ -52,13 +52,13 @@ func switch_scene(from_scene, to_scene):
 			var overworld = load(overworld_node).instance()
 			player_node.position = Vector2(500, 500)
 			load_scene(overworld)
-			remove_child($Battlefield_Template)
+			call_deferred("remove_child", $Battlefield_Template)
 			current_scene = "overworld"
 		if to_scene == "gameover":
 			var gameover = load(gameover_node).instance()
 			player_node.position = Vector2(512, 384)
 			load_scene(gameover)
-			remove_child($Battlefield_Template)
+			call_deferred("remove_child", $Battlefield_Template)
 			current_scene = "gameover"
 			
 	if from_scene == "gameover":
@@ -66,7 +66,7 @@ func switch_scene(from_scene, to_scene):
 			var town = load(town_node).instance()
 			player_node.position = Vector2(512, 384)
 			load_scene(town)
-			remove_child($Game_Over)
+			call_deferred("remove_child", $Game_Over)
 			current_scene = "town"
 
 func load_scene(scene_name):
