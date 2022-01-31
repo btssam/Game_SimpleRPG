@@ -259,7 +259,7 @@ func update_PC_UI():
 	PCStats.text = newText
 
 func initialize_log():
-	UILog.text = ''
+	UILog.bbcode_text = ''
 
 func update_log(message):
 	logArray.push_front(message + '\n')
@@ -268,7 +268,7 @@ func update_log(message):
 		logArray.pop_back()
 	for i in range(0, logArray.size()):
 		currentText += logArray[i]
-	UILog.text = currentText
+	UILog.bbcode_text = currentText
 
 
 ###turn ordering
@@ -286,7 +286,7 @@ func act_in_order():
 				update_log("It is the player's turn!")
 				isPlayersTurn = true
 		else:
-			update_log("It is " + turn_order[0].enemy_name + "'s turn!")
+			update_log("It is [color=red]" + turn_order[0].enemy_name + "[/color]'s turn!")
 			isPlayersTurn = false
 			enemy_attack()
 
@@ -313,7 +313,7 @@ func check_enemy_death():
 	for i in range(0, targetable_number_of_units):
 		if targetable_enemy_list[i-1].hp <= 0:
 			targetable_enemy_list[i-1].hp = 0
-			update_log(targetable_enemy_list[i-1].enemy_name +  " has perished!")
+			update_log("[color=red]" + targetable_enemy_list[i-1].enemy_name  + "[/color]" +  " has perished!")
 #			print(targetable_enemy_list[i-1].get_node("AnimationPlayer"))
 			targetable_enemy_list[i-1].get_node("AnimationPlayer").play("dying")
 			turn_order.erase(targetable_enemy_list[i-1])

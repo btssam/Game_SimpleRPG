@@ -33,24 +33,25 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="Log"]
+[node name="Label" type="RichTextLabel" parent="Log"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = 4.0
 margin_bottom = -5.0
 theme = ExtResource( 2 )
+bbcode_enabled = true
+bbcode_text = "You attack Dummy...
+Dummy took 12 damage
+Test Enemy tried casting a spell...
+It failed!
+Your Turn!
+You attack Dummy..."
 text = "You attack Dummy...
 Dummy took 12 damage
 Test Enemy tried casting a spell...
 It failed!
 Your Turn!
 You attack Dummy..."
-autowrap = true
-clip_text = true
-max_lines_visible = 6
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Label2" type="Label" parent="Log"]
 visible = false
