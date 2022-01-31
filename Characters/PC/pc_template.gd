@@ -5,10 +5,10 @@ var motion = Vector2()
 var running = false
 var speed = 2
 ###npc check
-var interactable = false
+var isInteractable = false
 var current_interaction
 ###battle check
-var battling = false
+var isBattling = false
 var steps_since_last = 0
 var current_position = Vector2()
 var previous_position = Vector2()
@@ -37,7 +37,7 @@ func _physics_process(delta):
 func _input(event):
 	#npc interaction
 	if event.is_action_pressed("interact"):
-		if interactable:
+		if isInteractable:
 			dialogue_node.print_dialogue(current_interaction)
 			
 
@@ -48,7 +48,7 @@ func _process(delta):
 
 ###movement
 func update_movement():
-	if not battling:
+	if not isBattling:
 		
 		if Input.is_action_pressed("left"):
 			$AnimatedSprite.play("walk_left")
@@ -118,12 +118,12 @@ func update_movement():
 ###check for interaction, like NPCs
 func _on_Area2D_Interact_body_entered(body):
 	if 'NPC_Template' in body.name:
-		interactable = true
+		isInteractable = true
 		current_interaction = body.name #get name of interacted NPC
 
 func _on_Area2D_Interact_body_exited(body):
 	if 'NPC_Template' in body.name:
-		interactable = false
+		isInteractable = false
 		current_interaction = 'none'
 		dialogue_node.hide_dialogue()
 
@@ -148,7 +148,7 @@ func check_for_battle():
 	steps_since_last += displacement
 	if steps_since_last > next_battle_counter or Input.is_action_pressed("test_key"):
 		main_node.switch_scene("overworld", "battle")
-		battling = true
+		isBattling = true
 		get_next_battle_counter()
 	else:
 		$Delta_Position1.start()
@@ -158,13 +158,13 @@ func reset_battle_check(): #return from battle
 	$AnimatedSprite.animation = "walk_down"
 	$AnimatedSprite.frame = 1
 	isDead = false
-	battling = false
+	isBattling = false
 	steps_since_last = 0
 	$Delta_Position2.stop()
 	$Delta_Position1.start()
 	
 func stop_battle_check():
-	battling = false
+	isBattling = false
 	steps_since_last = 0
 	$Delta_Position1.stop()
 	$Delta_Position2.stop()

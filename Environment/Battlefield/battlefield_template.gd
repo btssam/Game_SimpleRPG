@@ -19,21 +19,21 @@ var card_animation_player
 var cardIsVisible =  false
 var number_of_selections = 4
 ###updating UI
-onready var enemyStats = get_node("BattleUI/Battle_Bottom_UI/Enemies_Stats/Label")
-onready var PCStats = get_node("BattleUI/Battle_Bottom_UI/PCs_Stats/Label")
-onready var UILog = get_node("BattleUI/Battle_Bottom_UI/Log/Label")
-var logArray = []
+onready var enemy_stats_node = get_node("BattleUI/Battle_Bottom_UI/Enemies_Stats/Label")
+onready var pc_stats_node = get_node("BattleUI/Battle_Bottom_UI/PCs_Stats/Label")
+onready var ui_log_node = get_node("BattleUI/Battle_Bottom_UI/Log/Label")
+var log_array = []
 ###turn ordering
 var turn_order = []
 onready var player_node = get_node("../PC_Template")
 var isPlayersTurn = true
-var enemyAnimationPlayer
+var enemy_animationPlayer_node
 ###nodes
 onready var main_node = get_node("..")
 ###enemy death
 var targetable_enemy_list = []
 var targetable_number_of_units
-onready var victoryNode = get_node("BattleUI/Victory_Popup")
+onready var victory_node = get_node("BattleUI/Victory_Popup")
 var isVictorious = false
 
 func _ready():
@@ -242,33 +242,33 @@ func close_scene():
 ###updating UI
 func initialize_enemy_UI():
 	for i in range(0, number_of_units):
-		enemyStats.text += enemy_list[i].enemy_name + ': ' + str(enemy_list[i].hp) + '\n'
+		enemy_stats_node.text += enemy_list[i].enemy_name + ': ' + str(enemy_list[i].hp) + '\n'
 
 func update_enemy_UI():
 	var newText = ''
 	for i in range(0, number_of_units):
 		newText += enemy_list[i].enemy_name + ': ' + str(enemy_list[i].hp) + '\n'
-	enemyStats.text = newText
+	enemy_stats_node.text = newText
 
 func initialize_PC_UI():
-	PCStats.text += 'Player 1: ' + str(player_node.hp) + '\n'    #need to integrate multiple PC's
+	pc_stats_node.text += 'Player 1: ' + str(player_node.hp) + '\n'    #need to integrate multiple PC's
 
 func update_PC_UI():
 	var newText = ''
 	newText = 'Player 1: ' + str(player_node.hp) + '\n'    #need to integrate multiple PC's
-	PCStats.text = newText
+	pc_stats_node.text = newText
 
 func initialize_log():
-	UILog.bbcode_text = ''
+	ui_log_node.bbcode_text = ''
 
 func update_log(message):
-	logArray.push_front(message + '\n')
+	log_array.push_front(message + '\n')
 	var currentText = ''
-	if logArray.size () > 6: #check if log is too long
-		logArray.pop_back()
-	for i in range(0, logArray.size()):
-		currentText += logArray[i]
-	UILog.bbcode_text = currentText
+	if log_array.size () > 6: #check if log is too long
+		log_array.pop_back()
+	for i in range(0, log_array.size()):
+		currentText += log_array[i]
+	ui_log_node.bbcode_text = currentText
 
 
 ###turn ordering
@@ -303,9 +303,9 @@ func enemy_attack():
 	player_node.hp -= 1
 	player_node.check_for_death()
 	call_deferred("update_PC_UI") #if i dont defer, player goes to -1 as it is updated too quickly
-	enemyAnimationPlayer = turn_order[0].get_node("AnimationPlayer")
-	enemyAnimationPlayer.play('attack')
-	yield(enemyAnimationPlayer, 'animation_finished')
+	enemy_animationPlayer_node = turn_order[0].get_node("AnimationPlayer")
+	enemy_animationPlayer_node.play('attack')
+	yield(enemy_animationPlayer_node, 'animation_finished')
 	shift_turn_order()
 	act_in_order()
 
@@ -321,6 +321,6 @@ func check_enemy_death():
 			current_target = 0
 			targetable_number_of_units -= 1
 	if targetable_number_of_units <= 0:
-		victoryNode.visible = true
+		victory_node.visible = true
 		isVictorious = true
 		update_log('You are victorious!')

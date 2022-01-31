@@ -1,8 +1,8 @@
 extends Node2D
 
-onready var main_node = get_node("..")
 var from_scene = "town"
 var to_scene = ""
+onready var main_node = get_node("..")
 
 
 

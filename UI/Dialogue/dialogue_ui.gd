@@ -1,12 +1,9 @@
 extends Control
 
-
 var isCurrentlyInteracting = false
 var isDialogueFinished = false
 
 
-func _ready():
-	pass
 
 func print_dialogue(body):
 	if isCurrentlyInteracting == false and isDialogueFinished == false:
@@ -34,8 +31,7 @@ func print_dialogue(body):
 		isDialogueFinished = false
 		isCurrentlyInteracting = false
 		hide_dialogue()
-		
-	
+
 func hide_dialogue():
 	$Popup_Dialogue.hide()
 	$Popup_Dialogue/AnimationPlayer.stop()
