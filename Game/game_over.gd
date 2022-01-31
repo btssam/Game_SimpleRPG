@@ -1,6 +1,7 @@
 extends Node2D
 
 onready var player_node = get_node("../PC_Template")
+onready var main_node = get_node("..")
 
 
 
@@ -10,7 +11,8 @@ func _ready():
 
 func _input(event):
 	if event.is_action_pressed('interact'):
-		get_tree().call_group("level_switching", "switch_scene", "gameover", "town")
+		main_node.switch_scene("gameover", "town")
+#		get_tree().call_group("level_switching", "switch_scene", "gameover", "town")
 		player_node.isDead = false
 		player_node.battling = false
 		var AnimatedSpriteNode = player_node.get_node("AnimatedSprite")
