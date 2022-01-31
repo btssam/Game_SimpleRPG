@@ -313,13 +313,13 @@ func check_enemy_death():
 	for i in range(0, targetable_number_of_units):
 		if targetable_enemy_list[i-1].hp <= 0:
 			targetable_enemy_list[i-1].hp = 0
-			update_log(targetable_enemy_list[i].enemy_name +  " has perished!")
+			update_log(targetable_enemy_list[i-1].enemy_name +  " has perished!")
+#			print(targetable_enemy_list[i-1].get_node("AnimationPlayer"))
+			targetable_enemy_list[i-1].get_node("AnimationPlayer").play("dying")
 			turn_order.erase(targetable_enemy_list[i-1])
 			targetable_enemy_list.erase(targetable_enemy_list[i-1])
 			current_target = 0
 			targetable_number_of_units -= 1
-#			if targetable_number_of_units < 0:
-#				targetable_number_of_units = 0
 	if targetable_number_of_units <= 0:
 		victoryNode.visible = true
 		isVictorious = true
