@@ -90,6 +90,18 @@ func add_enemies():
 		var enemy = load(enemy_node).instance()
 		var enemy_sprite = enemy.get_node("Sprite")
 		enemy_sprite.frame = get_random_unit()
+		if enemy_sprite.frame == 0:
+			enemy.enemy_name = "Blue Fairy"
+		elif enemy_sprite.frame == 1:
+			enemy.enemy_name = "Brown Fairy"
+		elif enemy_sprite.frame == 2:
+			enemy.enemy_name = "Brown Wolf"
+		elif enemy_sprite.frame == 3:
+			enemy.enemy_name = "Green Wolf"
+		elif enemy_sprite.frame == 4:
+			enemy.enemy_name = "Red Goblin"
+		elif enemy_sprite.frame == 2:
+			enemy.enemy_name = "Purple Goblin"
 		call_deferred("add_child", enemy)
 		enemy_list.push_back(enemy)
 		call_deferred('change_position')
@@ -204,6 +216,7 @@ func return_target():
 func get_command():
 	if current_command == 0: #attack
 		enemy_list[current_target].hp -= 1
+		check_enemy_death()
 		update_enemy_UI()
 	isPlayersTurn = false
 
@@ -284,3 +297,8 @@ func enemy_attack():
 	yield(enemyAnimationPlayer, 'animation_finished')
 	shift_turn_order()
 	act_in_order()
+
+func check_enemy_death():
+	for i in range(0, number_of_units):
+		if enemy_list[i].hp <= 0:
+			print(enemy_list[i].enemy_name + " " + str(i+1) + " has perished!")
