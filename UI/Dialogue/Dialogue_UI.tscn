@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://UI/Dialogue/dialogue_ui.gd" type="Script" id=1]
+[ext_resource path="res://UI/Dialogue/dialogue_UI.gd" type="Script" id=1]
 [ext_resource path="res://UI/Dialogue/Popup_Dialogue.tscn" type="PackedScene" id=2]
 
 [node name="Dialogue_UI" type="Control"]

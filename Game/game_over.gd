@@ -9,7 +9,7 @@ func _input(event):
 	if event.is_action_pressed('interact'):
 		main_node.switch_scene("gameover", "town")
 		player_node.isDead = false
-		player_node.battling = false
+		player_node.isBattling = false
 		var AnimatedSpriteNode = player_node.get_node("AnimatedSprite")
 		AnimatedSpriteNode.animation = "walk_down"
 		AnimatedSpriteNode.stop()

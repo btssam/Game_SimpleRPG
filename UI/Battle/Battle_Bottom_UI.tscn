@@ -52,6 +52,7 @@ Test Enemy tried casting a spell...
 It failed!
 Your Turn!
 You attack Dummy..."
+scroll_active = false
 
 [node name="Label2" type="Label" parent="Log"]
 visible = false

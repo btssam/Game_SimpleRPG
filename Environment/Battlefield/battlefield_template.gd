@@ -35,6 +35,7 @@ var targetable_enemy_list = []
 var targetable_number_of_units
 onready var victory_node = get_node("BattleUI/Victory_Popup")
 var isVictorious = false
+var isPlayerAnimating = false
 
 func _ready():
 	####initialize
@@ -54,7 +55,7 @@ func _input(event):
 	if isVictorious:
 		if event.is_action_pressed("interact"):
 			close_scene()
-	if not player_node.isDead: #can't do anything when dead. ultimately should be isTeamDead
+	if not player_node.isDead and not player_node.isAttacking: #can't do anything when dead. should be isTeamDead
 		###targeting
 		if isPlayersTurn:
 			if isSelectingTarget:
@@ -218,15 +219,21 @@ func return_target():
 	isSelectingTarget = false
 	disable_selector_sprite()
 	get_command()
-	shift_turn_order()
-	act_in_order()
+#	shift_turn_order()
+#	act_in_order()
 
 #respond_to_command
 func get_command():
 	if current_command == 0: #attack
+		player_node.isAttacking = true
+		player_node.get_node("AnimationPlayer").play("attack")
+		yield(player_node.get_node("AnimatedSprite"), "animation_finished")
+		player_node.isAttacking = false
 		targetable_enemy_list[current_target].hp -= 1
 		check_enemy_death()
 		update_enemy_UI()
+		shift_turn_order()
+		act_in_order()
 	isPlayersTurn = false
 
 
@@ -314,7 +321,6 @@ func check_enemy_death():
 		if targetable_enemy_list[i-1].hp <= 0:
 			targetable_enemy_list[i-1].hp = 0
 			update_log("[color=red]" + targetable_enemy_list[i-1].enemy_name  + "[/color]" +  " has perished!")
-#			print(targetable_enemy_list[i-1].get_node("AnimationPlayer"))
 			targetable_enemy_list[i-1].get_node("AnimationPlayer").play("dying")
 			turn_order.erase(targetable_enemy_list[i-1])
 			targetable_enemy_list.erase(targetable_enemy_list[i-1])

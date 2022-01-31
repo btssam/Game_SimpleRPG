@@ -20,6 +20,8 @@ var isDead = false
 ###nodes
 onready var main_node = get_node("..")
 onready var dialogue_node = get_node("../GUI/Dialogue_UI")
+###attacking
+var isAttacking = false
 
 
 func _ready():
@@ -39,10 +41,6 @@ func _input(event):
 	if event.is_action_pressed("interact"):
 		if isInteractable:
 			dialogue_node.print_dialogue(current_interaction)
-			
-
-func _process(delta):
-	pass
 
 
 
@@ -110,9 +108,8 @@ func update_movement():
 		motion.x = 0
 		motion.y = 0
 		if not isDead:
-			$AnimatedSprite.stop()
-			$AnimatedSprite.animation = "walk_left"
-			$AnimatedSprite.frame = 1
+			if not isAttacking:
+				$AnimatedSprite.animation = "idle_battle"
 
 
 ###check for interaction, like NPCs
@@ -179,5 +176,3 @@ func check_for_death():
 		$AnimatedSprite.play("dying")
 		yield($AnimatedSprite, "animation_finished")
 		main_node.switch_scene('battle', 'gameover')
-		
-
