@@ -30,7 +30,9 @@ var isPlayersTurn = true
 var enemyAnimationPlayer
 ###nodes
 onready var main_node = get_node("..")
-
+###enemy death
+var targetable_enemy_list = []
+var targetable_number_of_units
 
 func _ready():
 	####initialize
@@ -78,6 +80,7 @@ func _input(event):
 func get_random_number_of_units():
 	randomize()
 	number_of_units = randi()%3 + 1
+	targetable_number_of_units = number_of_units
 	return number_of_units
 
 func get_random_unit():
@@ -88,7 +91,7 @@ func get_random_unit():
 func add_enemies():
 	for i in range(0, number_of_units):
 		var enemy = load(enemy_node).instance()
-		var enemy_sprite = enemy.get_node("Sprite")
+		var enemy_sprite = enemy.get_node("Sprite") #eventually will want different enemy scenes for each
 		enemy_sprite.frame = get_random_unit()
 		if enemy_sprite.frame == 0:
 			enemy.enemy_name = "Blue Fairy"
@@ -100,11 +103,12 @@ func add_enemies():
 			enemy.enemy_name = "Green Wolf"
 		elif enemy_sprite.frame == 4:
 			enemy.enemy_name = "Red Goblin"
-		elif enemy_sprite.frame == 2:
+		elif enemy_sprite.frame == 5:
 			enemy.enemy_name = "Purple Goblin"
 		call_deferred("add_child", enemy)
 		enemy_list.push_back(enemy)
 		call_deferred('change_position')
+	targetable_enemy_list = enemy_list.duplicate()
 
 func change_position():
 	for i in range(0, number_of_units):
@@ -186,7 +190,7 @@ func change_target(direction):
 			current_target -= 1
 			enable_selector_sprite()
 	elif direction == 'down':
-		if current_target < number_of_units - 1:
+		if current_target < targetable_number_of_units - 1:
 			disable_selector_sprite()
 			current_target += 1
 			enable_selector_sprite()
@@ -202,8 +206,8 @@ func disable_selector_sprite():
 	target_animation_player.stop()
 
 func get_target_nodes():
-	target_selector_sprite = enemy_list[current_target].get_node("Selector")
-	target_animation_player = enemy_list[current_target].get_node("AnimationPlayer")
+	target_selector_sprite = targetable_enemy_list[current_target].get_node("Selector")
+	target_animation_player = targetable_enemy_list[current_target].get_node("AnimationPlayer")
 
 func return_target():
 	isSelectingTarget = false
@@ -215,7 +219,7 @@ func return_target():
 #respond_to_command
 func get_command():
 	if current_command == 0: #attack
-		enemy_list[current_target].hp -= 1
+		targetable_enemy_list[current_target].hp -= 1
 		check_enemy_death()
 		update_enemy_UI()
 	isPlayersTurn = false
@@ -301,4 +305,11 @@ func enemy_attack():
 func check_enemy_death():
 	for i in range(0, number_of_units):
 		if enemy_list[i].hp <= 0:
+			enemy_list[i].hp = 0
 			print(enemy_list[i].enemy_name + " " + str(i+1) + " has perished!")
+			turn_order.erase(enemy_list[i])
+			print(turn_order)
+			targetable_enemy_list.erase(enemy_list[i])
+			print(targetable_enemy_list)
+			targetable_number_of_units -= 1
+			print(targetable_number_of_units)
