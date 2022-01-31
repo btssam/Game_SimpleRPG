@@ -25,10 +25,11 @@ onready var UILog = get_node("BattleUI/Battle_Bottom_UI/Log/Label")
 var logArray = []
 ###turn ordering
 var turn_order = []
-onready var player = get_node("../PC_Template")
+onready var player_node = get_node("../PC_Template")
 var isPlayersTurn = true
 var enemyAnimationPlayer
-
+###nodes
+onready var main_node = get_node("..")
 
 
 func _ready():
@@ -46,7 +47,7 @@ func _ready():
 	initialize_turn_order()
 
 func _input(event):
-	if not player.isDead: #can't do anything when dead. ultimately should be isTeamDead
+	if not player_node.isDead: #can't do anything when dead. ultimately should be isTeamDead
 		###targeting
 		if isPlayersTurn:
 			if isSelectingTarget:
@@ -209,9 +210,9 @@ func get_command():
 
 ###other
 func close_scene():
-	get_tree().call_group("level_switching", "switch_scene", "battle", "overworld")
-	get_tree().call_group("battle_check_group", "reset_battle_check")
-	player.hp = player.maxhp
+	main_node.switch_scene('battle', 'overworld')
+	player_node.reset_battle_check()
+	player_node.hp = player_node.maxhp
 	current_selection = 0
 
 
@@ -227,11 +228,11 @@ func update_enemy_UI():
 	enemyStats.text = newText
 
 func initialize_PC_UI():
-	PCStats.text += 'Player 1: ' + str(player.hp) + '\n'    #need to integrate multiple PC's
+	PCStats.text += 'Player 1: ' + str(player_node.hp) + '\n'    #need to integrate multiple PC's
 
 func update_PC_UI():
 	var newText = ''
-	newText = 'Player 1: ' + str(player.hp) + '\n'    #need to integrate multiple PC's
+	newText = 'Player 1: ' + str(player_node.hp) + '\n'    #need to integrate multiple PC's
 	PCStats.text = newText
 
 func initialize_log():
@@ -252,7 +253,7 @@ func initialize_turn_order():
 	randomize()
 	var randomized_list = enemy_list.duplicate()
 	randomized_list.shuffle()
-	randomized_list.push_front(player) #Shouldn't necessarily be first, just for testing. Can fix by moving this line up
+	randomized_list.push_front(player_node) #Shouldn't necessarily be first, just for testing. Can fix by moving this line up
 	turn_order = randomized_list
 	act_in_order()
 
@@ -275,8 +276,8 @@ func shift_turn_order():
 
 #enemy_AI
 func enemy_attack():
-	player.hp -= 1
-	get_tree().call_group("battle_group", "check_for_death")
+	player_node.hp -= 1
+	player_node.check_for_death()
 	call_deferred("update_PC_UI") #if i dont defer, player goes to -1 as it is updated too quickly
 	enemyAnimationPlayer = turn_order[0].get_node("AnimationPlayer")
 	enemyAnimationPlayer.play('attack')

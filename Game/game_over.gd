@@ -1,6 +1,6 @@
 extends Node2D
 
-onready var player = get_node("../PC_Template")
+onready var player_node = get_node("../PC_Template")
 
 
 
@@ -11,10 +11,10 @@ func _ready():
 func _input(event):
 	if event.is_action_pressed('interact'):
 		get_tree().call_group("level_switching", "switch_scene", "gameover", "town")
-		player.isDead = false
-		player.battling = false
-		var AnimatedSpriteNode = player.get_node("AnimatedSprite")
+		player_node.isDead = false
+		player_node.battling = false
+		var AnimatedSpriteNode = player_node.get_node("AnimatedSprite")
 		AnimatedSpriteNode.animation = "walk_down"
 		AnimatedSpriteNode.stop()
 		AnimatedSpriteNode.frame = 1
-		player.hp = player.maxhp
+		player_node.hp = player_node.maxhp
