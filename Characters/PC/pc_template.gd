@@ -17,7 +17,9 @@ var next_battle_counter = 0
 export var hp = 6
 export var maxhp = 6
 var isDead = false
-
+###nodes
+onready var main_node = get_node("..")
+onready var dialogue_node = get_node("../GUI/Dialogue_UI")
 
 
 func _ready():
@@ -36,7 +38,8 @@ func _input(event):
 	#npc interaction
 	if event.is_action_pressed("interact"):
 		if interactable:
-			get_tree().call_group("interact_NPC", "pass_body_to_dialogue", current_interaction)
+			dialogue_node.print_dialogue(current_interaction)
+			
 
 func _process(delta):
 	pass
@@ -122,7 +125,7 @@ func _on_Area2D_Interact_body_exited(body):
 	if 'NPC_Template' in body.name:
 		interactable = false
 		current_interaction = 'none'
-		get_tree().call_group('interact_NPC', 'hide_dialogue')
+		dialogue_node.hide_dialogue()
 
 
 ###check for battles
@@ -147,7 +150,7 @@ func check_for_battle():
 	var displacement = x_displacement + y_displacement
 	steps_since_last += displacement
 	if steps_since_last > next_battle_counter or Input.is_action_pressed("test_key"):
-		get_tree().call_group("level_switching", "switch_scene", 'overworld', 'battle')
+		main_node.switch_scene("overworld", "battle")
 		battling = true
 		get_next_battle_counter()
 	else:
@@ -174,10 +177,11 @@ func stop_battle_check():
 func check_for_death():
 	if hp <= 0:
 		hp = 0
-		get_tree().call_group("battle_group", "update_log", "You have died!")
+		get_node("../Battlefield_Template").update_log("You have died!")
 		isDead = true
 		$AnimatedSprite.play("dying")
 		yield($AnimatedSprite, "animation_finished")
 		print('done dying')
-		get_tree().call_group("level_switching", "switch_scene", 'battle', 'gameover')
+		main_node.switch_scene('battle', 'gameover')
 		
+

@@ -9,6 +9,7 @@ var gameover_node = "res://Game/Game_Over.tscn"
 var current_scene = "town"
 
 
+
 func _input(event):
 	###for testing
 	if event.is_action_pressed("mute_music"):
