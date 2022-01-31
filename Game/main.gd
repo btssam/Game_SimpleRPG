@@ -29,7 +29,8 @@ func switch_scene(from_scene, to_scene):
 			var overworld = load(overworld_node).instance()
 			player_node.position = Vector2(496, 368)
 			load_scene(overworld)
-			remove_child($Town_Template)
+			call_deferred("remove_child", $Town_Template)
+#			remove_child($Town_Template)
 			current_scene = "overworld"
 			
 	if from_scene == "overworld":

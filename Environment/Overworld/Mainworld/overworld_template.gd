@@ -2,12 +2,15 @@ extends Node2D
 
 var from_scene = "overworld"
 var to_scene = ""
+onready var main_node = get_node("..")
+
+
 
 func _ready():
-	get_tree().call_group("battle_check_group", "start_timer") #when enter overworld, start checking for battles
+	get_node("../PC_Template/Delta_Position1").start()
 
 
 func _on_Area2D_To_Town_body_entered(body):
 	to_scene = "town"
-	get_tree().call_group("level_switching", "switch_scene", from_scene, to_scene)
-	get_tree().call_group("battle_check_group", "stop_battle_check")
+	get_node("../PC_Template").stop_battle_check()
+	main_node.switch_scene(from_scene, to_scene)

@@ -132,9 +132,6 @@ func _on_Area2D_Interact_body_exited(body):
 func get_next_battle_counter(): #how many steps (pixels) until next battle
 	randomize()
 	next_battle_counter = randi() % 900 + 1 + 100 #100 to 1000
-	
-func start_timer():
-	$Delta_Position1.start()
 
 func _on_Delta_Position1_timeout():
 	previous_position = position

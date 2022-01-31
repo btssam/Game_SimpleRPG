@@ -68,9 +68,7 @@ tracks/0/keys = {
 "values": [ true, false ]
 }
 
-[node name="Command_Card" type="Sprite" groups=[
-"battle_group",
-]]
+[node name="Command_Card" type="Sprite"]
 scale = Vector2( 2, 2 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
