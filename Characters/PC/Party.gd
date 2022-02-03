@@ -33,9 +33,8 @@ func _process(delta):
 	elif(Input.is_action_just_released("right")):
 		stop_party()
 	if check_for_collision():
-		stop_party()
-	else:
-		move_party()
+		stop_party_for_collision()
+	move_party()
 	
 func move_party():
 	var isDirectionChanged = false
@@ -65,8 +64,11 @@ func add_follower():
 	add_child(inst)
 
 func stop_party():
-	print(collision_info)
-	direction = Vector2(0,0)
+	direction = Vector2(0,0) #if I leave this in, I can stop when I release a key, if I comment it out, the follower stops when I collide
+	for i in range(1, get_child_count()):
+		get_child(i).isStopped = true
+
+func stop_party_for_collision():
 	for i in range(1, get_child_count()):
 		get_child(i).isStopped = true
 
@@ -76,6 +78,7 @@ func move_followers():
 
 func check_for_collision():
 	if collision_info != null:
-		return true
+		stop_party_for_collision()
+		return true   #is constantly true when touching wall, so can't move then
 	else:
 		return false
