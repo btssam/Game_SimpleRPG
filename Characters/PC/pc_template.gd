@@ -22,6 +22,9 @@ onready var main_node = get_node("..")
 onready var dialogue_node = get_node("../GUI/Dialogue_UI")
 ###attacking
 var isAttacking = false
+###following
+var next_follower_direction = Vector2()
+var previous_direction = Vector2()
 
 
 func _ready():
@@ -34,7 +37,8 @@ func _ready():
 func _physics_process(delta):
 	#movement
 	update_movement()
-	move_and_collide(motion) #could I call these on _input instead? Didn't seem to work initially
+#	move_and_collide(motion) #could I call these on _input instead? Didn't seem to work initially
+	move_player()
 
 func _input(event):
 	#npc interaction
@@ -176,3 +180,9 @@ func check_for_death():
 		$AnimatedSprite.play("dying")
 		yield($AnimatedSprite, "animation_finished")
 		main_node.switch_scene('battle', 'gameover')
+
+
+
+###following
+func move_player():
+	position += motion #move and collide
