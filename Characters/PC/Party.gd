@@ -10,6 +10,8 @@ var collision_info
 
 func _ready():
 	add_follower()
+	add_follower()
+	add_follower()
 
 func _process(delta):
 	if(Input.is_action_pressed("up")):
@@ -53,7 +55,7 @@ func add_follower():
 	var inst = follower.instance()
 	var previous_follower = get_child(get_child_count() -1 )
 	if(previous_follower.name != "Leader_Test"):
-		inst.current_direction = previous_direction.current_direction
+		inst.current_direction = previous_follower.current_direction
 		for i in range(0,previous_follower.position_array.size()):
 			inst.position_array.append(previous_follower.position_array[i])
 			inst.directions.append(previous_follower.directions[i])
@@ -62,6 +64,8 @@ func add_follower():
 		inst.current_direction = direction
 		inst.position = previous_follower.position + direction * gap
 	add_child(inst)
+
+
 
 func stop_party():
 	direction = Vector2(0,0) #if I leave this in, I can stop when I release a key, if I comment it out, the follower stops when I collide
