@@ -20,4 +20,4 @@ __meta__ = {
 [node name="Dialogue_UI" parent="GUI" instance=ExtResource( 5 )]
 
 [node name="Party" parent="." instance=ExtResource( 2 )]
-position = Vector2( 512, 384 )
+position = Vector2( 231.901, 443.868 )

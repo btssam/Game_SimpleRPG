@@ -5,6 +5,8 @@ const gap = -35
 var next_follower_direction = Vector2(1,0)
 var previous_direction = Vector2(1,0)
 onready var follower = preload("res://Characters/PC/Follower_Test.tscn")
+var collision_info
+
 
 func _ready():
 	add_follower()
@@ -12,13 +14,28 @@ func _ready():
 func _process(delta):
 	if(Input.is_action_pressed("up")):
 		direction = Vector2(0,-1)
+		move_followers()
+	elif(Input.is_action_just_released("up")):
+		stop_party()
 	elif(Input.is_action_pressed("down")):
 		direction = Vector2(0,1)
+		move_followers()
+	elif(Input.is_action_just_released("down")):
+		stop_party()
 	elif(Input.is_action_pressed("left")):
 		direction = Vector2(-1,0)
+		move_followers()
+	elif(Input.is_action_just_released("left")):
+		stop_party()
 	elif(Input.is_action_pressed("right")):
 		direction = Vector2(1,0)
-	move_party()
+		move_followers()
+	elif(Input.is_action_just_released("right")):
+		stop_party()
+	if check_for_collision():
+		stop_party()
+	else:
+		move_party()
 	
 func move_party():
 	var isDirectionChanged = false
@@ -26,7 +43,8 @@ func move_party():
 		previous_direction = direction
 		isDirectionChanged = true
 	var leader_position = get_node("Leader_Test").position
-	get_node("Leader_Test").position += direction
+#	get_node("Leader_Test").position += direction
+	collision_info = get_node("Leader_Test").move_and_collide(direction)
 
 	if isDirectionChanged:
 		for i in range(1, get_child_count()):
@@ -45,3 +63,19 @@ func add_follower():
 		inst.current_direction = direction
 		inst.position = previous_follower.position + direction * gap
 	add_child(inst)
+
+func stop_party():
+	print(collision_info)
+	direction = Vector2(0,0)
+	for i in range(1, get_child_count()):
+		get_child(i).isStopped = true
+
+func move_followers():
+	for i in range(1, get_child_count()):
+		get_child(i).isStopped = false
+
+func check_for_collision():
+	if collision_info != null:
+		return true
+	else:
+		return false
