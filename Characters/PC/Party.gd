@@ -54,24 +54,24 @@ func move_party():
 	collision_info = get_node("Leader_Test").move_and_collide(direction)
 
 	if isDirectionChanged:
-		print(direction)
 		for i in range(1, get_child_count()):
 			get_child(i).add_directions(leader_position, direction)
 
 func add_follower():
 	var inst = follower.instance()
 	var previous_follower = get_child(get_child_count() -1 )
-	if(previous_follower.name != "Leader_Test"): #if other followers, grab the most rect ones information
-		inst.current_direction = previous_follower.current_direction
-		for i in range(0,previous_follower.position_array.size()): #grab the same arrays as previous follower for position and driection
-			inst.position_array.append(previous_follower.position_array[i])
-			inst.directions.append(previous_follower.directions[i])
-#		inst.position = previous_follower.position + previous_follower.current_direction * gap #set the position of the instance, using direction to determine where to place
-	else: #if first add, just use the leaders position
-		inst.current_direction = direction
-#		inst.position = previous_follower.position + direction * gap
-	inst.position = previous_follower.position + Vector2(gap, 0)
+#	if(previous_follower.name != "Leader_Test"): #if other followers, grab the most rect ones information
+#		inst.current_direction = previous_follower.current_direction
+#		for i in range(0,previous_follower.position_array.size()): #grab the same arrays as previous follower for position and driection
+#			inst.position_array.append(previous_follower.position_array[i])
+#			inst.directions.append(previous_follower.directions[i])
+##		inst.position = previous_follower.position + previous_follower.current_direction * gap #set the position of the instance, using direction to determine where to place
+#	else: #if first add, just use the leaders position
+#		inst.current_direction = direction
+##		inst.position = previous_follower.position + direction * gap
+	inst.position = previous_follower.position + Vector2(gap, 0) #dont need to use the other two ways of adding position as I'm not adding during movement
 	add_child(inst)
+	#commented most of this out as it is primarily there for adding followers during movement and is not necessary
 
 
 
