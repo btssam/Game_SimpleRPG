@@ -1,9 +1,11 @@
 extends Node2D
 
-var direction = Vector2(1,0)
+#I need to figure out how to remove the inital velocity from the queation, so that I start stopped.
+
+var direction = Vector2(0,0)
 const gap = -35
-var next_follower_direction = Vector2(1,0)
-var previous_direction = Vector2(1,0)
+var next_follower_direction = Vector2(0,0)
+var previous_direction = Vector2(0,0)
 onready var follower = preload("res://Characters/PC/Follower_Test.tscn")
 var collision_info
 
@@ -40,9 +42,9 @@ func _process(delta):
 	
 func move_party():
 	var isDirectionChanged = false
-	if previous_direction != direction:
-		previous_direction = direction
-		isDirectionChanged = true
+	if previous_direction != direction: #previous_direction only exists to note when
+		previous_direction = direction ##direction has changed
+		isDirectionChanged = true       #i. e. to set this variable
 	var leader_position = get_node("Leader_Test").position
 #	get_node("Leader_Test").position += direction
 	collision_info = get_node("Leader_Test").move_and_collide(direction)
@@ -54,17 +56,22 @@ func move_party():
 func add_follower():
 	var inst = follower.instance()
 	var previous_follower = get_child(get_child_count() -1 )
-	if(previous_follower.name != "Leader_Test"):
+	if(previous_follower.name != "Leader_Test"): #if other followers, grab the most rect ones information
 		inst.current_direction = previous_follower.current_direction
-		for i in range(0,previous_follower.position_array.size()):
+		for i in range(0,previous_follower.position_array.size()): #grab the same arrays as previous follower for position and driection
 			inst.position_array.append(previous_follower.position_array[i])
 			inst.directions.append(previous_follower.directions[i])
-		inst.position = previous_follower.position + previous_follower.current_direction * gap #move and collide
-	else:
+		inst.position = previous_follower.position + previous_follower.current_direction * gap #set the position of the instance, using direction to determine where to place
+	else: #if first add, just use the leaders position
 		inst.current_direction = direction
 		inst.position = previous_follower.position + direction * gap
 	add_child(inst)
 
+
+
+#func add_directions(leader_position, direction):
+#	position_array.append(leader_position)
+#	directions.append(direction)
 
 
 func stop_party():
