@@ -7,6 +7,8 @@ const gap = -35
 var previous_direction = Vector2(0,0)
 onready var follower = preload("res://Characters/PC/Follower_Test.tscn")
 var collision_info
+var isAgainstAWall = false
+var collision_direction
 var isStartingToMove = false
 
 
@@ -40,7 +42,8 @@ func _process(delta):
 		move_followers()
 	elif(Input.is_action_just_released("right")):
 		stop_party()
-	if check_for_collision():
+	call_deferred("check_for_collision")
+	if isAgainstAWall:
 		stop_party_for_collision()
 	move_party()
 	
@@ -81,7 +84,8 @@ func add_follower():
 
 
 func stop_party():
-	direction = Vector2(0,0) #if I leave this in, I can stop when I release a key, if I comment it out, the follower stops when I collide
+	if not isAgainstAWall: #else, when I push up against a wall then release, I am repeatedly sending direction commands of 0,0 to my followers, which causes them to sit still
+		direction = Vector2(0,0) #if I leave this in, I can stop when I release a key, if I comment it out, the follower stops when I collide
 	for i in range(1, get_child_count()):
 #		get_child(i).isStopped = true
 		get_child(i).set_deferred("isStopped", true)
@@ -97,10 +101,13 @@ func move_followers():
 
 func check_for_collision():
 	if collision_info != null:
-		stop_party_for_collision()
-		return true   #is constantly true when touching wall, so can't move then
+		collision_direction = direction
+#		return true   #is constantly true when touching wall, so can't move then
+		isAgainstAWall = true #so that it is always true when up against wall, rather than only when moving toward wall, and immediately true when letting go of key
 	else:
-		return false
+		if direction != collision_direction: #not moving toward wall
+#			collision_direction = null #is unncessary as this will be changed on next collision anyway, its not going to use the previous collision_direction
+			set_deferred("isAgainstAWall", false)
 
 func party_has_begun_moving(): #so that it still works even though I'm not starting with an inital velocity on the party
 	if not isStartingToMove:
