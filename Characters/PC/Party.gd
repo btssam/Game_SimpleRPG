@@ -46,7 +46,7 @@ func _process(delta):
 	
 func move_party():
 	var isDirectionChanged = false
-	if previous_direction != direction: #previous_direction only exists to note when
+	if previous_direction != direction: #previous_direction only exists to note when 
 		previous_direction = direction ##direction has changed
 		isDirectionChanged = true       #i. e. to set this variable
 	var leader_position = get_node("Leader_Test").position
@@ -83,11 +83,13 @@ func add_follower():
 func stop_party():
 	direction = Vector2(0,0) #if I leave this in, I can stop when I release a key, if I comment it out, the follower stops when I collide
 	for i in range(1, get_child_count()):
-		get_child(i).isStopped = true
+#		get_child(i).isStopped = true
+		get_child(i).set_deferred("isStopped", true)
 
 func stop_party_for_collision():
 	for i in range(1, get_child_count()):
 		get_child(i).isStopped = true
+#		get_child(i).set_deferred("isStopped", true)
 
 func move_followers():
 	for i in range(1, get_child_count()):
@@ -101,6 +103,6 @@ func check_for_collision():
 		return false
 
 func party_has_begun_moving(): #so that it still works even though I'm not starting with an inital velocity on the party
-	if isStartingToMove == false:
-		get_tree().call_group("party_movement_group", "movement_has_begun")
-	isStartingToMove = true
+	if not isStartingToMove:
+		get_tree().call_group("party_movement_group", "movement_has_begun") #could just loop through each child and call function directly. I don't know what's more efficient.
+		isStartingToMove = true
