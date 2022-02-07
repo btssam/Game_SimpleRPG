@@ -12,6 +12,10 @@ var collision_direction
 var isStartingToMove = false
 var stopped_position
 
+var stopped_position
+var new_direction
+var hasJustStopped = false
+
 
 func _ready():
 	add_follower()
@@ -51,16 +55,32 @@ func _process(delta):
 func move_party():
 	var isDirectionChanged = false
 	if previous_direction != direction: #previous_direction only exists to note when 
+<<<<<<< Updated upstream
 #		if previous_direction == Vector2(0,0):
 #
+=======
+		if previous_direction == Vector2(0,0):
+			print('new_direction')
+			new_direction = direction
+			hasJustStopped = true
+		else:
+			hasJustStopped = false
+		if direction == Vector2(0,0):
+			print('stopped_position')
+			stopped_position = get_node("Leader_Test").position
+>>>>>>> Stashed changes
 		previous_direction = direction  #direction has changed
 		isDirectionChanged = true       #i. e. to set this variable
 	var leader_position = get_node("Leader_Test").position
 	collision_info = get_node("Leader_Test").move_and_collide(direction)
 
 	if isDirectionChanged:
-		for i in range(1, get_child_count()):
-			get_child(i).add_directions(leader_position, direction)
+		if not hasJustStopped:
+			for i in range(1, get_child_count()):
+				get_child(i).add_directions(leader_position, direction)
+		elif hasJustStopped:
+			for i in range(1, get_child_count()):
+				get_child(i).remove_stop(stopped_position, new_direction)
 
 func add_follower():
 	var inst = follower.instance()

@@ -40,7 +40,13 @@ func remove_last_direction():
 
 func add_directions(leader_position, direction): #when party moves, this happens
 	position_array.append(leader_position)
+<<<<<<< Updated upstream
 	direction_array.append(direction)
+=======
+	directions.append(direction)
+#	if direction == Vector2(0,0):
+#		remove_stop(leader_position, direction)
+>>>>>>> Stashed changes
 
 func movement_has_begun():
 	current_direction = initial_direction
@@ -53,6 +59,7 @@ func get_inital_direction():
 #		vector_to_player.y = vector_to_player.y / vector_to_player.y
 	vector_to_player = normalize(vector_to_player)
 	initial_direction = vector_to_player
+<<<<<<< Updated upstream
 
 
 func normalize(vector):
@@ -100,3 +107,11 @@ func fix_gap():
 #	position_array[0] = next_in_line.position - desired_gap
 #	position = next_in_line.position - desired_gap
 	isAGap = false
+=======
+	
+func remove_stop(stop_position, direction):
+	if directions.size() > 0:
+		var this_array = (position_array.find(stop_position))
+		directions[this_array] = direction
+		position_array[this_array] = stop_position
+>>>>>>> Stashed changes
