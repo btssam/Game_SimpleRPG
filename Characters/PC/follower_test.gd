@@ -12,16 +12,9 @@ func _ready():
 func _process(delta):
 	if not isStopped:
 		if directions.size() > 0:  #party has moved'
-#			print('directions[0]')
-#			print(directions[0])
-#			print('position_array[0]')
-#			print(position_array[0])
-			if position == position_array[0]: #once follower reaches where the postion of when the party changed directions, #never reaches this as it doesn't start moving so doesnt't just immediately go to initial position. this is what movement has begun does
-#				print(directions[0])
-#				print(position_array[0])
+			if position == position_array[0]: #once follower reaches where the postion of when the party changed directions
 				current_direction = directions[0] #change direction
 				remove_last_direction()
-	#	position += current_direction
 		move_and_collide(current_direction)
 
 func remove_last_direction():
@@ -32,9 +25,7 @@ func add_directions(leader_position, direction): #when party moves, this happens
 	position_array.append(leader_position)
 	directions.append(direction)
 
-func movement_has_begun(): #so that it still works even though I'm not starting with an inital velocity on the party
-	
-#	current_direction = directions[0] #this causes the followers to always go whcihever way the player initally goes, not toward the player's inital position
+func movement_has_begun():
 	current_direction = initial_direction
 
 func get_inital_direction():
