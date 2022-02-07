@@ -10,6 +10,7 @@ var collision_info
 var isAgainstAWall = false
 var collision_direction
 var isStartingToMove = false
+var stopped_position
 
 
 func _ready():
@@ -50,6 +51,8 @@ func _process(delta):
 func move_party():
 	var isDirectionChanged = false
 	if previous_direction != direction: #previous_direction only exists to note when 
+#		if previous_direction == Vector2(0,0):
+#
 		previous_direction = direction  #direction has changed
 		isDirectionChanged = true       #i. e. to set this variable
 	var leader_position = get_node("Leader_Test").position
