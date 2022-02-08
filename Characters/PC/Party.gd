@@ -97,5 +97,6 @@ func check_for_collision():
 
 func party_has_begun_moving():
 	if not isStartingToMove:
-		get_tree().call_group("party_movement_group", "movement_has_begun")
+		for i in range(1, get_child_count()):
+			get_child(i).movement_has_begun()
 		isStartingToMove = true
