@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Characters/PC/Party.gd" type="Script" id=1]
+[ext_resource path="res://Characters/PC/party.gd" type="Script" id=1]
 [ext_resource path="res://Characters/PC/Leader_Test.tscn" type="PackedScene" id=3]
 
 [node name="Party" type="Node2D"]
