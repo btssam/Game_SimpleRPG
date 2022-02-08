@@ -10,6 +10,7 @@ var collision_info
 var isAgainstAWall = false
 var collision_direction
 var isStartingToMove = false
+var isStopped = false
 
 
 func _ready():
@@ -21,25 +22,25 @@ func _process(delta):
 	if(Input.is_action_pressed("up")):
 		direction = Vector2(0,-1)
 		party_has_begun_moving()
-		move_followers()
+		resume_follower_movement()
 	elif(Input.is_action_just_released("up")):
 		stop_party()
 	elif(Input.is_action_pressed("down")):
 		direction = Vector2(0,1)
 		party_has_begun_moving()
-		move_followers()
+		resume_follower_movement()
 	elif(Input.is_action_just_released("down")):
 		stop_party()
 	elif(Input.is_action_pressed("left")):
 		direction = Vector2(-1,0)
 		party_has_begun_moving()
-		move_followers()
+		resume_follower_movement()
 	elif(Input.is_action_just_released("left")):
 		stop_party()
 	elif(Input.is_action_pressed("right")):
 		direction = Vector2(1,0)
 		party_has_begun_moving()
-		move_followers()
+		resume_follower_movement()
 	elif(Input.is_action_just_released("right")):
 		stop_party()
 	call_deferred("check_for_collision")
@@ -48,16 +49,17 @@ func _process(delta):
 	move_party()
 	
 func move_party():
-	var isDirectionChanged = false
-	if previous_direction != direction: #previous_direction only exists to note when 
-		previous_direction = direction  #direction has changed
-		isDirectionChanged = true       #i. e. to set this variable
-	var leader_position = get_node("Leader_Test").position
-	collision_info = get_node("Leader_Test").move_and_collide(direction)
+	if not isStopped or isAgainstAWall:
+		var isDirectionChanged = false
+		if previous_direction != direction: #previous_direction only exists to note when 
+			previous_direction = direction  #direction has changed
+			isDirectionChanged = true       #i. e. to set this variable
+		var leader_position = get_node("Leader_Test").position
+		collision_info = get_node("Leader_Test").move_and_collide(direction)
 
-	if isDirectionChanged:
-		for i in range(1, get_child_count()):
-			get_child(i).add_directions(leader_position, direction)
+		if isDirectionChanged:
+			for i in range(1, get_child_count()):
+				get_child(i).add_directions(leader_position, direction)
 
 func add_follower():
 	var inst = follower.instance()
@@ -67,17 +69,23 @@ func add_follower():
 
 func stop_party():
 	if not isAgainstAWall:
-		direction = Vector2(0,0)
+		isStopped = true
+#	print('leader_position: ' +str(position))
 	for i in range(1, get_child_count()):
-		get_child(i).set_deferred("isStopped", true)
+#		print('transmitted: ' + str(OS.get_ticks_msec()))
+#		get_child(i).set_deferred("isStopped", true)
+		get_child(i).call_deferred("stop_follower")
+#		get_child(i).stop_follower()
 
 func stop_party_for_collision():
+	isStopped = true
 	for i in range(1, get_child_count()):
-		get_child(i).isStopped = true
+		get_child(i).stop_follower()
 		
-func move_followers():
+func resume_follower_movement():
+	isStopped = false
 	for i in range(1, get_child_count()):
-		get_child(i).isStopped = false
+		get_child(i).resume_follower()
 
 func check_for_collision():
 	if collision_info != null:

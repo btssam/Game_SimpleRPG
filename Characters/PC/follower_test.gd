@@ -10,12 +10,18 @@ func _ready():
 	get_inital_direction()
 
 func _process(delta):
-	if not isStopped:
-		if directions.size() > 0:  #party has moved'
-			if position == position_array[0]: #once follower reaches where the postion of when the party changed directions
-				current_direction = directions[0] #change direction
-				remove_last_direction()
-		move_and_collide(current_direction)
+	move_follower()
+
+func move_follower():
+#	if not isStopped:
+	if directions.size() > 0:  #party has moved'
+		if position == position_array[0]: #once follower reaches where the postion of when the party changed directions
+			current_direction = directions[0] #change direction
+			remove_last_direction()
+	move_and_collide(current_direction)
+#	else:
+#		print('isStopped during process' + str(OS.get_ticks_msec())) #it is 20 ms too late when it recognizes that it should not be moving_and_colliding
+##		remove_last_direction()
 
 func remove_last_direction():
 	directions.pop_front()
@@ -35,4 +41,18 @@ func get_inital_direction():
 	elif vector_to_player.y != 0:
 		vector_to_player.y = vector_to_player.y / vector_to_player.y
 	initial_direction = vector_to_player
-	
+
+func stop_follower():
+#	print('recievied: ' + str(OS.get_ticks_msec()))
+#	print('position[0]: ' + str(position_array[0]))
+#	isStopped = true
+#	print('current_d: ' + str(current_direction))
+#	print('directions[0]: ' + str(directions[0]))
+#	print('stop')
+#	set_process(false)
+	call_deferred("set_process", false)
+
+func resume_follower():
+#	print('resume')
+#	set_process(true)
+	call_deferred("set_process", true)
