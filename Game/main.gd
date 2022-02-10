@@ -1,7 +1,7 @@
 extends Node
 
 #levelswitching
-onready var player_node = $Party/PC_Template
+onready var party_node = $Party/
 var town_node = "res://Environment/Overworld/Town/Town_Template.tscn"
 var overworld_node = "res://Environment/Overworld/Mainworld/Overworld_Template.tscn"
 var battle_node = "res://Environment/Battlefield/Battlefield_Template.tscn"
@@ -27,7 +27,7 @@ func switch_scene(from_scene, to_scene):
 	if from_scene == "town":
 		if to_scene == "overworld":
 			var overworld = load(overworld_node).instance()
-			player_node.position = Vector2(496, 368)
+			party_node.position = Vector2(496, 368)
 			load_scene(overworld)
 			call_deferred("remove_child", $Town_Template)
 #			remove_child($Town_Template)
@@ -36,13 +36,13 @@ func switch_scene(from_scene, to_scene):
 	if from_scene == "overworld":
 		if to_scene == "town":
 			var town = load(town_node).instance()
-			player_node.position = Vector2(512, 96)
+			party_node.position = Vector2(512, 96)
 			load_scene(town)
 			call_deferred("remove_child", $Overworld_Template)
 			current_scene = "town"
 		if to_scene == "battle":
 			var battle = load(battle_node).instance()
-			player_node.position = Vector2(800, 512)
+			party_node.position = Vector2(800, 512)
 			load_scene(battle)
 			call_deferred("remove_child", $Overworld_Template)
 			current_scene = "battle"
@@ -50,13 +50,13 @@ func switch_scene(from_scene, to_scene):
 	if from_scene == "battle":
 		if to_scene == "overworld":
 			var overworld = load(overworld_node).instance()
-			player_node.position = Vector2(500, 500)
+			party_node.position = Vector2(500, 500)
 			load_scene(overworld)
 			call_deferred("remove_child", $Battlefield_Template)
 			current_scene = "overworld"
 		if to_scene == "gameover":
 			var gameover = load(gameover_node).instance()
-			player_node.position = Vector2(512, 384)
+			party_node.position = Vector2(512, 384)
 			load_scene(gameover)
 			call_deferred("remove_child", $Battlefield_Template)
 			current_scene = "gameover"
@@ -64,7 +64,7 @@ func switch_scene(from_scene, to_scene):
 	if from_scene == "gameover":
 		if to_scene == "town":
 			var town = load(town_node).instance()
-			player_node.position = Vector2(512, 384)
+			party_node.position = Vector2(512, 384)
 			load_scene(town)
 			call_deferred("remove_child", $Game_Over)
 			current_scene = "town"

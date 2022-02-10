@@ -7,7 +7,7 @@ onready var main_node = get_node("..")
 
 
 func _ready():
-	get_node("../PC_Template/Delta_Position1").start()
+	get_node("../Party/PC_Template/Delta_Position1").start()
 
 
 func _on_Area2D_To_Town_body_entered(body):

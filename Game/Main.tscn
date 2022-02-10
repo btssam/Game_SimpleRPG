@@ -21,3 +21,4 @@ __meta__ = {
 
 [node name="Party" parent="." instance=ExtResource( 4 )]
 position = Vector2( 258.287, 396.082 )
+z_index = 1

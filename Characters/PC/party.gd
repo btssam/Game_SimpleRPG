@@ -71,10 +71,10 @@ func move_party():
 			for i in range(1, get_child_count()):
 				get_child(i).add_directions(leader_position, direction)
 
-func add_follower():
+func add_follower(): #could check for if follower_gap * 3 is within collision, else choose a different direction
 	var instance = follower.instance()
 	var previous_follower = get_child(get_child_count() -1 )
-	instance.position = previous_follower.position + Vector2(gap, 0)
+	instance.position = previous_follower.position + Vector2(gap, 0) #pick a direction for followers to line up by using Vector2(0, gap), Vector2(-gap, 0), etc. Though I don't want to re-add them when I change scenes, I just want to potentially move them. I suppose I could design levels so that they shouldn't have to change direction
 	add_child(instance)
 
 func stop_party():
