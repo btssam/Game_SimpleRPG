@@ -70,7 +70,7 @@ func get_inital_direction():
 	initial_direction = vector_to_player
 
 func stop_follower():
-	update_movement_animation('up_stop')
+	update_movement_animation('stop')
 	call_deferred("set_process", false) #stop all that occurs during process. this will  cause problems when I integrate other behavior, like combat, during process. maybe have to use another node with another script to handle it by using another process for that node
 
 func resume_follower():
@@ -90,22 +90,13 @@ func convert_movement_to_string(direction):
 func update_movement_animation(direction): #make sure I call this before I stop_process
 	if direction == 'up':
 		$AnimatedSprite.play("walk_up")
-	elif direction == 'up_stop':
-		$AnimatedSprite.stop()
-		$AnimatedSprite.frame = 1
 	elif direction == 'down':
 		$AnimatedSprite.play("walk_down")
-	elif direction == 'down_stop':
-		$AnimatedSprite.stop()
-		$AnimatedSprite.frame = 1
 	elif direction == 'left':
 		$AnimatedSprite.play("walk_left")
-	elif direction == 'left_stop':
-		$AnimatedSprite.stop()
-		$AnimatedSprite.frame = 1
 	elif direction == 'right':
 		$AnimatedSprite.play("walk_right")
-	elif direction == 'right_stop':
+	elif direction == 'stop':
 		$AnimatedSprite.stop()
 		$AnimatedSprite.frame = 1
 

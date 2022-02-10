@@ -53,22 +53,13 @@ func _input(event):
 func update_movement_animation(direction):
 	if direction == 'up':
 		$AnimatedSprite.play("walk_up")
-	elif direction == 'up_stop':
-		$AnimatedSprite.stop()
-		$AnimatedSprite.frame = 1
 	elif direction == 'down':
 		$AnimatedSprite.play("walk_down")
-	elif direction == 'down_stop':
-		$AnimatedSprite.stop()
-		$AnimatedSprite.frame = 1
 	elif direction == 'left':
 		$AnimatedSprite.play("walk_left")
-	elif direction == 'left_stop':
-		$AnimatedSprite.stop()
-		$AnimatedSprite.frame = 1
 	elif direction == 'right':
 		$AnimatedSprite.play("walk_right")
-	elif direction == 'right_stop':
+	elif direction == 'stop':
 		$AnimatedSprite.stop()
 		$AnimatedSprite.frame = 1
 	
