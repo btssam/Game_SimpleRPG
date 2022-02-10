@@ -30,7 +30,7 @@ func movement_has_begun():
 	current_direction = initial_direction
 
 func get_inital_direction():
-	var vector_to_player =  (get_node("../Leader_Test").position - position)
+	var vector_to_player =  (get_node("../PC_Template").position - position)
 	if vector_to_player.x != 0:
 		vector_to_player.x = vector_to_player.x / vector_to_player.x
 	elif vector_to_player.y != 0:

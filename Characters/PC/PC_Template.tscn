@@ -167,6 +167,7 @@ tracks/1/keys = {
 
 [node name="PC_Template" type="KinematicBody2D"]
 scale = Vector2( 1.6, 2.2 )
+z_index = 1
 collision_mask = 6
 script = ExtResource( 2 )
 

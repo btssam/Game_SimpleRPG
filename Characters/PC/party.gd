@@ -10,6 +10,8 @@ var collision_direction
 var isStartingToMove = false
 var isStopped = false
 
+var animation_movement_direction
+
 
 func _ready():
 	add_follower()
@@ -21,26 +23,35 @@ func _process(delta):
 		direction = Vector2(0,-1)
 		party_has_begun_moving()
 		resume_follower_movement()
+		animation_movement_direction = 'up'
 	elif(Input.is_action_just_released("up")):
 		stop_party()
+		animation_movement_direction = 'up_stop'
 	elif(Input.is_action_pressed("down")):
 		direction = Vector2(0,1)
 		party_has_begun_moving()
 		resume_follower_movement()
+		animation_movement_direction = 'down'
 	elif(Input.is_action_just_released("down")):
 		stop_party()
+		animation_movement_direction = 'down_stop'
 	elif(Input.is_action_pressed("left")):
 		direction = Vector2(-1,0)
 		party_has_begun_moving()
 		resume_follower_movement()
+		animation_movement_direction = 'left'
 	elif(Input.is_action_just_released("left")):
 		stop_party()
+		animation_movement_direction = 'left_stop'
 	elif(Input.is_action_pressed("right")):
 		direction = Vector2(1,0)
 		party_has_begun_moving()
 		resume_follower_movement()
+		animation_movement_direction = 'right'
 	elif(Input.is_action_just_released("right")):
 		stop_party()
+		animation_movement_direction = 'right stop'
+	get_node("PC_Template").update_movement_animation(animation_movement_direction)
 	call_deferred("check_for_collision")
 	if isAgainstAWall:
 		stop_party_for_collision()
@@ -53,8 +64,8 @@ func move_party():
 		if previous_direction != direction: #previous_direction only exists to note when 
 			previous_direction = direction  #direction has changed
 			isDirectionChanged = true       #i. e. to set this variable
-		var leader_position = get_node("Leader_Test").position
-		collision_info = get_node("Leader_Test").move_and_collide(direction)
+		var leader_position = get_node("PC_Template").position
+		collision_info = get_node("PC_Template").move_and_collide(direction)
 
 		if isDirectionChanged:
 			for i in range(1, get_child_count()):

@@ -1,7 +1,7 @@
 extends Node
 
 #levelswitching
-onready var player_node = $PC_Template
+onready var player_node = $Party/PC_Template
 var town_node = "res://Environment/Overworld/Town/Town_Template.tscn"
 var overworld_node = "res://Environment/Overworld/Mainworld/Overworld_Template.tscn"
 var battle_node = "res://Environment/Battlefield/Battlefield_Template.tscn"
