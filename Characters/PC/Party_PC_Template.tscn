@@ -4,15 +4,15 @@
 [ext_resource path="res://Characters/PC/Battle/PC_Battle_Spritesheet.png" type="Texture" id=2]
 [ext_resource path="res://Characters/PC/party_pc_template.gd" type="Script" id=3]
 
-[sub_resource type="AtlasTexture" id=30]
+[sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 1 )
 region = Rect2( 72, 96, 24, 32 )
 
-[sub_resource type="AtlasTexture" id=31]
+[sub_resource type="AtlasTexture" id=2]
 atlas = ExtResource( 1 )
 region = Rect2( 96, 96, 24, 32 )
 
-[sub_resource type="AtlasTexture" id=32]
+[sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 1 )
 region = Rect2( 120, 96, 24, 32 )
 
@@ -44,15 +44,15 @@ region = Rect2( 144, 128, 24, 32 )
 atlas = ExtResource( 2 )
 region = Rect2( 30, 0, 30, 32 )
 
-[sub_resource type="AtlasTexture" id=27]
+[sub_resource type="AtlasTexture" id=11]
 atlas = ExtResource( 1 )
 region = Rect2( 72, 64, 24, 32 )
 
-[sub_resource type="AtlasTexture" id=28]
+[sub_resource type="AtlasTexture" id=12]
 atlas = ExtResource( 1 )
 region = Rect2( 96, 64, 24, 32 )
 
-[sub_resource type="AtlasTexture" id=29]
+[sub_resource type="AtlasTexture" id=13]
 atlas = ExtResource( 1 )
 region = Rect2( 120, 64, 24, 32 )
 
@@ -64,37 +64,37 @@ region = Rect2( 60, 0, 30, 32 )
 atlas = ExtResource( 2 )
 region = Rect2( 90, 0, 30, 32 )
 
-[sub_resource type="AtlasTexture" id=33]
+[sub_resource type="AtlasTexture" id=16]
 atlas = ExtResource( 1 )
 region = Rect2( 72, 0, 24, 32 )
 
-[sub_resource type="AtlasTexture" id=34]
+[sub_resource type="AtlasTexture" id=17]
 atlas = ExtResource( 1 )
 region = Rect2( 96, 0, 24, 32 )
 
-[sub_resource type="AtlasTexture" id=35]
+[sub_resource type="AtlasTexture" id=18]
 atlas = ExtResource( 1 )
 region = Rect2( 120, 0, 24, 32 )
 
-[sub_resource type="AtlasTexture" id=36]
+[sub_resource type="AtlasTexture" id=19]
 atlas = ExtResource( 1 )
 region = Rect2( 72, 32, 24, 32 )
 
-[sub_resource type="AtlasTexture" id=37]
+[sub_resource type="AtlasTexture" id=20]
 atlas = ExtResource( 1 )
 region = Rect2( 96, 32, 24, 32 )
 
-[sub_resource type="AtlasTexture" id=38]
+[sub_resource type="AtlasTexture" id=21]
 atlas = ExtResource( 1 )
 region = Rect2( 120, 32, 24, 32 )
 
-[sub_resource type="AtlasTexture" id=39]
+[sub_resource type="AtlasTexture" id=22]
 atlas = ExtResource( 1 )
 region = Rect2( 264, 160, 24, 32 )
 
 [sub_resource type="SpriteFrames" id=23]
 animations = [ {
-"frames": [ SubResource( 30 ), SubResource( 31 ), SubResource( 32 ), SubResource( 31 ) ],
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 2 ) ],
 "loop": true,
 "name": "walk_left",
 "speed": 5.0
@@ -104,7 +104,7 @@ animations = [ {
 "name": "attack",
 "speed": 10.0
 }, {
-"frames": [ SubResource( 27 ), SubResource( 28 ), SubResource( 29 ), SubResource( 28 ) ],
+"frames": [ SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 12 ) ],
 "loop": true,
 "name": "walk_down",
 "speed": 5.0
@@ -114,17 +114,17 @@ animations = [ {
 "name": "dying",
 "speed": 2.0
 }, {
-"frames": [ SubResource( 33 ), SubResource( 34 ), SubResource( 35 ), SubResource( 34 ) ],
+"frames": [ SubResource( 16 ), SubResource( 17 ), SubResource( 18 ), SubResource( 17 ) ],
 "loop": true,
 "name": "walk_up",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 36 ), SubResource( 37 ), SubResource( 38 ), SubResource( 37 ) ],
+"frames": [ SubResource( 19 ), SubResource( 20 ), SubResource( 21 ), SubResource( 20 ) ],
 "loop": true,
 "name": "walk_right",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 39 ) ],
+"frames": [ SubResource( 22 ) ],
 "loop": false,
 "name": "idle_battle",
 "speed": 5.0
@@ -133,7 +133,7 @@ animations = [ {
 [sub_resource type="RectangleShape2D" id=24]
 extents = Vector2( 9.5, 14 )
 
-[sub_resource type="Animation" id=26]
+[sub_resource type="Animation" id=25]
 resource_name = "attack"
 tracks/0/type = "method"
 tracks/0/path = NodePath("AnimatedSprite")
@@ -177,4 +177,4 @@ offset = Vector2( 0.5, -1 )
 shape = SubResource( 24 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/attack = SubResource( 26 )
+anims/attack = SubResource( 25 )

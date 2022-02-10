@@ -3,7 +3,7 @@ extends Node2D
 var direction = Vector2(0,0)
 const gap = -35
 var previous_direction = Vector2(0,0)
-onready var follower = preload("res://Characters/PC/Follower_Test.tscn")
+onready var follower = preload("res://Characters/PC/Party_PC_Template.tscn")
 var collision_info
 var isAgainstAWall = false
 var collision_direction
@@ -50,7 +50,7 @@ func _process(delta):
 		animation_movement_direction = 'right'
 	elif(Input.is_action_just_released("right")):
 		stop_party()
-		animation_movement_direction = 'right stop'
+		animation_movement_direction = 'right_stop'
 	get_node("PC_Template").update_movement_animation(animation_movement_direction)
 	call_deferred("check_for_collision")
 	if isAgainstAWall:
