@@ -43,6 +43,8 @@ func move_follower():
 	if direction_array.size() > 0:  #party has moved
 		if position == position_array[0]: #once follower reaches where the postion of when the party changed directions...
 			current_direction = direction_array[0] #...change direction
+			animation_movement_direction = convert_movement_to_string(current_direction)
+			update_movement_animation(animation_movement_direction)
 			remove_last_direction()
 	move_and_collide(current_direction)
 
@@ -56,6 +58,8 @@ func add_directions(leader_position, direction): #when party moves, this happens
 
 func movement_has_begun():
 	current_direction = initial_direction
+	animation_movement_direction = convert_movement_to_string(current_direction)
+	update_movement_animation(animation_movement_direction)
 
 func get_inital_direction():
 	var vector_to_player =  (get_node("../PC_Template").position - position)
@@ -66,7 +70,120 @@ func get_inital_direction():
 	initial_direction = vector_to_player
 
 func stop_follower():
+	update_movement_animation('up_stop')
 	call_deferred("set_process", false) #stop all that occurs during process. this will  cause problems when I integrate other behavior, like combat, during process. maybe have to use another node with another script to handle it by using another process for that node
 
 func resume_follower():
+	update_movement_animation(animation_movement_direction)
 	call_deferred("set_process", true)
+
+func convert_movement_to_string(direction):
+	if direction == Vector2(0, -1):
+		return('up')
+	elif direction == Vector2(0, 1):
+		return('down')
+	elif direction == Vector2(-1, 0):
+		return('left')
+	elif direction == Vector2(1, 0):
+		return('right')
+
+func update_movement_animation(direction): #make sure I call this before I stop_process
+	if direction == 'up':
+		$AnimatedSprite.play("walk_up")
+	elif direction == 'up_stop':
+		$AnimatedSprite.stop()
+		$AnimatedSprite.frame = 1
+	elif direction == 'down':
+		$AnimatedSprite.play("walk_down")
+	elif direction == 'down_stop':
+		$AnimatedSprite.stop()
+		$AnimatedSprite.frame = 1
+	elif direction == 'left':
+		$AnimatedSprite.play("walk_left")
+	elif direction == 'left_stop':
+		$AnimatedSprite.stop()
+		$AnimatedSprite.frame = 1
+	elif direction == 'right':
+		$AnimatedSprite.play("walk_right")
+	elif direction == 'right_stop':
+		$AnimatedSprite.stop()
+		$AnimatedSprite.frame = 1
+
+
+###movement
+#func update_movement():
+#	if not isBattling:
+#
+#		if Input.is_action_pressed("left"):
+#			$AnimatedSprite.play("walk_left")
+#			$AnimatedSprite.speed_scale = 1
+#			motion.x = -speed
+#			motion.y = 0
+#			if Input.is_action_pressed("run"):
+#				$AnimatedSprite.speed_scale = 2
+#				motion.x = -2 * speed
+#		elif Input.is_action_just_released("left"):
+#			$AnimatedSprite.stop()
+#			$AnimatedSprite.frame = 1
+#			motion.x = 0
+#			motion.y = 0
+#
+#		elif Input.is_action_pressed("right"):
+#			$AnimatedSprite.play("walk_right")
+#			$AnimatedSprite.speed_scale = 1
+#			motion.x = speed
+#			motion.y = 0
+#			if Input.is_action_pressed("run"):
+#				$AnimatedSprite.speed_scale = 2
+#				motion.x =  2 * speed
+#		elif Input.is_action_just_released("right"):
+#			$AnimatedSprite.stop()
+#			$AnimatedSprite.frame = 1
+#			motion.x = 0
+#			motion.y = 0
+#
+#		elif Input.is_action_pressed("up"):
+#			$AnimatedSprite.play("walk_up")
+#			$AnimatedSprite.speed_scale = 1
+#			motion.y = -speed
+#			motion.x = 0
+#			if Input.is_action_pressed("run"):
+#				$AnimatedSprite.speed_scale = 2
+#				motion.y = -2 *speed
+#		elif Input.is_action_just_released("up"):
+#			$AnimatedSprite.stop()
+#			$AnimatedSprite.frame = 1
+#			motion.x = 0
+#			motion.y = 0
+#
+#		elif Input.is_action_pressed("down"):
+#			$AnimatedSprite.play("walk_down")
+#			$AnimatedSprite.speed_scale = 1
+#			motion.y = speed
+#			motion.x = 0
+#			if Input.is_action_pressed("run"):
+#				$AnimatedSprite.speed_scale = 2
+#				motion.y = 2 *speed
+#		elif Input.is_action_just_released("down"):
+#			$AnimatedSprite.stop()
+#			$AnimatedSprite.frame = 1
+#			motion.x = 0
+#			motion.y = 0
+#
+#	else: #in battle
+#		motion.x = 0
+#		motion.y = 0
+#		if not isDead:
+#			if not isAttacking:
+#				$AnimatedSprite.animation = "idle_battle"
+
+
+###Battling code
+func check_for_death():
+	if hp <= 0:
+		hp = 0
+		get_node("../Battlefield_Template").update_log("You have died!")
+		isDead = true
+		$AnimatedSprite.play("dying")
+		yield($AnimatedSprite, "animation_finished")
+		main_node.switch_scene('battle', 'gameover')

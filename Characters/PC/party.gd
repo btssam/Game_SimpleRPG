@@ -50,7 +50,7 @@ func _process(delta):
 		animation_movement_direction = 'right'
 	elif(Input.is_action_just_released("right")):
 		stop_party()
-		animation_movement_direction = 'right_stop'
+		animation_movement_direction = 'right_stop' #couldn't these all just be 'stop'
 	get_node("PC_Template").update_movement_animation(animation_movement_direction)
 	call_deferred("check_for_collision")
 	if isAgainstAWall:
