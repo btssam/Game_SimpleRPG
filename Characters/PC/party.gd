@@ -14,6 +14,7 @@ var animation_movement_direction
 
 
 func _ready():
+	position = get_node("../Town_Template/Spawn_Points/Initial").position
 	add_follower()
 	add_follower()
 	add_follower()
