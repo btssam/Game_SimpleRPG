@@ -245,6 +245,6 @@ position = Vector2( 384, 192 )
 [node name="Spawn_Points" type="Node2D" parent="."]
 
 [node name="Initial" type="Position2D" parent="Spawn_Points"]
-position = Vector2( 384, 384 )
+position = Vector2( 272, 384 )
 
 [connection signal="body_entered" from="Area2D_To_Overworld" to="." method="_on_Area2D_To_Overworld_body_entered"]
