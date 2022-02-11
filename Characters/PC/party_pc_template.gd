@@ -27,7 +27,7 @@ func _ready():
 	$AnimatedSprite.animation = "walk_down"
 	$AnimatedSprite.frame = 1
 	#following/movement
-	get_inital_direction()
+	get_initial_direction()
 
 func _process(delta):
 	#movement
@@ -61,7 +61,7 @@ func movement_has_begun():
 	animation_movement_direction = convert_movement_to_string(current_direction)
 	update_movement_animation(animation_movement_direction)
 
-func get_inital_direction():
+func get_initial_direction():
 	var vector_to_player =  (get_node("../PC_Template").position - position)
 	if vector_to_player.x != 0:
 		vector_to_player.x = vector_to_player.x / vector_to_player.x
@@ -100,6 +100,16 @@ func update_movement_animation(direction): #make sure I call this before I stop_
 		$AnimatedSprite.stop()
 		$AnimatedSprite.frame = 1
 
+
+###scene_change
+func reset_follower():
+	print('reset_follower')
+	direction_array = []
+	position_array = []
+	current_direction = Vector2(0,0)
+	get_initial_direction()
+	$AnimatedSprite.animation = "walk_down"
+	$AnimatedSprite.frame = 1
 
 ###movement
 #func update_movement():

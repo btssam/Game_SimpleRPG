@@ -107,3 +107,14 @@ func party_has_begun_moving():
 		for i in range(1, get_child_count()):
 			get_child(i).movement_has_begun()
 		isStartingToMove = true
+
+
+#scene transition
+func reset_party_position():
+	print('reset_party_position()')
+	var leader_position = get_node("PC_Template").position
+	for i in range(1, get_child_count()):
+		get_child(i).position = get_child(i-1).position + Vector2(gap,0)
+		get_child(i).reset_follower()
+		get_child(i).add_directions(leader_position, direction)
+	isStartingToMove = false

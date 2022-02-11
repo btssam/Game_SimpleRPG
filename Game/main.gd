@@ -68,6 +68,7 @@ func switch_scene(from_scene, to_scene):
 			load_scene(town)
 			call_deferred("remove_child", $Game_Over)
 			current_scene = "town"
+	get_node("Party").reset_party_position()
 
 func load_scene(scene_name):
 	call_deferred("add_child", scene_name)
