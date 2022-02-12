@@ -12,7 +12,7 @@ var isStopped = false
 
 var animation_movement_direction
 
-var gap_direction = 'right'
+var gap_direction = 'left'
 
 
 func _ready():
@@ -80,12 +80,14 @@ func add_follower(): #could check for if follower_gap * 3 is within collision, e
 	add_child(instance)
 	if gap_direction == 'left':
 		instance.position = previous_follower.position + Vector2(gap, 0) #pick a direction for followers to line up by using Vector2(0, gap), Vector2(-gap, 0), etc. Though I don't want to re-add them when I change scenes, I just want to potentially move them. I suppose I could design levels so that they shouldn't have to change direction
-		for i in range(1, get_child_count()):
-			get_child(i).get_initial_direction()
 	elif gap_direction == 'right':
 		instance.position = previous_follower.position + Vector2(-gap, 0)
-		for i in range(1, get_child_count()):
-			get_child(i).get_initial_direction()
+	elif gap_direction == 'up':
+		instance.position = previous_follower.position + Vector2(0, gap)
+	elif gap_direction == 'down':
+		instance.position = previous_follower.position + Vector2(0, -gap)
+	for i in range(1, get_child_count()):
+		get_child(i).get_initial_direction()
 
 func stop_party():
 	if not isAgainstAWall:
@@ -126,6 +128,10 @@ func reset_party_position():
 			get_child(i).position = get_child(i-1).position + Vector2(gap,0)
 		elif gap_direction == 'right':
 			get_child(i).position = get_child(i-1).position + Vector2(-gap, 0)
+		elif gap_direction == 'up':
+			get_child(i).position = get_child(i-1).position + Vector2(0, gap)
+		elif gap_direction == 'down':
+			get_child(i).position = get_child(i-1).position + Vector2(0, -gap)
 		get_child(i).reset_follower()
 		get_child(i).add_directions(leader_position, direction)
 	isStartingToMove = false
