@@ -27,7 +27,13 @@ func switch_scene(from_scene, to_scene):
 	if from_scene == "town":
 		if to_scene == "overworld":
 			var overworld = load(overworld_node).instance()
-			party_node.position = Vector2(496, 368)
+			party_node.position = Vector2(300, 300)
+			var spawn_point = overworld.get_node("Spawn_Points/From_Town").position
+#			print(spawn_point)
+#			party_node.position = spawn_point
+#			party_node.position = overworld.get_node("Spawn_Points/From_Town").position
+#			print(overworld.get_node("Spawn_Points/From_Town").position)
+#			print(overworld.get_node("Spawn_Points"))
 			load_scene(overworld)
 			call_deferred("remove_child", $Town_Template)
 #			remove_child($Town_Template)

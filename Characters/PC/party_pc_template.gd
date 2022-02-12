@@ -63,8 +63,8 @@ func movement_has_begun():
 
 func get_initial_direction(): #could just use gap_direction
 	var vector_to_player =  (get_node("../PC_Template").position - position)
-	print('vector: ' + str(vector_to_player))
-	if vector_to_player.x != 0 and vector_to_player.x > 0:
+#	print('vector: ' + str(vector_to_player))
+	if vector_to_player.x != 0 and vector_to_player.x > 0: #normalize
 		vector_to_player.x = vector_to_player.x / vector_to_player.x
 	elif vector_to_player.x != 0 and vector_to_player.x < 0:
 		vector_to_player.x = -vector_to_player.x / vector_to_player.x
@@ -73,7 +73,7 @@ func get_initial_direction(): #could just use gap_direction
 	elif vector_to_player.y != 0 and vector_to_player.y < 0:
 		vector_to_player.y = -vector_to_player.y / vector_to_player.y
 	initial_direction = vector_to_player
-	print(initial_direction)
+#	print(initial_direction)
 
 func stop_follower():
 	update_movement_animation('stop')
