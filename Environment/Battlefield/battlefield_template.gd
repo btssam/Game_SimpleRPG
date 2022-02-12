@@ -258,7 +258,7 @@ func update_enemy_UI():
 	enemy_stats_node.text = newText
 
 func initialize_PC_UI():
-	pc_stats_node.text += 'Player 1: ' + str(player_node.hp) + '\n'    #need to integrate multiple PC's
+s	pc_stats_node.text += 'Player 1: ' + str(player_node.hp) + '\n'    #need to integrate multiple PC's
 
 func update_PC_UI():
 	var newText = ''
