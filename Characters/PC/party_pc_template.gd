@@ -41,7 +41,9 @@ func _process(delta):
 ###movement/following
 func move_follower():
 	if direction_array.size() > 0:  #party has moved
-		if position == position_array[0]: #once follower reaches where the postion of when the party changed directions...
+		if position.round() == position_array[0].round(): #once follower reaches where the postion of when the party changed directions...
+			if get_node('../..').current_scene == 'town':
+				print(name + ' has reached the change_direction position! New direction is ' + str(direction_array[0]) + 'and position is ' + str(position))
 			current_direction = direction_array[0] #...change direction
 			animation_movement_direction = convert_movement_to_string(current_direction)
 			update_movement_animation(animation_movement_direction)
