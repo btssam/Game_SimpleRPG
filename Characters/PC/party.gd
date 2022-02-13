@@ -12,7 +12,7 @@ var isStopped = false
 
 var animation_movement_direction
 
-var gap_direction = 'left'
+var gap_direction = 'down'
 
 
 func _ready():
@@ -69,6 +69,11 @@ func move_party():
 			isDirectionChanged = true       #i. e. to set this variable
 		var leader_position = get_node("PC_Template").position
 		collision_info = get_node("PC_Template").move_and_collide(direction)
+		adjust_z_index()
+#		if direction == Vector2(0, -1):
+#			get_node("PC_Template").z_index = 1
+#		elif direction == Vector2(0, 1):
+#			get_node("PC_Template").z_index = 2 #I probably just want the leader to be ontop
 
 		if isDirectionChanged:
 			for i in range(1, get_child_count()):
@@ -135,3 +140,14 @@ func reset_party_position():
 		get_child(i).reset_follower()
 		get_child(i).add_directions(leader_position, direction)
 	isStartingToMove = false
+
+func adjust_z_index():
+#	if direction == Vector2(0, -1):
+#		get_node("PC_Template").z_index = 1
+#	elif direction == Vector2(0, 1):
+#		get_node("PC_Template").z_index = 4 #as it moves down, if followers are still moving up, it glitches
+	for i in range(1,get_child_count()):
+		if get_child(i).current_direction == Vector2(0, -1):
+			get_child(i).z_index = i + 1
+		elif get_child(i).current_direction == Vector2(0, 1):
+			get_child(i).z_index = 4 - i

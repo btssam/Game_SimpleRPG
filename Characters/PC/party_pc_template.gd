@@ -41,20 +41,21 @@ func _process(delta):
 ###movement/following
 func move_follower():
 	if direction_array.size() > 0:  #party has moved
-		if position.round() == position_array[0].round(): #once follower reaches where the postion of when the party changed directions...
-			if get_node('../..').current_scene == 'town':
-				print(name + ' has reached the change_direction position! New direction is ' + str(direction_array[0]) + 'and position is ' + str(position))
+		if position.round() == position_array[0].round(): #once follower reaches where the postion of when the party changed directions... (round helps prevent problem with collision slightly altering position
+#			print(name + ' has begun movement toward direction: ' +  str(direction_array[0]) + ' at position: ' + str(position))
 			current_direction = direction_array[0] #...change direction
 			animation_movement_direction = convert_movement_to_string(current_direction)
 			update_movement_animation(animation_movement_direction)
 			remove_last_direction()
 	move_and_collide(current_direction)
+	adjust_z_index()
 
 func remove_last_direction():
 	direction_array.pop_front()
 	position_array.pop_front()
 
 func add_directions(leader_position, direction): #when party moves, this happens
+#	print('direction added on ' + str(name) + ' at ' + str(leader_position))
 	position_array.append(leader_position)
 	direction_array.append(direction)
 
@@ -117,6 +118,13 @@ func reset_follower():
 	get_initial_direction()
 	$AnimatedSprite.animation = "walk_down"
 	$AnimatedSprite.frame = 1
+
+
+func adjust_z_index():
+	if current_direction == Vector2(0, -1):
+		pass
+	elif current_direction == Vector2(0, 1):
+		pass
 
 ###movement
 #func update_movement():
