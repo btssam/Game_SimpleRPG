@@ -27,7 +27,7 @@ func switch_scene(from_scene, to_scene):
 	if from_scene == "town":
 		if to_scene == "overworld":
 			var overworld = load(overworld_node).instance()
-			party_node.gap_direction = 'right'
+			party_node.gap_direction = 'down'
 #			party_node.position = Vector2(496, 368)
 			party_node.get_node("PC_Template").position = Vector2(0,0) #otherwise, it retains the difference between the spawn_point of the previous frame and the end position of the party_leader. the party_node doesn't move at all during movement
 #			var spawn_point = overworld.get_node("Spawn_Points/From_Town").position
@@ -44,7 +44,9 @@ func switch_scene(from_scene, to_scene):
 	if from_scene == "overworld":
 		if to_scene == "town":
 			var town = load(town_node).instance()
-			party_node.position = Vector2(512, 96)
+			party_node.gap_direction = 'up'
+			party_node.get_node("PC_Template").position = Vector2(0,0)
+			party_node.position = town.get_node("Spawn_Points/From_Overworld").position
 			load_scene(town)
 			call_deferred("remove_child", $Overworld_Template)
 			current_scene = "town"
