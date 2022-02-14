@@ -3,7 +3,10 @@ extends Node2D
 var direction = Vector2(0,0)
 const gap = -35
 var previous_direction = Vector2(0,0)
-onready var follower = preload("res://Characters/PC/Party_PC_Template.tscn")
+onready var follower_1 = preload("res://Characters/PC/Party_PC_Template1.tscn")
+onready var follower_2 = preload("res://Characters/PC/Party_PC_Template2.tscn")
+onready var follower_3 = preload("res://Characters/PC/Party_PC_Template3.tscn")
+var follower_instance
 var collision_info
 var isAgainstAWall = false
 var collision_direction
@@ -17,9 +20,10 @@ var gap_direction = 'down'
 
 func _ready():
 	position = get_node("../Town_Template/Spawn_Points/Initial").position
-	add_follower()
-	add_follower()
-	add_follower()
+	add_followers(3)
+#	add_follower()
+#	add_follower()
+#	add_follower()
 
 func _process(delta):
 	if(Input.is_action_pressed("up")):
@@ -79,20 +83,29 @@ func move_party():
 			for i in range(1, get_child_count()):
 				get_child(i).add_directions(leader_position, direction)
 
-func add_follower(): #could check for if follower_gap * 3 is within collision, else choose a different direction
-	var instance = follower.instance()
+func add_follower(): #could check for if follower_gap * 3 is within collision, else choose a different direction. #This needs changed somewhat for different followers. maybe make 3 party_pc_templates and a function add_followers(3) that runs a for loop 3 times and calls add_follower(i) and add_follower instances in party_pc_template_i, ppc_template_2, and 3 
 	var previous_follower = get_child(get_child_count() -1 )
-	add_child(instance)
+	add_child(follower_instance)
 	if gap_direction == 'left':
-		instance.position = previous_follower.position + Vector2(gap, 0) #pick a direction for followers to line up by using Vector2(0, gap), Vector2(-gap, 0), etc. Though I don't want to re-add them when I change scenes, I just want to potentially move them. I suppose I could design levels so that they shouldn't have to change direction
+		follower_instance.position = previous_follower.position + Vector2(gap, 0) #pick a direction for followers to line up by using Vector2(0, gap), Vector2(-gap, 0), etc. Though I don't want to re-add them when I change scenes, I just want to potentially move them. I suppose I could design levels so that they shouldn't have to change direction
 	elif gap_direction == 'right':
-		instance.position = previous_follower.position + Vector2(-gap, 0)
+		follower_instance.position = previous_follower.position + Vector2(-gap, 0)
 	elif gap_direction == 'up':
-		instance.position = previous_follower.position + Vector2(0, gap)
+		follower_instance.position = previous_follower.position + Vector2(0, gap)
 	elif gap_direction == 'down':
-		instance.position = previous_follower.position + Vector2(0, -gap)
-	for i in range(1, get_child_count()):
+		follower_instance.position = previous_follower.position + Vector2(0, -gap)
+	for i in range(1, get_child_count()): #too early if I run on follower _ready. followers dont move
 		get_child(i).get_initial_direction()
+	
+func add_followers(number_of_followers):
+	for i in range(1, number_of_followers + 1):
+		if i == 1:
+			follower_instance = follower_1.instance()
+		elif i == 2:
+			follower_instance = follower_2.instance()
+		elif i == 3:
+			follower_instance = follower_3.instance()
+		add_follower()
 
 func stop_party():
 	if not isAgainstAWall:
