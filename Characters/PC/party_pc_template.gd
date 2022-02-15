@@ -26,14 +26,8 @@ func _ready():
 	#movement
 	$AnimatedSprite.animation = "walk_down"
 	$AnimatedSprite.frame = 1
-	#following/movement
-#	get_initial_direction()
 
 func _process(delta):
-	#movement
-#	update_movement()
-#	move_and_collide(motion) #could I call these on _input instead? Didn't seem to work initially
-	#following/movement
 	move_follower()
 
 
@@ -42,7 +36,6 @@ func _process(delta):
 func move_follower():
 	if direction_array.size() > 0:  #party has moved
 		if position.round() == position_array[0].round(): #once follower reaches where the postion of when the party changed directions... (round helps prevent problem with collision slightly altering position
-#			print(name + ' has begun movement toward direction: ' +  str(direction_array[0]) + ' at position: ' + str(position))
 			current_direction = direction_array[0] #...change direction
 			animation_movement_direction = convert_movement_to_string(current_direction)
 			update_movement_animation(animation_movement_direction)
@@ -55,7 +48,6 @@ func remove_last_direction():
 	position_array.pop_front()
 
 func add_directions(leader_position, direction): #when party moves, this happens
-#	print('direction added on ' + str(name) + ' at ' + str(leader_position))
 	position_array.append(leader_position)
 	direction_array.append(direction)
 
@@ -73,17 +65,6 @@ func get_initial_direction():
 		initial_direction = Vector2(-1,0)
 	elif get_parent().gap_direction == 'left':
 		initial_direction = Vector2(1,0)
-#	var vector_to_player =  (get_node("../PC_Template").position - position)
-#	if vector_to_player.x != 0 and vector_to_player.x > 0: #normalize
-#		vector_to_player.x = vector_to_player.x / vector_to_player.x
-#	elif vector_to_player.x != 0 and vector_to_player.x < 0:
-#		vector_to_player.x = -vector_to_player.x / vector_to_player.x
-#	elif vector_to_player.y != 0 and vector_to_player.y > 0:
-#		vector_to_player.y = vector_to_player.y / vector_to_player.y
-#	elif vector_to_player.y != 0 and vector_to_player.y < 0:
-#		vector_to_player.y = -vector_to_player.y / vector_to_player.y
-#	initial_direction = vector_to_player
-#	print(initial_direction)
 
 func stop_follower():
 	update_movement_animation('stop')
@@ -103,7 +84,7 @@ func convert_movement_to_string(direction):
 	elif direction == Vector2(1, 0):
 		return('right')
 
-func update_movement_animation(direction): #make sure I call this before I stop_process
+func update_movement_animation(direction):
 	if direction == 'up':
 		$AnimatedSprite.play("walk_up")
 	elif direction == 'down':
@@ -123,8 +104,12 @@ func reset_follower():
 	position_array = []
 	current_direction = Vector2(0,0)
 	get_initial_direction()
-	$AnimatedSprite.animation = "walk_down"
-	$AnimatedSprite.frame = 1
+	if not get_parent().isBattling:
+		$AnimatedSprite.animation = "walk_down"
+		$AnimatedSprite.frame = 1
+	else:
+		$AnimatedSprite.animation = "idle_battle"
+		$AnimatedSprite.frame = 0
 
 
 func adjust_z_index():

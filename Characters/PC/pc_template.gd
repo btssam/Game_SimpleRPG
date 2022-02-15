@@ -8,7 +8,7 @@ var speed = 2
 var isInteractable = false
 var current_interaction
 ###battle check
-var isBattling = false #should be on party
+#var isBattling = false #should be on party
 var steps_since_last = 0
 var current_position = Vector2()
 var previous_position = Vector2()
@@ -163,8 +163,10 @@ func check_for_battle():
 	var displacement = x_displacement + y_displacement
 	steps_since_last += displacement
 	if steps_since_last > next_battle_counter or Input.is_action_pressed("test_key"):
+		get_parent().isBattling = true #need to set party (children) isBattling here as well
 		main_node.switch_scene("overworld", "battle")
-		isBattling = true #need to set party (children) isBattling here as well
+		get_parent().stop_party()
+		get_parent().animation_movement_direction = 'stop'
 		get_next_battle_counter()
 	else:
 		$Delta_Position1.start()
@@ -174,13 +176,13 @@ func reset_battle_check(): #return from battle
 	$AnimatedSprite.animation = "walk_down"
 	$AnimatedSprite.frame = 1
 	isDead = false #need to set party (children) isBattling here as well
-	isBattling = false #need to set party (children) isBattling here as well
+	get_parent().isBattling = false #need to set party (children) isBattling here as well
 	steps_since_last = 0
 	$Delta_Position2.stop()
 	$Delta_Position1.start()
 	
 func stop_battle_check():
-	isBattling = false #need to set party (children) isBattling here as well
+	get_parent().isBattling = false #need to set party (children) isBattling here as well
 	steps_since_last = 0
 	$Delta_Position1.stop()
 	$Delta_Position2.stop()

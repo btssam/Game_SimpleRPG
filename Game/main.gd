@@ -7,6 +7,7 @@ var overworld_node = "res://Environment/Overworld/Mainworld/Overworld_Template.t
 var battle_node = "res://Environment/Battlefield/Battlefield_Template.tscn"
 var gameover_node = "res://Game/Game_Over.tscn"
 var current_scene = "town"
+var party_return_position
 
 
 
@@ -28,17 +29,10 @@ func switch_scene(from_scene, to_scene):
 		if to_scene == "overworld":
 			var overworld = load(overworld_node).instance()
 			party_node.gap_direction = 'down'
-#			party_node.position = Vector2(496, 368)
 			party_node.get_node("PC_Template").position = Vector2(0,0) #otherwise, it retains the difference between the spawn_point of the previous frame and the end position of the party_leader. the party_node doesn't move at all during movement
-#			var spawn_point = overworld.get_node("Spawn_Points/From_Town").position
-#			print(spawn_point)
-#			party_node.position = spawn_point
 			party_node.position = overworld.get_node("Spawn_Points/From_Town").position
-#			print(overworld.get_node("Spawn_Points/From_Town").position)
-#			print(overworld.get_node("Spawn_Points"))
 			load_scene(overworld)
 			call_deferred("remove_child", $Town_Template)
-#			remove_child($Town_Template)
 			current_scene = "overworld"
 			
 	if from_scene == "overworld":
@@ -52,6 +46,8 @@ func switch_scene(from_scene, to_scene):
 			current_scene = "town"
 		if to_scene == "battle":
 			var battle = load(battle_node).instance()
+			party_return_position = party_node.position + party_node.get_node("PC_Template").position
+			party_node.get_node("PC_Template").position = Vector2(0,0)
 			party_node.position = Vector2(800, 512)
 			load_scene(battle)
 			call_deferred("remove_child", $Overworld_Template)
@@ -60,12 +56,15 @@ func switch_scene(from_scene, to_scene):
 	if from_scene == "battle":
 		if to_scene == "overworld":
 			var overworld = load(overworld_node).instance()
-			party_node.position = Vector2(500, 500)
+			party_node.get_node("PC_Template").position = Vector2(0,0)
+#			party_node.position = party_return_position
+			party_node.position = overworld.get_node("Spawn_Points/From_Town").position
 			load_scene(overworld)
 			call_deferred("remove_child", $Battlefield_Template)
 			current_scene = "overworld"
 		if to_scene == "gameover":
 			var gameover = load(gameover_node).instance()
+			party_node.get_node("PC_Template").position = Vector2(0,0)
 			party_node.position = Vector2(512, 384)
 			load_scene(gameover)
 			call_deferred("remove_child", $Battlefield_Template)
@@ -74,6 +73,7 @@ func switch_scene(from_scene, to_scene):
 	if from_scene == "gameover":
 		if to_scene == "town":
 			var town = load(town_node).instance()
+			party_node.get_node("PC_Template").position = Vector2(0,0)
 			party_node.position = Vector2(512, 384)
 			load_scene(town)
 			call_deferred("remove_child", $Game_Over)

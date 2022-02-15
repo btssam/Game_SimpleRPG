@@ -17,49 +17,53 @@ var animation_movement_direction
 
 var gap_direction = 'down'
 
+#battle
+var isBattling = false
+
 
 func _ready():
 	position = get_node("../Town_Template/Spawn_Points/Initial").position
 	add_followers(3)
 
 func _process(delta):
-	if(Input.is_action_pressed("up")):
-		direction = Vector2(0,-1)
-		party_has_begun_moving()
-		resume_follower_movement()
-		animation_movement_direction = 'up'
-	elif(Input.is_action_just_released("up")):
-		stop_party()
-		animation_movement_direction = 'stop'
-	elif(Input.is_action_pressed("down")):
-		direction = Vector2(0,1)
-		party_has_begun_moving()
-		resume_follower_movement()
-		animation_movement_direction = 'down'
-	elif(Input.is_action_just_released("down")):
-		stop_party()
-		animation_movement_direction = 'stop'
-	elif(Input.is_action_pressed("left")):
-		direction = Vector2(-1,0)
-		party_has_begun_moving()
-		resume_follower_movement()
-		animation_movement_direction = 'left'
-	elif(Input.is_action_just_released("left")):
-		stop_party()
-		animation_movement_direction = 'stop'
-	elif(Input.is_action_pressed("right")):
-		direction = Vector2(1,0)
-		party_has_begun_moving()
-		resume_follower_movement()
-		animation_movement_direction = 'right'
-	elif(Input.is_action_just_released("right")):
-		stop_party()
-		animation_movement_direction = 'stop'
-	get_node("PC_Template").update_movement_animation(animation_movement_direction)
-	call_deferred("check_for_collision") #if not deferred, followers will move too late
-	if isAgainstAWall:
-		stop_party_for_collision()
-	move_party()
+	if not isBattling:
+		if(Input.is_action_pressed("up")):
+			direction = Vector2(0,-1)
+			party_has_begun_moving()
+			resume_follower_movement()
+			animation_movement_direction = 'up'
+		elif(Input.is_action_just_released("up")):
+			stop_party()
+			animation_movement_direction = 'stop'
+		elif(Input.is_action_pressed("down")):
+			direction = Vector2(0,1)
+			party_has_begun_moving()
+			resume_follower_movement()
+			animation_movement_direction = 'down'
+		elif(Input.is_action_just_released("down")):
+			stop_party()
+			animation_movement_direction = 'stop'
+		elif(Input.is_action_pressed("left")):
+			direction = Vector2(-1,0)
+			party_has_begun_moving()
+			resume_follower_movement()
+			animation_movement_direction = 'left'
+		elif(Input.is_action_just_released("left")):
+			stop_party()
+			animation_movement_direction = 'stop'
+		elif(Input.is_action_pressed("right")):
+			direction = Vector2(1,0)
+			party_has_begun_moving()
+			resume_follower_movement()
+			animation_movement_direction = 'right'
+		elif(Input.is_action_just_released("right")):
+			stop_party()
+			animation_movement_direction = 'stop'
+		get_node("PC_Template").update_movement_animation(animation_movement_direction)
+		call_deferred("check_for_collision") #if not deferred, followers will move too late
+		if isAgainstAWall:
+			stop_party_for_collision()
+		move_party()
 
 
 func move_party():
@@ -103,6 +107,7 @@ func add_followers(number_of_followers):
 func stop_party():
 	if not isAgainstAWall:
 		isStopped = true
+		print('stopped')
 	for i in range(1, get_child_count()):
 		get_child(i).call_deferred("stop_follower") #if not deferred: follower gap increases
 
@@ -135,7 +140,7 @@ func party_has_begun_moving():
 func reset_party_position():
 	var leader_position = get_node("PC_Template").position
 	for i in range(1, get_child_count()):
-		if gap_direction == 'left':
+		if gap_direction == 'left': #maybe a gap_direction for battle #should check if gap_direction collides, especially on return from battle
 			get_child(i).position = get_child(i-1).position + Vector2(gap,0)
 		elif gap_direction == 'right':
 			get_child(i).position = get_child(i-1).position + Vector2(-gap, 0)
@@ -144,7 +149,7 @@ func reset_party_position():
 		elif gap_direction == 'down':
 			get_child(i).position = get_child(i-1).position + Vector2(0, -gap)
 		get_child(i).reset_follower()
-		get_child(i).add_directions(leader_position, direction)
+		get_child(i).add_directions(leader_position, direction) #wrong direction when returning from battle
 	isStartingToMove = false
 
 func adjust_z_index():

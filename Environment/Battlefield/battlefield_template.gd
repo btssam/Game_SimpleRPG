@@ -25,7 +25,7 @@ onready var ui_log_node = get_node("BattleUI/Battle_Bottom_UI/Log/Label")
 var log_array = []
 ###turn ordering
 var turn_order = []
-onready var player_node = get_node("../PC_Template")
+onready var player_node = get_node("../Party/PC_Template")
 var isPlayersTurn = true
 var enemy_animationPlayer_node
 ###nodes
@@ -113,10 +113,10 @@ func add_enemies():
 			enemy.enemy_name = "Purple Goblin"
 		call_deferred("add_child", enemy)
 		enemy_list.push_back(enemy)
-		call_deferred('change_position')
+		call_deferred('change_enemy_position')
 	targetable_enemy_list = enemy_list.duplicate()
 
-func change_position():
+func change_enemy_position():
 	for i in range(0, number_of_units):
 		if number_of_units == 3:
 			enemy_list[i].position = Vector2(224, 256 + 128 * i)
