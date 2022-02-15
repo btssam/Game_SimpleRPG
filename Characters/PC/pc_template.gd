@@ -63,6 +63,11 @@ func update_animation(animation):
 		$AnimatedSprite.stop()
 		$AnimatedSprite.play("idle_battle")
 		$AnimatedSprite.frame = 0
+	elif animation == 'idle_down':
+		$AnimatedSprite.play("walk_down")
+		$AnimatedSprite.stop()
+		$AnimatedSprite.frame = 1
+		
 	
 	
 #func update_movement():
@@ -175,8 +180,7 @@ func check_for_battle():
 		$Delta_Position1.start()
 
 func reset_battle_check(): #return from battle
-	print('reset')
-#	update_animation("stop")
+	get_parent().animation_name = 'idle_down'
 	isDead = false #need to set party (children) isBattling here as well
 	get_parent().isBattling = false #need to set party (children) isBattling here as well
 	steps_since_last = 0

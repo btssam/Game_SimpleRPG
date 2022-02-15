@@ -239,6 +239,7 @@ func get_command():
 
 ###other
 func close_scene():
+	get_node("../Party").isBattling = false
 	main_node.switch_scene('battle', 'overworld')
 	player_node.reset_battle_check()
 	player_node.hp = player_node.maxhp

@@ -64,7 +64,6 @@ func _process(delta):
 		if isAgainstAWall:
 			stop_party_for_collision()
 		move_party()
-	else: animation_name = 'stop'
 
 
 func move_party():
@@ -151,11 +150,13 @@ func reset_party_position():
 		get_child(i).reset_follower()
 #		get_child(i).add_directions(leader_position, direction) #wrong direction when returning from battle #I'm not sure this is even necessary
 		previous_direction = Vector2(0,0)
-		print(leader_position)
-		print(direction)
 	isStartingToMove = false
 
 func adjust_z_index():
+	if direction == Vector2(0, -1):
+		get_node("PC_Template").z_index = 1
+	elif direction == Vector2(0, 1):
+		get_node("PC_Template").z_index = 4
 	for i in range(1,get_child_count()):
 		if get_child(i).current_direction == Vector2(0, -1):
 			get_child(i).z_index = i + 1
