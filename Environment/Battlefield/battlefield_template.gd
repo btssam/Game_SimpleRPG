@@ -228,6 +228,7 @@ func get_command():
 		player_node.isAttacking = true
 		player_node.get_node("AnimationPlayer").play("attack")
 		yield(player_node.get_node("AnimatedSprite"), "animation_finished")
+		player_node.update_animation("battling")
 		player_node.isAttacking = false
 		targetable_enemy_list[current_target].hp -= 1
 		check_enemy_death()

@@ -32,9 +32,6 @@ func _ready():
 	get_next_battle_counter()
 
 func _physics_process(delta):
-	#movement
-#	update_movement()
-#	move_and_collide(motion) #could I call these on _input instead? Didn't seem to work initially
 	pass
 
 
@@ -67,74 +64,7 @@ func update_animation(animation):
 		$AnimatedSprite.play("walk_down")
 		$AnimatedSprite.stop()
 		$AnimatedSprite.frame = 1
-		
-	
-	
-#func update_movement():
-#	if not isBattling:
-#
-#		if Input.is_action_pressed("left"):
-#			$AnimatedSprite.play("walk_left")
-#			$AnimatedSprite.speed_scale = 1
-#			motion.x = -speed
-#			motion.y = 0
-#			if Input.is_action_pressed("run"):
-#				$AnimatedSprite.speed_scale = 2
-#				motion.x = -2 * speed
-#		elif Input.is_action_just_released("left"):
-#			$AnimatedSprite.stop()
-#			$AnimatedSprite.frame = 1
-#			motion.x = 0
-#			motion.y = 0
-#
-#		elif Input.is_action_pressed("right"):
-#			$AnimatedSprite.play("walk_right")
-#			$AnimatedSprite.speed_scale = 1
-#			motion.x = speed
-#			motion.y = 0
-#			if Input.is_action_pressed("run"):
-#				$AnimatedSprite.speed_scale = 2
-#				motion.x =  2 * speed
-#		elif Input.is_action_just_released("right"):
-#			$AnimatedSprite.stop()
-#			$AnimatedSprite.frame = 1
-#			motion.x = 0
-#			motion.y = 0
-#
-#		elif Input.is_action_pressed("up"):
-#			$AnimatedSprite.play("walk_up")
-#			$AnimatedSprite.speed_scale = 1
-#			motion.y = -speed
-#			motion.x = 0
-#			if Input.is_action_pressed("run"):
-#				$AnimatedSprite.speed_scale = 2
-#				motion.y = -2 *speed
-#		elif Input.is_action_just_released("up"):
-#			$AnimatedSprite.stop()
-#			$AnimatedSprite.frame = 1
-#			motion.x = 0
-#			motion.y = 0
-#
-#		elif Input.is_action_pressed("down"):
-#			$AnimatedSprite.play("walk_down")
-#			$AnimatedSprite.speed_scale = 1
-#			motion.y = speed
-#			motion.x = 0
-#			if Input.is_action_pressed("run"):
-#				$AnimatedSprite.speed_scale = 2
-#				motion.y = 2 *speed
-#		elif Input.is_action_just_released("down"):
-#			$AnimatedSprite.stop()
-#			$AnimatedSprite.frame = 1
-#			motion.x = 0
-#			motion.y = 0
-#
-#	else: #in battle
-#		motion.x = 0
-#		motion.y = 0
-#		if not isDead:
-#			if not isAttacking:
-#				$AnimatedSprite.animation = "idle_battle"
+
 
 
 ###check for interaction, like NPCs
@@ -172,8 +102,6 @@ func check_for_battle():
 		get_parent().isBattling = true
 		main_node.switch_scene("overworld", "battle")
 		get_parent().stop_party() #stop leader
-#		get_parent().direction = null
-#		get_parent().previous_direction = Vector2(0,0) #assure movement when returning from battle
 		update_animation("battling")
 		get_next_battle_counter()
 	else:

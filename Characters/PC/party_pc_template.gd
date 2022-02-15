@@ -41,7 +41,6 @@ func move_follower():
 			update_animation(animation_name)
 			remove_last_direction()
 	move_and_collide(current_direction)
-	adjust_z_index()
 
 func remove_last_direction():
 	direction_array.pop_front()
@@ -111,81 +110,6 @@ func reset_follower():
 	else:
 		$AnimatedSprite.animation = "idle_battle"
 		$AnimatedSprite.frame = 0
-
-
-func adjust_z_index():
-	if current_direction == Vector2(0, -1):
-		pass
-	elif current_direction == Vector2(0, 1):
-		pass
-
-###movement
-#func update_movement():
-#	if not isBattling:
-#
-#		if Input.is_action_pressed("left"):
-#			$AnimatedSprite.play("walk_left")
-#			$AnimatedSprite.speed_scale = 1
-#			motion.x = -speed
-#			motion.y = 0
-#			if Input.is_action_pressed("run"):
-#				$AnimatedSprite.speed_scale = 2
-#				motion.x = -2 * speed
-#		elif Input.is_action_just_released("left"):
-#			$AnimatedSprite.stop()
-#			$AnimatedSprite.frame = 1
-#			motion.x = 0
-#			motion.y = 0
-#
-#		elif Input.is_action_pressed("right"):
-#			$AnimatedSprite.play("walk_right")
-#			$AnimatedSprite.speed_scale = 1
-#			motion.x = speed
-#			motion.y = 0
-#			if Input.is_action_pressed("run"):
-#				$AnimatedSprite.speed_scale = 2
-#				motion.x =  2 * speed
-#		elif Input.is_action_just_released("right"):
-#			$AnimatedSprite.stop()
-#			$AnimatedSprite.frame = 1
-#			motion.x = 0
-#			motion.y = 0
-#
-#		elif Input.is_action_pressed("up"):
-#			$AnimatedSprite.play("walk_up")
-#			$AnimatedSprite.speed_scale = 1
-#			motion.y = -speed
-#			motion.x = 0
-#			if Input.is_action_pressed("run"):
-#				$AnimatedSprite.speed_scale = 2
-#				motion.y = -2 *speed
-#		elif Input.is_action_just_released("up"):
-#			$AnimatedSprite.stop()
-#			$AnimatedSprite.frame = 1
-#			motion.x = 0
-#			motion.y = 0
-#
-#		elif Input.is_action_pressed("down"):
-#			$AnimatedSprite.play("walk_down")
-#			$AnimatedSprite.speed_scale = 1
-#			motion.y = speed
-#			motion.x = 0
-#			if Input.is_action_pressed("run"):
-#				$AnimatedSprite.speed_scale = 2
-#				motion.y = 2 *speed
-#		elif Input.is_action_just_released("down"):
-#			$AnimatedSprite.stop()
-#			$AnimatedSprite.frame = 1
-#			motion.x = 0
-#			motion.y = 0
-#
-#	else: #in battle
-#		motion.x = 0
-#		motion.y = 0
-#		if not isDead:
-#			if not isAttacking:
-#				$AnimatedSprite.animation = "idle_battle"
-
 
 ###Battling code
 func check_for_death():
