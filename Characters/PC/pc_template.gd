@@ -175,9 +175,8 @@ func check_for_battle():
 		$Delta_Position1.start()
 
 func reset_battle_check(): #return from battle
-	$AnimatedSprite.stop()
-	$AnimatedSprite.animation = "walk_down"
-	$AnimatedSprite.frame = 1
+	print('reset')
+#	update_animation("stop")
 	isDead = false #need to set party (children) isBattling here as well
 	get_parent().isBattling = false #need to set party (children) isBattling here as well
 	steps_since_last = 0

@@ -59,11 +59,12 @@ func _process(delta):
 		elif(Input.is_action_just_released("right")):
 			stop_party()
 			animation_name = 'stop'
-		get_node("PC_Template").update_animation(animation_name)
+		get_node("PC_Template").update_animation(animation_name) #called with wrong value upon returning from battle
 		call_deferred("check_for_collision") #if not deferred, followers will move too late
 		if isAgainstAWall:
 			stop_party_for_collision()
 		move_party()
+	else: animation_name = 'stop'
 
 
 func move_party():
