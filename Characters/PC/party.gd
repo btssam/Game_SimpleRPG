@@ -13,7 +13,7 @@ var collision_direction
 var isStartingToMove = false
 var isStopped = false
 
-var animation_movement_direction
+var animation_name
 
 var gap_direction = 'down'
 
@@ -31,35 +31,35 @@ func _process(delta):
 			direction = Vector2(0,-1)
 			party_has_begun_moving()
 			resume_follower_movement()
-			animation_movement_direction = 'up'
+			animation_name = 'up'
 		elif(Input.is_action_just_released("up")):
 			stop_party()
-			animation_movement_direction = 'stop'
+			animation_name = 'stop'
 		elif(Input.is_action_pressed("down")):
 			direction = Vector2(0,1)
 			party_has_begun_moving()
 			resume_follower_movement()
-			animation_movement_direction = 'down'
+			animation_name = 'down'
 		elif(Input.is_action_just_released("down")):
 			stop_party()
-			animation_movement_direction = 'stop'
+			animation_name = 'stop'
 		elif(Input.is_action_pressed("left")):
 			direction = Vector2(-1,0)
 			party_has_begun_moving()
 			resume_follower_movement()
-			animation_movement_direction = 'left'
+			animation_name = 'left'
 		elif(Input.is_action_just_released("left")):
 			stop_party()
-			animation_movement_direction = 'stop'
+			animation_name = 'stop'
 		elif(Input.is_action_pressed("right")):
 			direction = Vector2(1,0)
 			party_has_begun_moving()
 			resume_follower_movement()
-			animation_movement_direction = 'right'
+			animation_name = 'right'
 		elif(Input.is_action_just_released("right")):
 			stop_party()
-			animation_movement_direction = 'stop'
-		get_node("PC_Template").update_movement_animation(animation_movement_direction)
+			animation_name = 'stop'
+		get_node("PC_Template").update_animation(animation_name)
 		call_deferred("check_for_collision") #if not deferred, followers will move too late
 		if isAgainstAWall:
 			stop_party_for_collision()
@@ -107,7 +107,6 @@ func add_followers(number_of_followers):
 func stop_party():
 	if not isAgainstAWall:
 		isStopped = true
-		print('stopped')
 	for i in range(1, get_child_count()):
 		get_child(i).call_deferred("stop_follower") #if not deferred: follower gap increases
 

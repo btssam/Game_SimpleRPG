@@ -22,9 +22,6 @@ onready var main_node = get_node("../..")
 onready var dialogue_node = get_node("../../GUI/Dialogue_UI")
 ###attacking
 var isAttacking = false
-###following
-var next_follower_direction = Vector2()
-var previous_direction = Vector2()
 
 
 func _ready():
@@ -50,18 +47,22 @@ func _input(event):
 
 
 ###movement
-func update_movement_animation(direction):
-	if direction == 'up':
+func update_animation(animation):
+	if animation == 'up':
 		$AnimatedSprite.play("walk_up")
-	elif direction == 'down':
+	elif animation == 'down':
 		$AnimatedSprite.play("walk_down")
-	elif direction == 'left':
+	elif animation == 'left':
 		$AnimatedSprite.play("walk_left")
-	elif direction == 'right':
+	elif animation == 'right':
 		$AnimatedSprite.play("walk_right")
-	elif direction == 'stop':
+	elif animation == 'stop':
 		$AnimatedSprite.stop()
 		$AnimatedSprite.frame = 1
+	elif animation == 'battling':
+		$AnimatedSprite.stop()
+		$AnimatedSprite.play("idle_battle")
+		$AnimatedSprite.frame = 0
 	
 	
 #func update_movement():
@@ -163,10 +164,11 @@ func check_for_battle():
 	var displacement = x_displacement + y_displacement
 	steps_since_last += displacement
 	if steps_since_last > next_battle_counter or Input.is_action_pressed("test_key"):
-		get_parent().isBattling = true #need to set party (children) isBattling here as well
+		get_parent().isBattling = true
 		main_node.switch_scene("overworld", "battle")
-		get_parent().stop_party()
-		get_parent().animation_movement_direction = 'stop'
+		get_parent().stop_party() #stop leader
+		get_parent().direction = null
+		update_animation("battling")
 		get_next_battle_counter()
 	else:
 		$Delta_Position1.start()

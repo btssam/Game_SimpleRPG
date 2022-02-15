@@ -20,7 +20,7 @@ var position_array = []
 var current_direction = Vector2()
 var initial_direction
 
-var animation_movement_direction
+var animation_name
 
 func _ready():
 	#movement
@@ -37,8 +37,8 @@ func move_follower():
 	if direction_array.size() > 0:  #party has moved
 		if position.round() == position_array[0].round(): #once follower reaches where the postion of when the party changed directions... (round helps prevent problem with collision slightly altering position
 			current_direction = direction_array[0] #...change direction
-			animation_movement_direction = convert_movement_to_string(current_direction)
-			update_movement_animation(animation_movement_direction)
+			animation_name = convert_movement_to_string(current_direction)
+			update_animation(animation_name)
 			remove_last_direction()
 	move_and_collide(current_direction)
 	adjust_z_index()
@@ -53,8 +53,8 @@ func add_directions(leader_position, direction): #when party moves, this happens
 
 func movement_has_begun():
 	current_direction = initial_direction
-	animation_movement_direction = convert_movement_to_string(current_direction)
-	update_movement_animation(animation_movement_direction)
+	animation_name = convert_movement_to_string(current_direction)
+	update_animation(animation_name)
 
 func get_initial_direction():
 	if get_parent().gap_direction == 'up':
@@ -67,11 +67,11 @@ func get_initial_direction():
 		initial_direction = Vector2(1,0)
 
 func stop_follower():
-	update_movement_animation('stop')
+	update_animation('stop')
 	call_deferred("set_process", false) #stop all that occurs during process. this will  cause problems when I integrate other behavior, like combat, during process. maybe have to use another node with another script to handle it by using another process for that node
 
 func resume_follower():
-	update_movement_animation(animation_movement_direction)
+	update_animation(animation_name)
 	call_deferred("set_process", true)
 
 func convert_movement_to_string(direction):
@@ -84,16 +84,16 @@ func convert_movement_to_string(direction):
 	elif direction == Vector2(1, 0):
 		return('right')
 
-func update_movement_animation(direction):
-	if direction == 'up':
+func update_animation(animation):
+	if animation == 'up':
 		$AnimatedSprite.play("walk_up")
-	elif direction == 'down':
+	elif animation == 'down':
 		$AnimatedSprite.play("walk_down")
-	elif direction == 'left':
+	elif animation == 'left':
 		$AnimatedSprite.play("walk_left")
-	elif direction == 'right':
+	elif animation == 'right':
 		$AnimatedSprite.play("walk_right")
-	elif direction == 'stop':
+	elif animation == 'stop':
 		$AnimatedSprite.stop()
 		$AnimatedSprite.frame = 1
 
