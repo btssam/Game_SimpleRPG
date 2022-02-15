@@ -21,9 +21,6 @@ var gap_direction = 'down'
 func _ready():
 	position = get_node("../Town_Template/Spawn_Points/Initial").position
 	add_followers(3)
-#	add_follower()
-#	add_follower()
-#	add_follower()
 
 func _process(delta):
 	if(Input.is_action_pressed("up")):
@@ -57,9 +54,9 @@ func _process(delta):
 		animation_movement_direction = 'right'
 	elif(Input.is_action_just_released("right")):
 		stop_party()
-		animation_movement_direction = 'stop' #couldn't these all just be 'stop'
+		animation_movement_direction = 'stop'
 	get_node("PC_Template").update_movement_animation(animation_movement_direction)
-	call_deferred("check_for_collision")
+	call_deferred("check_for_collision") #if not deferred, followers will move too late
 	if isAgainstAWall:
 		stop_party_for_collision()
 	move_party()
@@ -68,33 +65,29 @@ func _process(delta):
 func move_party():
 	if not isStopped or isAgainstAWall:
 		var isDirectionChanged = false
-		if previous_direction != direction: #previous_direction only exists to note when 
+		if previous_direction != direction: #previous_direction exists to note when 
 			previous_direction = direction  #direction has changed
 			isDirectionChanged = true       #i. e. to set this variable
 		var leader_position = get_node("PC_Template").position
 		collision_info = get_node("PC_Template").move_and_collide(direction)
 		adjust_z_index()
-#		if direction == Vector2(0, -1):
-#			get_node("PC_Template").z_index = 1
-#		elif direction == Vector2(0, 1):
-#			get_node("PC_Template").z_index = 2 #I probably just want the leader to be ontop
 
 		if isDirectionChanged:
 			for i in range(1, get_child_count()):
 				get_child(i).add_directions(leader_position, direction)
 
-func add_follower(): #could check for if follower_gap * 3 is within collision, else choose a different direction. #This needs changed somewhat for different followers. maybe make 3 party_pc_templates and a function add_followers(3) that runs a for loop 3 times and calls add_follower(i) and add_follower instances in party_pc_template_i, ppc_template_2, and 3 
+func add_follower():
 	var previous_follower = get_child(get_child_count() -1 )
 	add_child(follower_instance)
 	if gap_direction == 'left':
-		follower_instance.position = previous_follower.position + Vector2(gap, 0) #pick a direction for followers to line up by using Vector2(0, gap), Vector2(-gap, 0), etc. Though I don't want to re-add them when I change scenes, I just want to potentially move them. I suppose I could design levels so that they shouldn't have to change direction
+		follower_instance.position = previous_follower.position + Vector2(gap, 0)
 	elif gap_direction == 'right':
 		follower_instance.position = previous_follower.position + Vector2(-gap, 0)
 	elif gap_direction == 'up':
 		follower_instance.position = previous_follower.position + Vector2(0, gap)
 	elif gap_direction == 'down':
 		follower_instance.position = previous_follower.position + Vector2(0, -gap)
-	for i in range(1, get_child_count()): #too early if I run on follower _ready. followers dont move
+	for i in range(1, get_child_count()): #too early if I instead run on follower's _ready(). Then, followers dont move
 		get_child(i).get_initial_direction()
 	
 func add_followers(number_of_followers):
@@ -155,10 +148,6 @@ func reset_party_position():
 	isStartingToMove = false
 
 func adjust_z_index():
-#	if direction == Vector2(0, -1):
-#		get_node("PC_Template").z_index = 1
-#	elif direction == Vector2(0, 1):
-#		get_node("PC_Template").z_index = 4 #as it moves down, if followers are still moving up, it glitches
 	for i in range(1,get_child_count()):
 		if get_child(i).current_direction == Vector2(0, -1):
 			get_child(i).z_index = i + 1

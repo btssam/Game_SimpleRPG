@@ -64,18 +64,25 @@ func movement_has_begun():
 	animation_movement_direction = convert_movement_to_string(current_direction)
 	update_movement_animation(animation_movement_direction)
 
-func get_initial_direction(): #could just use gap_direction
-	var vector_to_player =  (get_node("../PC_Template").position - position)
-#	print('vector: ' + str(vector_to_player))
-	if vector_to_player.x != 0 and vector_to_player.x > 0: #normalize
-		vector_to_player.x = vector_to_player.x / vector_to_player.x
-	elif vector_to_player.x != 0 and vector_to_player.x < 0:
-		vector_to_player.x = -vector_to_player.x / vector_to_player.x
-	elif vector_to_player.y != 0 and vector_to_player.y > 0:
-		vector_to_player.y = vector_to_player.y / vector_to_player.y
-	elif vector_to_player.y != 0 and vector_to_player.y < 0:
-		vector_to_player.y = -vector_to_player.y / vector_to_player.y
-	initial_direction = vector_to_player
+func get_initial_direction():
+	if get_parent().gap_direction == 'up':
+		initial_direction = Vector2(0,1) #opposite of gap_direction
+	elif get_parent().gap_direction == 'down':
+		initial_direction = Vector2(0,-1)
+	elif get_parent().gap_direction == 'right':
+		initial_direction = Vector2(-1,0)
+	elif get_parent().gap_direction == 'left':
+		initial_direction = Vector2(1,0)
+#	var vector_to_player =  (get_node("../PC_Template").position - position)
+#	if vector_to_player.x != 0 and vector_to_player.x > 0: #normalize
+#		vector_to_player.x = vector_to_player.x / vector_to_player.x
+#	elif vector_to_player.x != 0 and vector_to_player.x < 0:
+#		vector_to_player.x = -vector_to_player.x / vector_to_player.x
+#	elif vector_to_player.y != 0 and vector_to_player.y > 0:
+#		vector_to_player.y = vector_to_player.y / vector_to_player.y
+#	elif vector_to_player.y != 0 and vector_to_player.y < 0:
+#		vector_to_player.y = -vector_to_player.y / vector_to_player.y
+#	initial_direction = vector_to_player
 #	print(initial_direction)
 
 func stop_follower():
