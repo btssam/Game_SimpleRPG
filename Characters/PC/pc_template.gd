@@ -167,7 +167,8 @@ func check_for_battle():
 		get_parent().isBattling = true
 		main_node.switch_scene("overworld", "battle")
 		get_parent().stop_party() #stop leader
-		get_parent().direction = null
+#		get_parent().direction = null
+#		get_parent().previous_direction = Vector2(0,0) #assure movement when returning from battle
 		update_animation("battling")
 		get_next_battle_counter()
 	else:

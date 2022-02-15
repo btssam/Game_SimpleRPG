@@ -48,6 +48,7 @@ func remove_last_direction():
 	position_array.pop_front()
 
 func add_directions(leader_position, direction): #when party moves, this happens
+	print('new_direction') #oftentimes not called after return from battle. perhaps if moving the same direction as before?
 	position_array.append(leader_position)
 	direction_array.append(direction)
 
