@@ -92,18 +92,28 @@ func load_scene(scene_name):
 
 
 func test_gap_direction():
+	var gap_direction_confirmed = false
+	party_node.gap_direction = 'right'
 	party_node.add_child(load(gap_directions_test).instance())
-	print(party_node.get_node("Gap_Directions/Timer"))
 	party_node.get_node("Gap_Directions/Timer").start()
 	yield(party_node.get_node("Gap_Directions/Timer"), "timeout")
-	if party_node.get_node("Gap_Directions/Down_Gap_Test").overlaps_body(get_node("Town_Template/Collision")): #change to ow_template
-		print('problem with down_direction')
-	elif party_node.get_node("Gap_Directions/Right_Gap_Test").overlaps_body(get_node("Town_Template/Collision")):
-		print('problem with right_direction')
-	elif party_node.get_node("Gap_Directions/Left_Gap_Test").overlaps_body(get_node("Town_Template/Collision")):
-		print('problem with left_direction')
-	elif party_node.get_node("Gap_Directions/Up_Gap_Test").overlaps_body(get_node("Town_Template/Collision")):
-		print('problem with up_direction')
-	else:
-		print('use default collision')
+	while(!gap_direction_confirmed):
+		if !party_node.get_node("Gap_Directions/Down_Gap_Test").overlaps_body(get_node("Town_Template/Collision")): #change to ow_template
+			party_node.gap_direction = 'down'
+			gap_direction_confirmed = true
+		elif !party_node.get_node("Gap_Directions/Right_Gap_Test").overlaps_body(get_node("Town_Template/Collision")):
+			party_node.gap_direction = 'right'
+			gap_direction_confirmed = true
+		elif !party_node.get_node("Gap_Directions/Left_Gap_Test").overlaps_body(get_node("Town_Template/Collision")):
+			party_node.gap_direction = 'left'
+			gap_direction_confirmed = true
+		elif !party_node.get_node("Gap_Directions/Up_Gap_Test").overlaps_body(get_node("Town_Template/Collision")):
+			party_node.gap_direction == 'up'
+			gap_direction_confirmed = true
+		else:
+			print('error, no gap directions are satisfactory')
+			party_node.gap_direction == 'down'
+			gap_direction_confirmed = true
+		print('An iteration loop went by.')
+	print(party_node.gap_direction)
 	party_node.get_node("Gap_Directions").queue_free()

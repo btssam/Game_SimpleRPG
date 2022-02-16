@@ -23,7 +23,7 @@ var isBattling = false
 
 func _ready():
 	position = get_node("../Town_Template/Spawn_Points/Initial").position
-	add_followers(3)
+#	add_followers(3)
 
 func _process(delta):
 	if not isBattling:
@@ -74,7 +74,7 @@ func move_party():
 			isDirectionChanged = true       #i. e. to set this variable
 		var leader_position = get_node("PC_Template").position
 		collision_info = get_node("PC_Template").move_and_collide(direction)
-		adjust_z_index()
+#		adjust_z_index()
 
 		if isDirectionChanged:
 			for i in range(1, get_child_count()):
