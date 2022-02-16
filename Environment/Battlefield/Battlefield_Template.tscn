@@ -24,6 +24,3 @@ autoplay = true
 
 [node name="PC_1" type="Position2D" parent="Spawn_Points"]
 position = Vector2( 800, 512 )
-
-[node name="PC_2" type="Position2D" parent="Spawn_Points"]
-position = Vector2( 800, 434 )

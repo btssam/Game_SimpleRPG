@@ -121,7 +121,6 @@ func stop_battle_check():
 	$Delta_Position1.stop()
 	$Delta_Position2.stop()
 
-
 ###Battling code
 func check_for_death():
 	if hp <= 0:

@@ -9,7 +9,8 @@ var gameover_node = "res://Game/Game_Over.tscn"
 var current_scene = "town"
 var party_return_position
 
-
+func _ready():
+	test_for_collision()
 
 func _input(event):
 	###for testing
@@ -49,20 +50,21 @@ func switch_scene(from_scene, to_scene):
 			party_node.gap_direction = 'battling'
 			party_return_position = party_node.position + party_node.get_node("PC_Template").position
 			party_node.get_node("PC_Template").position = Vector2(0,0)
-#			party_node.position = Vector2(800, 512)
 			party_node.position = battle.get_node("Spawn_Points/PC_1").position
 			load_scene(battle)
 			call_deferred("remove_child", $Overworld_Template)
 			current_scene = "battle"
-			get_node("Party/Party_PC_Template1").set_battle_positions()
 	
 	if from_scene == "battle":
 		if to_scene == "overworld":
 			var overworld = load(overworld_node).instance()
+#			intersect_point(party_return_position)
+#			if party_node.gap_direction == 'down':
+#				if party_return_position + Vector2(0, 105): #is within a collision? #maybe just grab the tails direction? no I could see that being off
+#					party_node.gap_direction == 'up'
 			party_node.gap_direction = 'down'
 			party_node.get_node("PC_Template").position = Vector2(0,0)
-			party_node.position = party_return_position
-#			party_node.position = overworld.get_node("Spawn_Points/From_Town").position
+			party_node.position = party_return_position #need to adjust gap_direction based on that.
 			load_scene(overworld)
 			call_deferred("remove_child", $Battlefield_Template)
 			current_scene = "overworld"
@@ -87,3 +89,8 @@ func switch_scene(from_scene, to_scene):
 func load_scene(scene_name):
 	call_deferred("add_child", scene_name)
 
+func test_for_collision():
+	var position = Vector2(100, 100)
+	var physics = get_tree().get_direct_space_state()
+	var points = physics.intersect_point(position, 1, [], 2147483647, false, true)
+	print(points)
