@@ -7,10 +7,16 @@ var overworld_node = "res://Environment/Overworld/Mainworld/Overworld_Template.t
 var battle_node = "res://Environment/Battlefield/Battlefield_Template.tscn"
 var gameover_node = "res://Game/Game_Over.tscn"
 var current_scene = "town"
+
 var party_return_position
+var gap_directions_test = "res://Characters/PC/Gap_Directions.tscn"
+
 
 func _ready():
-	test_for_collision()
+	test_gap_direction()
+
+#func _process(delta):
+#	test_gap_direction()
 
 func _input(event):
 	###for testing
@@ -24,7 +30,6 @@ func _input(event):
 	if event.is_action_pressed("ui_cancel"):
 		get_tree().quit()
 
-# need to add a spawn_point argument for positioning
 func switch_scene(from_scene, to_scene): 
 	if from_scene == "town":
 		if to_scene == "overworld":
@@ -58,10 +63,6 @@ func switch_scene(from_scene, to_scene):
 	if from_scene == "battle":
 		if to_scene == "overworld":
 			var overworld = load(overworld_node).instance()
-#			intersect_point(party_return_position)
-#			if party_node.gap_direction == 'down':
-#				if party_return_position + Vector2(0, 105): #is within a collision? #maybe just grab the tails direction? no I could see that being off
-#					party_node.gap_direction == 'up'
 			party_node.gap_direction = 'down'
 			party_node.get_node("PC_Template").position = Vector2(0,0)
 			party_node.position = party_return_position #need to adjust gap_direction based on that.
@@ -89,8 +90,20 @@ func switch_scene(from_scene, to_scene):
 func load_scene(scene_name):
 	call_deferred("add_child", scene_name)
 
-func test_for_collision():
-	var position = Vector2(100, 100)
-	var physics = get_tree().get_direct_space_state()
-	var points = physics.intersect_point(position, 1, [], 2147483647, false, true)
-	print(points)
+
+func test_gap_direction():
+	party_node.add_child(load(gap_directions_test).instance())
+	print(party_node.get_node("Gap_Directions/Timer"))
+	party_node.get_node("Gap_Directions/Timer").start()
+	yield(party_node.get_node("Gap_Directions/Timer"), "timeout")
+	if party_node.get_node("Gap_Directions/Down_Gap_Test").overlaps_body(get_node("Town_Template/Collision")): #change to ow_template
+		print('problem with down_direction')
+	elif party_node.get_node("Gap_Directions/Right_Gap_Test").overlaps_body(get_node("Town_Template/Collision")):
+		print('problem with right_direction')
+	elif party_node.get_node("Gap_Directions/Left_Gap_Test").overlaps_body(get_node("Town_Template/Collision")):
+		print('problem with left_direction')
+	elif party_node.get_node("Gap_Directions/Up_Gap_Test").overlaps_body(get_node("Town_Template/Collision")):
+		print('problem with up_direction')
+	else:
+		print('use default collision')
+	party_node.get_node("Gap_Directions").queue_free()

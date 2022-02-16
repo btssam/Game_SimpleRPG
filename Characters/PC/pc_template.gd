@@ -130,4 +130,3 @@ func check_for_death():
 		$AnimatedSprite.play("dying")
 		yield($AnimatedSprite, "animation_finished")
 		main_node.switch_scene('battle', 'gameover')
-
