@@ -111,6 +111,14 @@ func reset_follower():
 		$AnimatedSprite.animation = "idle_battle"
 		$AnimatedSprite.frame = 0
 
+func set_battle_positions():
+#	var node = get_node("../../")
+#	var node = call_deferred("get_node", "../..")
+#	call_deferred("print", node.name)
+#	Battlefield_Template/Spawn_Points/PC_2
+	if name == 'Party_PC_Template1':
+		global_position = Vector2(10,10)
+
 ###Battling code
 func check_for_death():
 	if hp <= 0:

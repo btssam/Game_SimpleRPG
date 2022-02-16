@@ -147,6 +147,8 @@ func reset_party_position():
 			get_child(i).position = get_child(i-1).position + Vector2(0, gap)
 		elif gap_direction == 'down':
 			get_child(i).position = get_child(i-1).position + Vector2(0, -gap)
+		elif gap_direction == 'battling':
+			get_child(i).position = get_child(i-1).position + Vector2(0, -80)
 		get_child(i).reset_follower()
 #		get_child(i).add_directions(leader_position, direction) #wrong direction when returning from battle #I'm not sure this is even necessary
 		previous_direction = Vector2(0,0)

@@ -14,7 +14,19 @@ __meta__ = {
 [node name="Battle_Bottom_UI" parent="." instance=ExtResource( 2 )]
 
 [node name="Command_Card" parent="." instance=ExtResource( 1 )]
-position = Vector2( 673.6, 446 )
+position = Vector2( 674, 446 )
+scale = Vector2( 3.2, 4.4 )
+
+[node name="Command_Card2" parent="." instance=ExtResource( 1 )]
+position = Vector2( 674, 366 )
+scale = Vector2( 3.2, 4.4 )
+
+[node name="Command_Card3" parent="." instance=ExtResource( 1 )]
+position = Vector2( 674, 286 )
+scale = Vector2( 3.2, 4.4 )
+
+[node name="Command_Card4" parent="." instance=ExtResource( 1 )]
+position = Vector2( 674, 206 )
 scale = Vector2( 3.2, 4.4 )
 
 [node name="Victory_Popup" parent="." instance=ExtResource( 3 )]

@@ -19,3 +19,11 @@ volume_db = -9.0
 autoplay = true
 
 [node name="BattleUI" parent="." instance=ExtResource( 4 )]
+
+[node name="Spawn_Points" type="Node2D" parent="."]
+
+[node name="PC_1" type="Position2D" parent="Spawn_Points"]
+position = Vector2( 800, 512 )
+
+[node name="PC_2" type="Position2D" parent="Spawn_Points"]
+position = Vector2( 800, 434 )
