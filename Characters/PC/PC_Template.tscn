@@ -1,8 +1,9 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://Characters/PC/PC_Spritesheet.png" type="Texture" id=1]
 [ext_resource path="res://Characters/PC/pc_template.gd" type="Script" id=2]
 [ext_resource path="res://Characters/PC/Battle/PC_Battle_Spritesheet.png" type="Texture" id=3]
+[ext_resource path="res://Characters/PC/Gap_Directions.tscn" type="PackedScene" id=4]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 1 )
@@ -195,6 +196,8 @@ one_shot = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/attack = SubResource( 26 )
+
+[node name="Gap_Directions" parent="." instance=ExtResource( 4 )]
 
 [connection signal="body_entered" from="Area2D_Interact" to="." method="_on_Area2D_Interact_body_entered"]
 [connection signal="body_exited" from="Area2D_Interact" to="." method="_on_Area2D_Interact_body_exited"]
