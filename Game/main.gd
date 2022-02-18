@@ -13,12 +13,6 @@ onready var gap_test_node = party_node.get_node("PC_Template/Gap_Directions")
 var return_gap_direction
 
 
-#func _ready():
-#	gap_test_node.get_node("Timer").start()
-	
-
-#func _process(delta):
-#	test_gap_direction()
 
 func _input(event):
 	###for testing
@@ -31,6 +25,8 @@ func _input(event):
 			$Overworld_Template/AudioStreamPlayer.playing = !$Overworld_Template/AudioStreamPlayer.playing
 	if event.is_action_pressed("ui_cancel"):
 		get_tree().quit()
+
+
 
 func switch_scene(from_scene, to_scene): 
 	if from_scene == "town":
@@ -53,28 +49,14 @@ func switch_scene(from_scene, to_scene):
 			call_deferred("remove_child", $Overworld_Template)
 			current_scene = "town"
 		if to_scene == "battle":
-##			test_gap_direction() #set gap_direction for return #TRY A TEMP GAP_DIRECTION AND APPLY ON RETURN, AS IT IS SET TO BATTLING
-#			var battle = load(battle_node).instance()
-#			party_node.gap_direction = 'battling'
-#			party_return_position = party_node.position + party_node.get_node("PC_Template").position
-#			party_node.get_node("PC_Template").position = Vector2(0,0)
-#			party_node.position = battle.get_node("Spawn_Points/PC_1").position
-#			call_deferred("remove_child", $Overworld_Template)
-#			current_scene = "battle"
-#			load_scene(battle)
-			gap_test_node.get_node("Timer_For_Test").start()
+			test_gap_direction()
 	
 	if from_scene == "battle":
 		if to_scene == "overworld":
 			var overworld = load(overworld_node).instance()
 			party_node.get_node("PC_Template").position = Vector2(0,0)
-			party_node.position = party_return_position #need to adjust gap_direction based on that.
-#			party_node.gap_direction = 'down'
+			party_node.position = party_return_position
 			party_node.gap_direction = return_gap_direction
-#			test_gap_direction()
-#			var gap_test_node = party_node.get_node("PC_Template/Gap_Directions")
-#			gap_test_node.get_node("Timer").start()
-#			yield(gap_test_node.get_node("Timer"), "timeout")
 			load_scene(overworld)
 			call_deferred("remove_child", $Battlefield_Template)
 			current_scene = "overworld"
@@ -85,7 +67,7 @@ func switch_scene(from_scene, to_scene):
 			load_scene(gameover)
 			call_deferred("remove_child", $Battlefield_Template)
 			current_scene = "gameover"
-			
+
 	if from_scene == "gameover":
 		if to_scene == "town":
 			var town = load(town_node).instance()
@@ -100,17 +82,13 @@ func load_scene(scene_name):
 	call_deferred("add_child", scene_name)
 
 
+#return from battle
 func test_gap_direction(): #doesn't test again other collision types beside enviornment
 	var gap_direction_confirmed = false
 	return_gap_direction = 'down'
-#	var gap_test_node = party_node.get_node("PC_Template/Gap_Directions")
-#	gap_test_node.get_node("Timer").start()
-#	yield(gap_test_node.get_node("Timer"), "timeout") #else it is innacurate. this yield causes other functions to continue while it waits, and doesn't allow the set gap_direction to affect anything. it is too late
-	
 	var collision_node = get_node("Overworld_Template/Collision")
-	
 	while(!gap_direction_confirmed):
-		if !gap_test_node.get_node("Down_Gap_Test").overlaps_body(collision_node):  #Seemed to work better with party_node. something to do with the fact that it thinks its on battlefield_template and cant find overworld_template. possibly because the yield isn't working as I expect, it's just yield for the rest of this function, but not yielding for the functions that follows. The following function just go right on ahead without waiting for this one to complete.
+		if !gap_test_node.get_node("Down_Gap_Test").overlaps_body(collision_node):
 			return_gap_direction = 'down'
 			gap_direction_confirmed = true
 		elif !gap_test_node.get_node("Right_Gap_Test").overlaps_body(collision_node):
@@ -126,13 +104,9 @@ func test_gap_direction(): #doesn't test again other collision types beside envi
 			print('error, no gap directions are satisfactory')
 			return_gap_direction == 'down'
 			gap_direction_confirmed = true
-	print(return_gap_direction)
-	gap_test_node.get_node("Timer_For_Load").start()
-	
-	
+	to_battle_from_overworld()
 
 func to_battle_from_overworld():
-#	test_gap_direction() #set gap_direction for return #TRY A TEMP GAP_DIRECTION AND APPLY ON RETURN, AS IT IS SET TO BATTLING
 	var battle = load(battle_node).instance()
 	party_node.gap_direction = 'battling'
 	party_return_position = party_node.position + party_node.get_node("PC_Template").position
