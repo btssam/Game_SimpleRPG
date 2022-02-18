@@ -70,6 +70,7 @@ func move_party():
 	if not isStopped or isAgainstAWall:
 		var isDirectionChanged = false
 		if previous_direction != direction: #previous_direction exists to note when 
+			print('going to add direction because ' + str(previous_direction ) + ' != ' + str(direction))
 			previous_direction = direction  #direction has changed
 			isDirectionChanged = true       #i. e. to set this variable
 		var leader_position = get_node("PC_Template").position
@@ -152,6 +153,7 @@ func reset_party_position():
 		get_child(i).reset_follower()
 #		get_child(i).add_directions(leader_position, direction) #wrong direction when returning from battle #I'm not sure this is even necessary
 		previous_direction = Vector2(0,0)
+		direction = Vector2 (0,0)
 	isStartingToMove = false
 
 func adjust_z_index():

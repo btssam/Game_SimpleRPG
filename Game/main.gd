@@ -141,3 +141,4 @@ func to_battle_from_overworld():
 	call_deferred("remove_child", $Overworld_Template)
 	current_scene = "battle"
 	load_scene(battle)
+	get_node("Party").reset_party_position()
