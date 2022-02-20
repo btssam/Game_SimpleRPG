@@ -70,11 +70,10 @@ func move_party():
 	if not isStopped or isAgainstAWall:
 		var isDirectionChanged = false
 		if previous_direction != direction: #previous_direction exists to note when 
-			print('going to add direction because ' + str(previous_direction ) + ' != ' + str(direction))
 			previous_direction = direction  #direction has changed
 			isDirectionChanged = true       #i. e. to set this variable
 		var leader_position = get_node("PC_Template").position
-		collision_info = get_node("PC_Template").move_and_collide(direction)
+		collision_info = get_node("PC_Template").move_and_collide(direction) #it only realizes its colliding once it already has moved (this is called after it checks for collision, meaning it only realizes on the next loop/frame). maybe try that test version of move_and_collide in check_for_collision
 		adjust_z_index()
 
 		if isDirectionChanged:
