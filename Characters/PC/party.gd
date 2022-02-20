@@ -23,7 +23,7 @@ var isBattling = false
 
 func _ready():
 	position = get_node("../Town_Template/Spawn_Points/Initial").position
-#	add_followers(3)
+	add_followers(3)
 
 func _process(delta):
 	if not isBattling:
@@ -59,7 +59,7 @@ func _process(delta):
 		elif(Input.is_action_just_released("right")):
 			stop_party()
 			animation_name = 'stop'
-		get_node("PC_Template").update_animation(animation_name) #called with wrong value upon returning from battle
+		get_node("PC_Template").update_animation(animation_name)
 		call_deferred("check_for_collision") #if not deferred, followers will move too late
 		if isAgainstAWall:
 			stop_party_for_collision()
@@ -73,8 +73,8 @@ func move_party():
 			previous_direction = direction  #direction has changed
 			isDirectionChanged = true       #i. e. to set this variable
 		var leader_position = get_node("PC_Template").position
-		collision_info = get_node("PC_Template").move_and_collide(direction)
-#		adjust_z_index()
+		collision_info = get_node("PC_Template").move_and_collide(direction) #it only realizes its colliding once it already has moved (this is called after it checks for collision, meaning it only realizes on the next loop/frame). maybe try that test version of move_and_collide in check_for_collision
+		adjust_z_index()
 
 		if isDirectionChanged:
 			for i in range(1, get_child_count()):
@@ -139,7 +139,7 @@ func party_has_begun_moving():
 func reset_party_position():
 	var leader_position = get_node("PC_Template").position
 	for i in range(1, get_child_count()):
-		if gap_direction == 'left': #maybe a gap_direction for battle #should check if gap_direction collides, especially on return from battle
+		if gap_direction == 'left':
 			get_child(i).position = get_child(i-1).position + Vector2(gap,0)
 		elif gap_direction == 'right':
 			get_child(i).position = get_child(i-1).position + Vector2(-gap, 0)
@@ -150,8 +150,8 @@ func reset_party_position():
 		elif gap_direction == 'battling':
 			get_child(i).position = get_child(i-1).position + Vector2(0, -80)
 		get_child(i).reset_follower()
-#		get_child(i).add_directions(leader_position, direction) #wrong direction when returning from battle #I'm not sure this is even necessary
 		previous_direction = Vector2(0,0)
+		direction = Vector2 (0,0)
 	isStartingToMove = false
 
 func adjust_z_index():
