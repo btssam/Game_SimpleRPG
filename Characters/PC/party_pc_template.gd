@@ -35,7 +35,8 @@ func _process(delta):
 ###movement/following
 func move_follower():
 	if direction_array.size() > 0:  #party has moved
-		if position.round() == position_array[0].round(): #once follower reaches where the postion of when the party changed directions... (round helps prevent problem with collision slightly altering position
+		if position == position_array[0]: #once follower reaches where the postion of when the party changed directions... (round helps prevent problem with collision slightly altering position. I need to deal with the fact that they move slightly when pushing against a wall, rather than just rounding. checking for collision_info at the right time helps)
+			print('change_direction')
 			current_direction = direction_array[0] #...change direction
 			animation_name = convert_movement_to_string(current_direction)
 			update_animation(animation_name)
@@ -49,7 +50,7 @@ func remove_last_direction():
 func add_directions(leader_position, direction): #when party moves, this happens
 	#oftentimes not called after return from battle. perhaps if moving the same direction as before?
 	print('Added_directions at ' + str(leader_position) + ' heading toward ' + str(direction))
-	position_array.append(leader_position)
+	position_array.append(leader_position) #could round here
 	direction_array.append(direction)
 
 func movement_has_begun():

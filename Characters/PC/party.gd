@@ -9,13 +9,15 @@ onready var follower_3 = preload("res://Characters/PC/Party_PC_Template3.tscn")
 var follower_instance
 var collision_info
 var isAgainstAWall = false
-var collision_direction
+var collision_direction = Vector2(0,0)
 var isStartingToMove = false
 var isStopped = false
 
 var animation_name
 
 var gap_direction = 'down'
+
+var collision_direction_info
 
 #battle
 var isBattling = false
@@ -60,10 +62,12 @@ func _process(delta):
 			stop_party()
 			animation_name = 'stop'
 		get_node("PC_Template").update_animation(animation_name)
-		call_deferred("check_for_collision") #if not deferred, followers will move too late
+#		call_deferred("check_for_collision") #if not deferred, followers will move too late. deferring this may cause it to move before realizing it is against a wall
+		check_for_collision()
 		if isAgainstAWall:
 			stop_party_for_collision()
-		move_party()
+		if not isAgainstAWall:
+			move_party()
 
 
 func move_party():
@@ -73,10 +77,11 @@ func move_party():
 			previous_direction = direction  #direction has changed
 			isDirectionChanged = true       #i. e. to set this variable
 		var leader_position = get_node("PC_Template").position
-		collision_info = get_node("PC_Template").move_and_collide(direction) #it only realizes its colliding once it already has moved (this is called after it checks for collision, meaning it only realizes on the next loop/frame). maybe try that test version of move_and_collide in check_for_collision
+#		collision_info = get_node("PC_Template").move_and_collide(direction) #it only realizes its colliding once it already has moved (this is called after it checks for collision, meaning it only realizes on the next loop/frame). maybe try that test version of move_and_collide in check_for_collision
+		get_node("PC_Template").move_and_collide(direction)
 		adjust_z_index()
 
-		if isDirectionChanged:
+		if isDirectionChanged and direction != collision_direction:
 			for i in range(1, get_child_count()):
 				get_child(i).add_directions(leader_position, direction)
 
@@ -121,12 +126,14 @@ func resume_follower_movement():
 		get_child(i).resume_follower()
 
 func check_for_collision():
+	move_and_collide_test()
 	if collision_info != null:
 		collision_direction = direction
 		isAgainstAWall = true
 	else:
 		if direction != collision_direction: #not moving toward wall
 			set_deferred("isAgainstAWall", false)
+			move_and_collide_test_collision_direction()
 
 func party_has_begun_moving():
 	if not isStartingToMove: #used so that this only occurs once
@@ -164,3 +171,15 @@ func adjust_z_index():
 			get_child(i).z_index = i + 1
 		elif get_child(i).current_direction == Vector2(0, 1):
 			get_child(i).z_index = 4 - i
+
+func move_and_collide_test():
+	collision_info = get_node("PC_Template").move_and_collide(direction, true, true, true)
+#	print(collision_info)
+#	move_and_collide(rel_vec: Vector2, infinite_inertia: bool = true, exclude_raycast_shapes: bool = true, test_only: bool = false)
+
+func move_and_collide_test_collision_direction():
+	collision_direction_info = get_node("PC_Template").move_and_collide(collision_direction, true, true, true)
+	if collision_direction_info == null:
+		collision_direction = Vector2(0,0)
+
+	
