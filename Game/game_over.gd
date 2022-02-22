@@ -16,5 +16,5 @@ func _input(event):
 		AnimatedSpriteNode.animation = "walk_down"
 		AnimatedSpriteNode.stop()
 		AnimatedSpriteNode.frame = 1
-		player_node.hp = player_node.maxhp #need to rest all hp'
+		player_node.hp = player_node.maxhp #need to reset all char' hp
 		player_2_node.hp = player_2_node.maxhp

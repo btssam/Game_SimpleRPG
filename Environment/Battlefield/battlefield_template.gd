@@ -278,7 +278,7 @@ func close_scene():
 	main_node.switch_scene('battle', 'overworld')
 	player_node.reset_battle_check()
 	player_node.hp = player_node.maxhp
-	player_2_node.hp = player_node.maxhp #add other players
+	player_2_node.hp = player_2_node.maxhp #add other players
 	current_selection = 0
 	isVictorious = false
 
@@ -332,9 +332,12 @@ func act_in_order():
 				update_log("It is the player's turn!")
 				isPlayersTurn = true
 		else:
-			update_log("It is [color=red]" + turn_order[0].enemy_name + "[/color]'s turn!")
-			isPlayersTurn = false
-			enemy_attack()
+			if player_node.hp <= 0:
+				turn_order = []
+			else:
+				update_log("It is [color=red]" + turn_order[0].enemy_name + "[/color]'s turn!")
+				isPlayersTurn = false
+				enemy_attack()
 
 func shift_turn_order():
 	var first_unit = turn_order[0] #move the turn order forward once someone goes
@@ -350,7 +353,7 @@ func enemy_attack():
 	enemy_animationPlayer_node.play('attack')
 	yield(enemy_animationPlayer_node, 'animation_finished')
 	player_node.hp -= 1
-	player_node.check_for_death()
+	player_node.check_for_death() #my enemy attacks after character is daed, therefore glitching the game_over_load
 	call_deferred("update_PC_UI") #if i dont defer, player goes to -1 as it is updated too quickly
 	shift_turn_order()
 	act_in_order()
