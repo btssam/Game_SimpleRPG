@@ -71,6 +71,7 @@ func switch_scene(from_scene, to_scene):
 	if from_scene == "gameover":
 		if to_scene == "town":
 			var town = load(town_node).instance()
+			party_node.gap_direction = 'down'
 			party_node.get_node("PC_Template").position = Vector2(0,0)
 			party_node.position = Vector2(512, 384)
 			load_scene(town)

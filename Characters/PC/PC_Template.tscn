@@ -171,6 +171,8 @@ scale = Vector2( 1.6, 2.2 )
 z_index = 1
 collision_mask = 6
 script = ExtResource( 2 )
+hp = 1
+maxhp = 1
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 23 )

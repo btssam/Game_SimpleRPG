@@ -22,6 +22,7 @@ var collision_direction_info
 #battle
 var isBattling = false #changed by PC_Template upon entering/leaving battle
 var isAttacking = false #changed by Battlefield_Template
+var isPartyDead = false
 
 
 func _ready():

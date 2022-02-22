@@ -43,6 +43,7 @@ var isPlayerAnimating = false
 ###adding party
 onready var party_node = get_node("../Party")
 onready var player_2_node = get_node("../Party/Party_PC_Template1")
+var active_party_member = 1
 
 func _ready():
 	####initialize
@@ -55,8 +56,10 @@ func _ready():
 	command_card_3.hide()
 	command_card_4.hide()
 	###UI_update
-	initialize_enemy_UI()
-	initialize_PC_UI()
+#	initialize_enemy_UI()
+	update_enemy_UI()
+#	initialize_PC_UI()
+	update_PC_UI()
 	initialize_log()
 	###turn_ordering
 	initialize_turn_order()
@@ -65,7 +68,7 @@ func _input(event):
 	if isVictorious:
 		if event.is_action_pressed("interact"):
 			close_scene()
-	if not player_node.isDead and not party_node.isAttacking: #can't do anything when dead. should be isTeamDead
+	if not player_node.isDead and not party_node.isAttacking: #can't do anything when dead. should be isTeamDead #party_node.isPartyDead
 		###targeting
 		if isPlayersTurn:
 			if isSelectingTarget:
@@ -107,7 +110,7 @@ func get_random_unit():
 func add_enemies():
 	for i in range(0, number_of_units):
 		var enemy = load(enemy_node).instance()
-		var enemy_sprite = enemy.get_node("Sprite") #eventually will want different enemy scenes for each
+		var enemy_sprite = enemy.get_node("Sprite") #eventually will want different enemy scenes for each when they have dif functions
 		enemy_sprite.frame = get_random_unit()
 		if enemy_sprite.frame == 0:
 			enemy.enemy_name = "Blue Fairy"
@@ -138,18 +141,26 @@ func change_enemy_position():
 
 ####commandcard
 func process_command():
-	if isPlayersTurn:
+	if isPlayersTurn: #which players?
 		get_card_nodes()
 
 		if not isSelectingTarget:
-			if not cardIsVisible:
-				command_card_1.show()
+			if not cardIsVisible: #pop up card
+#				command_card_1.show()
+				if active_party_member == 1:
+					command_card_1.show()
+				elif active_party_member == 2:
+					command_card_2.show()
 				cardIsVisible = true
 				isSelectingCommand = true
 				enable_card_selector_sprite()
-			else:
+			else: #make selection. hide card
 				disable_card_selector_sprite()
-				command_card_1.hide()
+#				command_card_1.hide()
+				if active_party_member == 1:
+					command_card_1.hide()
+				elif active_party_member == 2:
+					command_card_2.hide()
 				cardIsVisible = false
 				current_command = current_selection  #do this here so dif. skills may target differently
 				if current_selection == 0: #attack
@@ -177,7 +188,12 @@ func change_command(direction):
 			enable_card_selector_sprite()
 
 func get_card_nodes():
-	var commands_list = command_card_1.get_node("TextureRect").get_children()
+#	var commands_list = command_card_1.get_node("TextureRect").get_children()
+	var commands_list
+	if active_party_member == 1:
+		commands_list = command_card_1.get_node("TextureRect").get_children()
+	elif active_party_member == 2:
+		commands_list = command_card_2.get_node("TextureRect").get_children()
 	card_selector_sprite = commands_list[current_selection].get_node("Selector")
 	card_animation_player = commands_list[current_selection].get_node("AnimationPlayer")
 
@@ -211,6 +227,10 @@ func change_target(direction):
 			current_target += 1
 			enable_selector_sprite()
 	
+func get_target_nodes():
+	target_selector_sprite = targetable_enemy_list[current_target].get_node("Selector")
+	target_animation_player = targetable_enemy_list[current_target].get_node("AnimationPlayer")
+	
 func enable_selector_sprite():
 	get_target_nodes()
 	target_selector_sprite.visible = true
@@ -220,10 +240,6 @@ func disable_selector_sprite():
 	get_target_nodes()
 	target_selector_sprite.visible = false
 	target_animation_player.stop()
-
-func get_target_nodes():
-	target_selector_sprite = targetable_enemy_list[current_target].get_node("Selector")
-	target_animation_player = targetable_enemy_list[current_target].get_node("AnimationPlayer")
 
 func return_target():
 	isSelectingTarget = false
@@ -236,16 +252,24 @@ func return_target():
 func get_command():
 	if current_command == 0: #attack
 		party_node.isAttacking = true
-		player_node.get_node("AnimationPlayer").play("attack")
-		yield(player_node.get_node("AnimatedSprite"), "animation_finished")
-		player_node.update_animation("battling")
+#		player_node.get_node("AnimationPlayer").play("attack")
+#		yield(player_node.get_node("AnimatedSprite"), "animation_finished")
+#		player_node.update_animation("battling")
+		if active_party_member == 1:
+			player_node.get_node("AnimationPlayer").play("attack")
+			yield(player_node.get_node("AnimatedSprite"), "animation_finished")
+			player_node.update_animation("battling")
+		elif active_party_member == 2:
+			player_2_node.get_node("AnimationPlayer").play("attack")
+			yield(player_2_node.get_node("AnimatedSprite"), "animation_finished")
+			player_2_node.update_animation("battling")
 		party_node.isAttacking = false
 		targetable_enemy_list[current_target].hp -= 1
 		check_enemy_death()
 		update_enemy_UI()
 		shift_turn_order()
 		act_in_order()
-	isPlayersTurn = false
+	isPlayersTurn = false #which Players?
 
 
 ###other
@@ -254,6 +278,7 @@ func close_scene():
 	main_node.switch_scene('battle', 'overworld')
 	player_node.reset_battle_check()
 	player_node.hp = player_node.maxhp
+	player_2_node.hp = player_node.maxhp #add other players
 	current_selection = 0
 	isVictorious = false
 
@@ -270,12 +295,14 @@ func update_enemy_UI():
 	enemy_stats_node.text = newText
 
 func initialize_PC_UI():
-	pc_stats_node.text += 'Player 1: ' + str(player_node.hp) + '\n'    #need to integrate multiple PC's
+	pc_stats_node.text += 'Player 1: ' + str(player_node.hp) + '\n' + 'Player 2: ' + str(player_2_node.hp) + '\n' #need to integrate multiple PC's
 
 func update_PC_UI():
 	var newText = ''
-	newText = 'Player 1: ' + str(player_node.hp) + '\n'    #need to integrate multiple PC's
+	newText = 'Player 1: ' + str(player_node.hp) + '\n' + 'Player 2: ' + str(player_2_node.hp) + '\n' #need to integrate multiple PC's
 	pc_stats_node.text = newText
+	
+	#arent all these initalize and update function the same? Couldn't I just call update?
 
 func initialize_log():
 	ui_log_node.bbcode_text = ''
@@ -319,12 +346,12 @@ func shift_turn_order():
 
 #enemy_AI
 func enemy_attack():
-	player_node.hp -= 1
-	player_node.check_for_death()
-	call_deferred("update_PC_UI") #if i dont defer, player goes to -1 as it is updated too quickly
 	enemy_animationPlayer_node = turn_order[0].get_node("AnimationPlayer")
 	enemy_animationPlayer_node.play('attack')
 	yield(enemy_animationPlayer_node, 'animation_finished')
+	player_node.hp -= 1
+	player_node.check_for_death()
+	call_deferred("update_PC_UI") #if i dont defer, player goes to -1 as it is updated too quickly
 	shift_turn_order()
 	act_in_order()
 
