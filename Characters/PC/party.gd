@@ -61,8 +61,7 @@ func _process(delta):
 		elif(Input.is_action_just_released("right")):
 			stop_party()
 			animation_name = 'stop'
-		get_node("PC_Template").update_animation(animation_name)
-#		call_deferred("check_for_collision") #if not deferred, followers will move too late. deferring this may cause it to move before realizing it is against a wall
+		get_node("PC_Template").update_animation(animation_name) #if not deferred, followers will move too late?
 		check_for_collision()
 		if isAgainstAWall:
 			stop_party_for_collision()
@@ -71,13 +70,12 @@ func _process(delta):
 
 
 func move_party():
-	if not isStopped or isAgainstAWall:
+	if not isStopped:
 		var isDirectionChanged = false
 		if previous_direction != direction: #previous_direction exists to note when 
 			previous_direction = direction  #direction has changed
 			isDirectionChanged = true       #i. e. to set this variable
 		var leader_position = get_node("PC_Template").position
-#		collision_info = get_node("PC_Template").move_and_collide(direction) #it only realizes its colliding once it already has moved (this is called after it checks for collision, meaning it only realizes on the next loop/frame). maybe try that test version of move_and_collide in check_for_collision
 		get_node("PC_Template").move_and_collide(direction)
 		adjust_z_index()
 
@@ -174,12 +172,10 @@ func adjust_z_index():
 
 func move_and_collide_test():
 	collision_info = get_node("PC_Template").move_and_collide(direction, true, true, true)
-#	print(collision_info)
-#	move_and_collide(rel_vec: Vector2, infinite_inertia: bool = true, exclude_raycast_shapes: bool = true, test_only: bool = false)
 
 func move_and_collide_test_collision_direction():
 	collision_direction_info = get_node("PC_Template").move_and_collide(collision_direction, true, true, true)
-	if collision_direction_info == null:
+	if collision_direction_info == null: #not moving toward wall
 		collision_direction = Vector2(0,0)
 
 	
