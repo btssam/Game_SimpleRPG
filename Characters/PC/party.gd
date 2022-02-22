@@ -20,7 +20,8 @@ var gap_direction = 'down'
 var collision_direction_info
 
 #battle
-var isBattling = false
+var isBattling = false #changed by PC_Template upon entering/leaving battle
+var isAttacking = false #changed by Battlefield_Template
 
 
 func _ready():

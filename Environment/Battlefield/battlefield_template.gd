@@ -41,6 +41,7 @@ onready var victory_node = get_node("BattleUI/Victory_Popup")
 var isVictorious = false
 var isPlayerAnimating = false
 ###adding party
+onready var party_node = get_node("../Party")
 onready var player_2_node = get_node("../Party/Party_PC_Template1")
 
 func _ready():
@@ -64,7 +65,7 @@ func _input(event):
 	if isVictorious:
 		if event.is_action_pressed("interact"):
 			close_scene()
-	if not player_node.isDead and not player_node.isAttacking: #can't do anything when dead. should be isTeamDead
+	if not player_node.isDead and not party_node.isAttacking: #can't do anything when dead. should be isTeamDead
 		###targeting
 		if isPlayersTurn:
 			if isSelectingTarget:
@@ -234,11 +235,11 @@ func return_target():
 #respond_to_command
 func get_command():
 	if current_command == 0: #attack
-		player_node.isAttacking = true
+		party_node.isAttacking = true
 		player_node.get_node("AnimationPlayer").play("attack")
 		yield(player_node.get_node("AnimatedSprite"), "animation_finished")
 		player_node.update_animation("battling")
-		player_node.isAttacking = false
+		party_node.isAttacking = false
 		targetable_enemy_list[current_target].hp -= 1
 		check_enemy_death()
 		update_enemy_UI()
