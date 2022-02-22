@@ -1,9 +1,9 @@
 extends KinematicBody2D
 
 ###movement
-var motion = Vector2()
-var running = false
-var speed = 2
+#var motion = Vector2()
+#var running = false
+#var speed = 2
 ###npc check
 var isInteractable = false
 var current_interaction

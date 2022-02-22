@@ -13,7 +13,11 @@ var current_selection = 0
 var target_selector_sprite
 var target_animation_player
 ###command card
-onready var command_card = $BattleUI/Command_Card
+onready var command_card_1 = $BattleUI/Command_Card
+onready var command_card_2 = $BattleUI/Command_Card2
+onready var command_card_3 = $BattleUI/Command_Card3
+onready var command_card_4 = $BattleUI/Command_Card4
+
 var card_selector_sprite
 var card_animation_player
 var cardIsVisible =  false
@@ -36,6 +40,8 @@ var targetable_number_of_units
 onready var victory_node = get_node("BattleUI/Victory_Popup")
 var isVictorious = false
 var isPlayerAnimating = false
+###adding party
+onready var player_2_node = get_node("../Party/Party_PC_Template1")
 
 func _ready():
 	####initialize
@@ -43,7 +49,10 @@ func _ready():
 	get_random_unit()
 	add_enemies()
 	###command card
-	command_card.hide()
+	command_card_1.hide()
+	command_card_2.hide()
+	command_card_3.hide()
+	command_card_4.hide()
 	###UI_update
 	initialize_enemy_UI()
 	initialize_PC_UI()
@@ -133,13 +142,13 @@ func process_command():
 
 		if not isSelectingTarget:
 			if not cardIsVisible:
-				command_card.show()
+				command_card_1.show()
 				cardIsVisible = true
 				isSelectingCommand = true
 				enable_card_selector_sprite()
 			else:
 				disable_card_selector_sprite()
-				command_card.hide()
+				command_card_1.hide()
 				cardIsVisible = false
 				current_command = current_selection  #do this here so dif. skills may target differently
 				if current_selection == 0: #attack
@@ -167,7 +176,7 @@ func change_command(direction):
 			enable_card_selector_sprite()
 
 func get_card_nodes():
-	var commands_list = command_card.get_node("TextureRect").get_children()
+	var commands_list = command_card_1.get_node("TextureRect").get_children()
 	card_selector_sprite = commands_list[current_selection].get_node("Selector")
 	card_animation_player = commands_list[current_selection].get_node("AnimationPlayer")
 
