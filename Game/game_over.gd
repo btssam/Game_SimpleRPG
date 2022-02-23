@@ -10,11 +10,8 @@ onready var party_node = get_node("../Party/")
 func _input(event):
 	if event.is_action_pressed('interact'):
 		main_node.switch_scene("gameover", "town")
-		player_node.isDead = false #need to reset each player
+		player_node.isDead = false #need to reset each player and the party isPartyDead
 		party_node.isBattling = false
-		var AnimatedSpriteNode = player_node.get_node("AnimatedSprite")
-		AnimatedSpriteNode.animation = "walk_down"
-		AnimatedSpriteNode.stop()
-		AnimatedSpriteNode.frame = 1
+		party_node.animation_name = 'idle_down'
 		player_node.hp = player_node.maxhp #need to reset all char' hp
 		player_2_node.hp = player_2_node.maxhp
