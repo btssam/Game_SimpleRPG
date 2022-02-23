@@ -139,31 +139,31 @@ extents = Vector2( 19, 28 )
 
 [sub_resource type="Animation" id=26]
 resource_name = "attack"
-tracks/0/type = "method"
-tracks/0/path = NodePath("AnimatedSprite")
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:offset")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
+"times": PoolRealArray( 0.1, 0.5, 0.8, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.5, -1 ), Vector2( -19.5, -1 ), Vector2( -19.5, -1 ), Vector2( 0.5, -1 ) ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath("AnimatedSprite")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [ "attack", false ],
 "method": "play"
 } ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("AnimatedSprite:offset")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0.1, 0.5, 0.8, 1 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 0.5, -1 ), Vector2( -19.5, -1 ), Vector2( -19.5, -1 ), Vector2( 0.5, -1 ) ]
 }
 
 [node name="PC_Template" type="KinematicBody2D"]

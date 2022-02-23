@@ -95,6 +95,14 @@ func update_animation(animation):
 	elif animation == 'stop':
 		$AnimatedSprite.stop()
 		$AnimatedSprite.frame = 1
+	elif animation == 'battling':
+		$AnimatedSprite.stop()
+		$AnimatedSprite.play("idle_battle")
+		$AnimatedSprite.frame = 0
+	elif animation == 'idle_down':
+		$AnimatedSprite.play("walk_down")
+		$AnimatedSprite.stop()
+		$AnimatedSprite.frame = 1
 
 
 ###scene_change
@@ -104,11 +112,9 @@ func reset_follower():
 	current_direction = Vector2(0,0)
 	get_initial_direction()
 	if not get_parent().isBattling:
-		$AnimatedSprite.animation = "walk_down"
-		$AnimatedSprite.frame = 1
+		update_animation("idle_down")
 	else:
-		$AnimatedSprite.animation = "idle_battle"
-		$AnimatedSprite.frame = 0
+		update_animation("battling")
 
 ###Battling code
 func check_for_death():

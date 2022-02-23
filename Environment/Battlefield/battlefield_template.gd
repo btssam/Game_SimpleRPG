@@ -153,6 +153,10 @@ func process_command():
 					command_card_1.show()
 				elif active_party_member == 2:
 					command_card_2.show()
+				elif active_party_member == 3:
+					command_card_3.show()
+				elif active_party_member == 4:
+					command_card_4.show()
 				cardIsVisible = true
 				isSelectingCommand = true
 				enable_card_selector_sprite()
@@ -163,6 +167,10 @@ func process_command():
 					command_card_1.hide()
 				elif active_party_member == 2:
 					command_card_2.hide()
+				elif active_party_member == 3:
+					command_card_3.hide()
+				elif active_party_member == 4:
+					command_card_4.hide()
 				cardIsVisible = false
 				current_command = current_selection  #do this here so dif. skills may target differently
 				if current_selection == 0: #attack
@@ -196,6 +204,10 @@ func get_card_nodes():
 		commands_list = command_card_1.get_node("TextureRect").get_children()
 	elif active_party_member == 2:
 		commands_list = command_card_2.get_node("TextureRect").get_children()
+	elif active_party_member == 3:
+		commands_list = command_card_3.get_node("TextureRect").get_children()
+	elif active_party_member == 4:
+		commands_list = command_card_4.get_node("TextureRect").get_children()
 	card_selector_sprite = commands_list[current_selection].get_node("Selector")
 	card_animation_player = commands_list[current_selection].get_node("AnimationPlayer")
 
@@ -264,14 +276,17 @@ func get_command():
 		elif active_party_member == 2:
 			player_2_node.get_node("AnimationPlayer").play("attack")
 			yield(player_2_node.get_node("AnimatedSprite"), "animation_finished")
+			print('animation_finished 2')
 			player_2_node.update_animation("battling")
 		elif active_party_member == 3:
 			player_3_node.get_node("AnimationPlayer").play("attack")
 			yield(player_3_node.get_node("AnimatedSprite"), "animation_finished")
+			print('animation_finished 3')
 			player_3_node.update_animation("battling")
 		elif active_party_member == 4:
 			player_4_node.get_node("AnimationPlayer").play("attack")
 			yield(player_4_node.get_node("AnimatedSprite"), "animation_finished")
+			print('animation_finished 4')
 			player_4_node.update_animation("battling")
 		party_node.isAttacking = false
 		targetable_enemy_list[current_target].hp -= 1
@@ -279,7 +294,7 @@ func get_command():
 		update_enemy_UI()
 		shift_turn_order()
 		act_in_order()
-	isPlayersTurn = false #which Players? use active_party_member to clarify
+#	isPlayersTurn = false #which Players? use active_party_member to clarify
 
 
 ###other
@@ -333,7 +348,10 @@ func update_log(message):
 func initialize_turn_order():
 	randomize()
 	var randomized_list = enemy_list.duplicate()
-	randomized_list.push_front(player_node) #Shouldn't necessarily be first, just for testing. Can fix by moving this line up
+	randomized_list.append(player_node)
+	randomized_list.append(player_2_node)
+	randomized_list.append(player_3_node)
+	randomized_list.append(player_4_node)
 	randomized_list.shuffle()
 	turn_order = randomized_list
 	act_in_order()
@@ -341,10 +359,23 @@ func initialize_turn_order():
 func act_in_order():
 	if not isVictorious:
 		if turn_order[0].name == "PC_Template":
-				update_log("It is the player's turn!")
+				update_log("It is Player 1's turn!")
+				active_party_member = 1
+				isPlayersTurn = true
+		elif turn_order[0].name == "Party_PC_Template1":
+				update_log("It is Player 2's turn!")
+				active_party_member = 2
+				isPlayersTurn = true
+		elif turn_order[0].name == "Party_PC_Template2":
+				update_log("It is Player 3's turn!")
+				active_party_member = 3
+				isPlayersTurn = true
+		elif turn_order[0].name == "Party_PC_Template3":
+				update_log("It is Player 4's turn!")
+				active_party_member = 4
 				isPlayersTurn = true
 		else:
-			if player_node.hp <= 0:
+			if player_node.hp <= 0: #check all 4/check isPartyDead
 				turn_order = []
 			else:
 				update_log("It is [color=red]" + turn_order[0].enemy_name + "[/color]'s turn!")
@@ -363,9 +394,9 @@ func shift_turn_order():
 func enemy_attack():
 	enemy_animationPlayer_node = turn_order[0].get_node("AnimationPlayer")
 	enemy_animationPlayer_node.play('attack')
-	yield(enemy_animationPlayer_node, 'animation_finished')
-	player_node.hp -= 1
-	player_node.check_for_death() #my enemy attacks after character is daed, therefore glitching the game_over_load
+	yield(enemy_animationPlayer_node, "animation_finished")
+	player_node.hp -= 1 #set a loop to pick a random target
+	player_node.check_for_death()
 	call_deferred("update_PC_UI") #if i dont defer, player goes to -1 as it is updated too quickly
 	shift_turn_order()
 	act_in_order()
