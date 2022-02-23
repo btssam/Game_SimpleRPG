@@ -43,7 +43,9 @@ var isPlayerAnimating = false
 ###adding party
 onready var party_node = get_node("../Party")
 onready var player_2_node = get_node("../Party/Party_PC_Template1")
-var active_party_member = 1
+onready var player_3_node = get_node("../Party/Party_PC_Template2")
+onready var player_4_node = get_node("../Party/Party_PC_Template3")
+var active_party_member = 1 #set during act_in_order. around isPlayersTurn
 
 func _ready():
 	####initialize
@@ -263,13 +265,21 @@ func get_command():
 			player_2_node.get_node("AnimationPlayer").play("attack")
 			yield(player_2_node.get_node("AnimatedSprite"), "animation_finished")
 			player_2_node.update_animation("battling")
+		elif active_party_member == 3:
+			player_3_node.get_node("AnimationPlayer").play("attack")
+			yield(player_3_node.get_node("AnimatedSprite"), "animation_finished")
+			player_3_node.update_animation("battling")
+		elif active_party_member == 4:
+			player_4_node.get_node("AnimationPlayer").play("attack")
+			yield(player_4_node.get_node("AnimatedSprite"), "animation_finished")
+			player_4_node.update_animation("battling")
 		party_node.isAttacking = false
 		targetable_enemy_list[current_target].hp -= 1
 		check_enemy_death()
 		update_enemy_UI()
 		shift_turn_order()
 		act_in_order()
-	isPlayersTurn = false #which Players?
+	isPlayersTurn = false #which Players? use active_party_member to clarify
 
 
 ###other
@@ -279,14 +289,16 @@ func close_scene():
 	player_node.reset_battle_check()
 	player_node.hp = player_node.maxhp
 	player_2_node.hp = player_2_node.maxhp #add other players
+	player_3_node.hp = player_3_node.maxhp
+	player_4_node.hp = player_4_node.maxhp
 	current_selection = 0
 	isVictorious = false
 
 
 ###updating UI
-func initialize_enemy_UI():
-	for i in range(0, number_of_units):
-		enemy_stats_node.text += enemy_list[i].enemy_name + ': ' + str(enemy_list[i].hp) + '\n'
+#func initialize_enemy_UI():
+#	for i in range(0, number_of_units):
+#		enemy_stats_node.text += enemy_list[i].enemy_name + ': ' + str(enemy_list[i].hp) + '\n'
 
 func update_enemy_UI():
 	var newText = ''
@@ -294,15 +306,15 @@ func update_enemy_UI():
 		newText += enemy_list[i].enemy_name + ': ' + str(enemy_list[i].hp) + '\n'
 	enemy_stats_node.text = newText
 
-func initialize_PC_UI():
-	pc_stats_node.text += 'Player 1: ' + str(player_node.hp) + '\n' + 'Player 2: ' + str(player_2_node.hp) + '\n' #need to integrate multiple PC's
+#func initialize_PC_UI():
+#	pc_stats_node.text += 'Player 1: ' + str(player_node.hp) + '\n' + 'Player 2: ' + str(player_2_node.hp) + '\n' #need to integrate multiple PC's. Should be backwards (Player 1 last), so that it aligns with the PC positions
 
 func update_PC_UI():
 	var newText = ''
-	newText = 'Player 1: ' + str(player_node.hp) + '\n' + 'Player 2: ' + str(player_2_node.hp) + '\n' #need to integrate multiple PC's
+	newText = 'Player 4: ' + str(player_4_node.hp) + '\n' + 'Player 3: ' + str(player_3_node.hp) + '\n' + 'Player 2: ' + str(player_2_node.hp) + '\n' + 'Player 1: ' + str(player_node.hp) + '\n'  #need to integrate multiple PC's
 	pc_stats_node.text = newText
 	
-	#arent all these initalize and update function the same? Couldn't I just call update?
+	#couldnt I just use update_UI instead of initialize (it sets with = rather than +=)
 
 func initialize_log():
 	ui_log_node.bbcode_text = ''
@@ -321,8 +333,8 @@ func update_log(message):
 func initialize_turn_order():
 	randomize()
 	var randomized_list = enemy_list.duplicate()
-	randomized_list.shuffle()
 	randomized_list.push_front(player_node) #Shouldn't necessarily be first, just for testing. Can fix by moving this line up
+	randomized_list.shuffle()
 	turn_order = randomized_list
 	act_in_order()
 

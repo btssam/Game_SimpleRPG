@@ -7,8 +7,8 @@ extends KinematicBody2D
 ###battle check
 #var isBattling = false
 ###combat stats
-export var hp = 5
-export var maxhp = 5
+export var hp: int
+export var maxhp: int
 var isDead = false
 ###nodes
 onready var main_node = get_node("..")
