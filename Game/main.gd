@@ -62,6 +62,7 @@ func switch_scene(from_scene, to_scene):
 			current_scene = "overworld"
 		if to_scene == "gameover":
 			var gameover = load(gameover_node).instance()
+			party_node.gap_direction = 'down'
 			party_node.get_node("PC_Template").position = Vector2(0,0)
 			party_node.position = Vector2(512, 384)
 			load_scene(gameover)
@@ -73,7 +74,8 @@ func switch_scene(from_scene, to_scene):
 			var town = load(town_node).instance()
 			party_node.gap_direction = 'down'
 			party_node.get_node("PC_Template").position = Vector2(0,0)
-			party_node.position = Vector2(512, 384)
+#			party_node.position = Vector2(512, 384)
+			party_node.position = town.get_node("Spawn_Points/From_Overworld").position
 			load_scene(town)
 			call_deferred("remove_child", $Game_Over)
 			current_scene = "town"

@@ -14,8 +14,8 @@ var current_position = Vector2()
 var previous_position = Vector2()
 var next_battle_counter = 0
 ###combat stats
-export var hp = 1
-export var maxhp = 1
+export var hp = 6
+export var maxhp = 6
 var isDead = false
 ###nodes
 onready var main_node = get_node("../..")
@@ -124,7 +124,6 @@ func stop_battle_check():
 ###Battling code
 func check_for_death():
 	if hp <= 0:
-		print('he dead')
 		hp = 0
 		get_node("../../Battlefield_Template").update_log("You have died!")
 		isDead = true
