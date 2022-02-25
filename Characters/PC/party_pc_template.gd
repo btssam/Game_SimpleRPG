@@ -11,7 +11,7 @@ export var hp: int
 export var maxhp: int
 var isDead = false
 ###nodes
-onready var main_node = get_node("..")
+onready var main_node = get_node("../..")
 ###attacking
 var isAttacking = false
 ###following/movement
@@ -120,8 +120,8 @@ func reset_follower():
 func check_for_death():
 	if hp <= 0:
 		hp = 0
-		get_node("../Battlefield_Template").update_log("You have died!")
+		get_node("../../Battlefield_Template").update_log("You have died!") #A party member has died.
 		isDead = true
 		$AnimatedSprite.play("dying")
 		yield($AnimatedSprite, "animation_finished")
-		main_node.switch_scene('battle', 'gameover')
+		main_node.switch_scene('battle', 'gameover')  # check for each party member first

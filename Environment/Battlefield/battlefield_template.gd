@@ -276,17 +276,14 @@ func get_command():
 		elif active_party_member == 2:
 			player_2_node.get_node("AnimationPlayer").play("attack")
 			yield(player_2_node.get_node("AnimatedSprite"), "animation_finished")
-			print('animation_finished 2')
 			player_2_node.update_animation("battling")
 		elif active_party_member == 3:
 			player_3_node.get_node("AnimationPlayer").play("attack")
 			yield(player_3_node.get_node("AnimatedSprite"), "animation_finished")
-			print('animation_finished 3')
 			player_3_node.update_animation("battling")
 		elif active_party_member == 4:
 			player_4_node.get_node("AnimationPlayer").play("attack")
 			yield(player_4_node.get_node("AnimatedSprite"), "animation_finished")
-			print('animation_finished 4')
 			player_4_node.update_animation("battling")
 		party_node.isAttacking = false
 		targetable_enemy_list[current_target].hp -= 1
@@ -395,8 +392,20 @@ func enemy_attack():
 	enemy_animationPlayer_node = turn_order[0].get_node("AnimationPlayer")
 	enemy_animationPlayer_node.play('attack')
 	yield(enemy_animationPlayer_node, "animation_finished")
-	player_node.hp -= 1 #set a loop to pick a random target
-	player_node.check_for_death()
+	randomize()
+	var random_player_target = randi()%4 + 1 #check if player is alive, then pick a different target
+	if random_player_target == 1:
+		player_node.hp -= 1 #set a loop to pick a random target. maybe based on an aggro stat
+		player_node.check_for_death()
+	elif random_player_target == 2:
+		player_2_node.hp -= 1
+		player_2_node.check_for_death()
+	elif random_player_target == 3:
+		player_3_node.hp -= 1
+		player_3_node.check_for_death()
+	elif random_player_target == 4:
+		player_4_node.hp -= 1
+		player_4_node.check_for_death()
 	call_deferred("update_PC_UI") #if i dont defer, player goes to -1 as it is updated too quickly
 	shift_turn_order()
 	act_in_order()
