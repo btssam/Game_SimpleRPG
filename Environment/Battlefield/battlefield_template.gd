@@ -70,7 +70,8 @@ func _input(event):
 	if isVictorious:
 		if event.is_action_pressed("interact"):
 			close_scene()
-	if not player_node.isDead and not party_node.isAttacking: #can't do anything when dead. should be isTeamDead #party_node.isPartyDead
+#	if not player_node.isDead and not party_node.isAttacking: #can't do anything when dead. should be isTeamDead #party_node.isPartyDead
+	if not party_node.isPartyDead and not party_node.isAttacking:
 		###targeting
 		if isPlayersTurn:
 			if isSelectingTarget:
@@ -355,6 +356,7 @@ func initialize_turn_order():
 
 func act_in_order():
 	if not isVictorious:
+		print('act_in_order. current actor is ' + str(turn_order[0].name))
 		if turn_order[0].name == "PC_Template":
 				update_log("It is Player 1's turn!")
 				active_party_member = 1
@@ -379,34 +381,45 @@ func act_in_order():
 				isPlayersTurn = false
 				enemy_attack()
 
-func shift_turn_order():
+func shift_turn_order(): #make sure this is called after death check, not before
 	var first_unit = turn_order[0] #move the turn order forward once someone goes
 	for i in range(0, turn_order.size()):
 		if i + 1 < turn_order.size():
 			turn_order[i] = turn_order[i+1]
 		else:
 			turn_order[i] = first_unit
+	print('shift turn order. Turn order is: ')
+	for i in range(0, turn_order.size()):
+		print(turn_order[i].name)
 
 #enemy_AI
 func enemy_attack():
 	enemy_animationPlayer_node = turn_order[0].get_node("AnimationPlayer")
 	enemy_animationPlayer_node.play('attack')
+	var hasSelected =  false
 	yield(enemy_animationPlayer_node, "animation_finished")
-	randomize()
-	var random_player_target = randi()%4 + 1 #check if player is alive, then pick a different target
-	if random_player_target == 1:
-		player_node.hp -= 1 #set a loop to pick a random target. maybe based on an aggro stat
-		player_node.check_for_death()
-	elif random_player_target == 2:
-		player_2_node.hp -= 1
-		player_2_node.check_for_death()
-	elif random_player_target == 3:
-		player_3_node.hp -= 1
-		player_3_node.check_for_death()
-	elif random_player_target == 4:
-		player_4_node.hp -= 1
-		player_4_node.check_for_death()
+	while !hasSelected:
+		randomize()
+		var random_player_target = randi()%4 + 1 #check if player is alive, then pick a different target
+		if random_player_target == 1 and !player_node.isDead:
+			player_node.hp -= 1 #set a loop to pick a random target. maybe based on an aggro stat
+			player_node.check_for_death()
+			hasSelected = true
+		elif random_player_target == 2 and !player_2_node.isDead:
+			player_2_node.hp -= 1
+			player_2_node.check_for_death()
+			hasSelected = true
+		elif random_player_target == 3 and !player_3_node.isDead:
+			player_3_node.hp -= 1
+			player_3_node.check_for_death()
+			hasSelected = true
+		elif random_player_target == 4 and !player_4_node.isDead:
+			player_4_node.hp -= 1
+			player_4_node.check_for_death()
+			hasSelected = true
+	hasSelected =  false
 	call_deferred("update_PC_UI") #if i dont defer, player goes to -1 as it is updated too quickly
+#	call_deferred('shift_turn_order')
 	shift_turn_order()
 	act_in_order()
 

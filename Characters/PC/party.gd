@@ -180,4 +180,17 @@ func move_and_collide_test_collision_direction():
 	if collision_direction_info == null: #not moving toward wall
 		collision_direction = Vector2(0,0)
 
-	
+
+#combat
+func check_if_party_is_dead():
+	var number_dead = 0
+	for i in range(0, get_child_count()):
+#		print('listing possible dead party_members' + str(get_child(i).name))
+		if get_child(i).isDead == true:
+			number_dead += 1
+	print('check_if_party_is_dead. number_dead: ' + str(number_dead))
+	if number_dead == 4:
+		print('Party is Dead!')
+		isPartyDead = true
+	else:
+		number_dead = 0

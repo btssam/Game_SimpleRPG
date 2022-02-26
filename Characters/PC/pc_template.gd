@@ -14,8 +14,8 @@ var current_position = Vector2()
 var previous_position = Vector2()
 var next_battle_counter = 0
 ###combat stats
-export var hp = 6
-export var maxhp = 6
+export var hp = 1
+export var maxhp = 1
 var isDead = false
 ###nodes
 onready var main_node = get_node("../..")
@@ -111,6 +111,7 @@ func reset_battle_check(): #return from battle
 	get_parent().animation_name = 'idle_down'
 	isDead = false #need to set party (children) isBattling here as well
 	get_parent().isBattling = false #need to set party (children) isBattling here as well
+	get_parent().isPartyDead = false
 	steps_since_last = 0
 	$Delta_Position2.stop()
 	$Delta_Position1.start()
@@ -125,8 +126,13 @@ func stop_battle_check():
 func check_for_death():
 	if hp <= 0:
 		hp = 0
-		get_node("../../Battlefield_Template").update_log("You have died!")
+		get_node("../../Battlefield_Template").update_log("A party member died!")
 		isDead = true
 		$AnimatedSprite.play("dying")
 		yield($AnimatedSprite, "animation_finished")
-		main_node.switch_scene('battle', 'gameover') #this is called twice?
+		if get_node("../../Battlefield_Template").turn_order.has(get_node(".")):
+			print('removing from turn_order')
+			get_node("../../Battlefield_Template").turn_order.erase(get_node("."))
+		get_parent().check_if_party_is_dead()
+		if get_parent().isPartyDead:
+			main_node.switch_scene('battle', 'gameover')
