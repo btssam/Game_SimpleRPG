@@ -128,11 +128,11 @@ func check_for_death():
 		hp = 0
 		get_node("../../Battlefield_Template").update_log("A party member died!")
 		isDead = true
-		$AnimatedSprite.play("dying")
-		yield($AnimatedSprite, "animation_finished")
 		if get_node("../../Battlefield_Template").turn_order.has(get_node(".")):
 			print('removing from turn_order')
 			get_node("../../Battlefield_Template").turn_order.erase(get_node("."))
 		get_parent().check_if_party_is_dead()
+		$AnimatedSprite.play("dying")
+		yield($AnimatedSprite, "animation_finished")
 		if get_parent().isPartyDead:
 			main_node.switch_scene('battle', 'gameover')

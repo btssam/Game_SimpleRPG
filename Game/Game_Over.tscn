@@ -76,3 +76,8 @@ __meta__ = {
 [node name="Blinker" type="AnimationPlayer" parent="ColorRect/Continue\?"]
 autoplay = "Blinking"
 anims/Blinking = SubResource( 1 )
+
+[node name="Spawn_Points" type="Node2D" parent="."]
+
+[node name="Initial" type="Position2D" parent="Spawn_Points"]
+position = Vector2( 512, 436 )

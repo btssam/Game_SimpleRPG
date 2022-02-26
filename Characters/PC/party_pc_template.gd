@@ -114,7 +114,8 @@ func reset_follower():
 	if not get_parent().isBattling:
 		update_animation("idle_down")
 	else:
-		update_animation("battling")
+		if not isDead: #remain dead on game_over screen
+			update_animation("battling")
 
 ###Battling code
 func check_for_death():
@@ -125,8 +126,8 @@ func check_for_death():
 		if get_node("../../Battlefield_Template").turn_order.has(get_node(".")):
 			print('removing from turn_order')
 			get_node("../../Battlefield_Template").turn_order.erase(get_node("."))
+		get_parent().check_if_party_is_dead()
 		$AnimatedSprite.play("dying")
 		yield($AnimatedSprite, "animation_finished")
-		get_parent().check_if_party_is_dead()
 		if get_parent().isPartyDead:
 			main_node.switch_scene('battle', 'gameover')

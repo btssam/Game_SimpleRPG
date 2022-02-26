@@ -374,8 +374,8 @@ func act_in_order():
 				active_party_member = 4
 				isPlayersTurn = true
 		else:
-			if player_node.hp <= 0: #check all 4/check isPartyDead
-				turn_order = []
+			if party_node.isPartyDead: #check all 4/check isPartyDead #maybe this is my problem.
+				turn_order = [] #maybe just erase all party_members? trying to stop all activity then
 			else:
 				update_log("It is [color=red]" + turn_order[0].enemy_name + "[/color]'s turn!")
 				isPlayersTurn = false
@@ -390,7 +390,7 @@ func shift_turn_order(): #make sure this is called after death check, not before
 			turn_order[i] = first_unit
 	print('shift turn order. Turn order is: ')
 	for i in range(0, turn_order.size()):
-		print(turn_order[i].name)
+		print(str(i) + '---' + str(turn_order[i].name))
 
 #enemy_AI
 func enemy_attack():
@@ -398,26 +398,34 @@ func enemy_attack():
 	enemy_animationPlayer_node.play('attack')
 	var hasSelected =  false
 	yield(enemy_animationPlayer_node, "animation_finished")
-	while !hasSelected:
-		randomize()
-		var random_player_target = randi()%4 + 1 #check if player is alive, then pick a different target
+	randomize()
+	var random_player_target = randi()%4 + 1 #check if player is alive, then pick a different target
+	while !hasSelected: #sometimes doesnt work, wont ever pick a target
 		if random_player_target == 1 and !player_node.isDead:
 			player_node.hp -= 1 #set a loop to pick a random target. maybe based on an aggro stat
+			print('target acquired')
 			player_node.check_for_death()
 			hasSelected = true
 		elif random_player_target == 2 and !player_2_node.isDead:
 			player_2_node.hp -= 1
+			print('target acquired')
 			player_2_node.check_for_death()
 			hasSelected = true
 		elif random_player_target == 3 and !player_3_node.isDead:
 			player_3_node.hp -= 1
+			print('target acquired')
 			player_3_node.check_for_death()
 			hasSelected = true
 		elif random_player_target == 4 and !player_4_node.isDead:
 			player_4_node.hp -= 1
+			print('target acquired')
 			player_4_node.check_for_death()
 			hasSelected = true
-	hasSelected =  false
+		if random_player_target < 4:
+			random_player_target += 1
+		else:
+			random_player_target = 1
+		print('Selecting Player Target Loop Iteration')
 	call_deferred("update_PC_UI") #if i dont defer, player goes to -1 as it is updated too quickly
 #	call_deferred('shift_turn_order')
 	shift_turn_order()
