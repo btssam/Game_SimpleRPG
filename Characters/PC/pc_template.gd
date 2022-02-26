@@ -107,9 +107,12 @@ func check_for_battle():
 	else:
 		$Delta_Position1.start()
 
-func reset_battle_check(): #return from battle
+func reset_battle_check(): #return from battle. resets hp and such. ultimately, wont want to do this. want to maintain prev.
 	get_parent().animation_name = 'idle_down'
 	isDead = false #need to set party (children) isBattling here as well
+	get_node("../Party_PC_Template1").isDead = false
+	get_node("../Party_PC_Template2").isDead = false
+	get_node("../Party_PC_Template3").isDead = false
 	get_parent().isBattling = false #need to set party (children) isBattling here as well
 	get_parent().isPartyDead = false
 	steps_since_last = 0
