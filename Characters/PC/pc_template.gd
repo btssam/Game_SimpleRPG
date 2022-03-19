@@ -47,6 +47,7 @@ func _input(event):
 func update_animation(animation):
 	if animation == 'up':
 		$AnimatedSprite.play("walk_up")
+#		$AnimatedSprite.advance(0) # I do not remember why I had this here at all
 	elif animation == 'down':
 		$AnimatedSprite.play("walk_down")
 	elif animation == 'left':
