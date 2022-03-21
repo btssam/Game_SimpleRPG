@@ -12,6 +12,8 @@ var party_return_position
 onready var gap_test_node = party_node.get_node("PC_Template/Gap_Directions")
 var return_gap_direction
 
+onready var menu_node = get_node("GUI/Menu_UI/Popup_Menu")
+
 
 
 func _input(event):
@@ -23,8 +25,9 @@ func _input(event):
 			$Battlefield_Template/AudioStreamPlayer.playing = !$Battlefield_Template/AudioStreamPlayer.playing
 		elif current_scene == "overworld":
 			$Overworld_Template/AudioStreamPlayer.playing = !$Overworld_Template/AudioStreamPlayer.playing
-	if event.is_action_pressed("ui_cancel"):
-		get_tree().quit()
+#	if event.is_action_pressed("start"):
+#		get_tree().quit()
+		
 
 
 

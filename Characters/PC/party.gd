@@ -19,6 +19,8 @@ var gap_direction = 'down'
 
 var collision_direction_info
 
+onready var menu_node = get_node("../GUI/Menu_UI/")
+
 #battle
 var isBattling = false #changed by PC_Template upon entering/leaving battle
 var isAttacking = false #changed by Battlefield_Template
@@ -30,7 +32,8 @@ func _ready():
 	add_followers(3)
 
 func _process(delta):
-	if not isBattling:
+	if not isBattling and not menu_node.isMenuOpen:
+#	if not isBattling:
 		if(Input.is_action_pressed("up")):
 			direction = Vector2(0,-1)
 			party_has_begun_moving()
@@ -69,6 +72,8 @@ func _process(delta):
 			stop_party_for_collision()
 		if not isAgainstAWall:
 			move_party()
+#	if menu_node.isMenuOpen:
+#		animation_name = 'stop'
 
 
 func move_party():

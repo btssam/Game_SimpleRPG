@@ -7,3 +7,4 @@
 script = ExtResource( 1 )
 
 [node name="PC_Template" parent="." instance=ExtResource( 2 )]
+z_index = 0
