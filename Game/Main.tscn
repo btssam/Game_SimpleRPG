@@ -12,10 +12,6 @@ script = ExtResource( 3 )
 [node name="Town_Template" parent="." instance=ExtResource( 1 )]
 position = Vector2( 0.755066, 0 )
 
-[node name="Party" parent="." instance=ExtResource( 4 )]
-position = Vector2( 258.287, 396.082 )
-z_index = 1
-
 [node name="GUI" type="Control" parent="."]
 __meta__ = {
 "_edit_use_anchors_": false
@@ -24,3 +20,11 @@ __meta__ = {
 [node name="Dialogue_UI" parent="GUI" instance=ExtResource( 5 )]
 
 [node name="Menu_UI" parent="GUI" instance=ExtResource( 2 )]
+margin_left = 1017.6
+margin_top = 363.2
+margin_right = 1017.6
+margin_bottom = 363.2
+
+[node name="Party" parent="." instance=ExtResource( 4 )]
+position = Vector2( 258.287, 396.082 )
+z_index = 1

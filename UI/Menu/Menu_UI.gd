@@ -20,11 +20,9 @@ func _input(event):
 		if !isMenuOpen:
 			menu_node.show()
 			isMenuOpen = true
-#			party_node.animation_name = 'stop'
 		else:
 			menu_node.hide()
 			isMenuOpen = false
-#			party_node.stop_party()
 	if isMenuOpen:
 		if event.is_action_pressed("down"):
 			current_selection += 1

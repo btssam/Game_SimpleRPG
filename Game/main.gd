@@ -88,7 +88,6 @@ func switch_scene(from_scene, to_scene):
 func load_scene(scene_name):
 	call_deferred("add_child", scene_name)
 
-
 #return from battle
 func test_gap_direction(): #doesn't test again other collision types beside enviornment
 	var gap_direction_confirmed = false
