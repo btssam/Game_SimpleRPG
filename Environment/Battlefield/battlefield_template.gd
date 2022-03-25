@@ -356,7 +356,6 @@ func initialize_turn_order():
 
 func act_in_order():
 	if not isVictorious:
-		print('act_in_order. current actor is ' + str(turn_order[0].name))
 		if turn_order[0].name == "PC_Template":
 				update_log("It is Player 1's turn!")
 				active_party_member = 1
@@ -388,9 +387,6 @@ func shift_turn_order(): #make sure this is called after death check, not before
 			turn_order[i] = turn_order[i+1]
 		else:
 			turn_order[i] = first_unit
-	print('shift turn order. Turn order is: ')
-	for i in range(0, turn_order.size()):
-		print(str(i) + '---' + str(turn_order[i].name))
 
 #enemy_AI
 func enemy_attack():
