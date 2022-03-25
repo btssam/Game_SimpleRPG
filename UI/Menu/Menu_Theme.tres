@@ -3,8 +3,8 @@
 [ext_resource path="res://UI/Fonts/ModernDOS8x16.ttf" type="DynamicFontData" id=1]
 
 [sub_resource type="DynamicFont" id=1]
-size = 55
-extra_spacing_top = 21
+size = 60
+extra_spacing_top = 7
 font_data = ExtResource( 1 )
 
 [resource]

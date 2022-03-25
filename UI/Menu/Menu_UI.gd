@@ -18,6 +18,7 @@ func _process(delta):
 func _input(event):
 	if event.is_action_pressed("start"):
 		if !isMenuOpen:
+			enable_selector()
 			menu_node.show()
 			isMenuOpen = true
 		else:
@@ -27,3 +28,10 @@ func _input(event):
 		if event.is_action_pressed("down"):
 			current_selection += 1
 			print(current_selection)
+
+func enable_selector():
+	if current_selection == 1:
+		$Popup_Menu/Frame/Options/Items/Selector.show()
+
+func disable_selector():
+	pass
