@@ -1,4 +1,14 @@
-[gd_scene format=2]
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://UI/Fonts/ModernDOS8x16.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://UI/Menu/Menu_Theme.tres" type="Theme" id=2]
+[ext_resource path="res://UI/GFX/System_Frame.png" type="Texture" id=3]
+[ext_resource path="res://UI/Dialogue/GFX/Faceset.png" type="Texture" id=4]
+
+[sub_resource type="DynamicFont" id=1]
+size = 15
+extra_spacing_space = 5
+font_data = ExtResource( 1 )
 
 [node name="Status_UI" type="Control"]
 anchor_right = 1.0
@@ -11,3 +21,170 @@ __meta__ = {
 visible = true
 anchor_right = 1.0
 anchor_bottom = 1.0
+
+[node name="ColorRect" type="ColorRect" parent="Popup_Status"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.105882, 0.105882, 0.105882, 0.713726 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Frame" type="NinePatchRect" parent="Popup_Status"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 0.356384
+margin_top = -0.133438
+margin_right = 0.356445
+margin_bottom = -0.133423
+rect_pivot_offset = Vector2( -0.161846, -0.107735 )
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="Popup_Status/Frame"]
+margin_left = 422.0
+margin_top = 38.0
+margin_right = 602.0
+margin_bottom = 105.0
+theme = ExtResource( 2 )
+text = "STATUS"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PC1" type="Node" parent="Popup_Status/Frame"]
+
+[node name="Sprite" type="Sprite" parent="Popup_Status/Frame/PC1"]
+position = Vector2( 171, 181 )
+scale = Vector2( 3.1, 3.1 )
+texture = ExtResource( 4 )
+hframes = 4
+vframes = 4
+
+[node name="Info" type="Label" parent="Popup_Status/Frame/PC1/Sprite"]
+margin_left = 32.0
+margin_top = -20.0
+margin_right = 232.0
+margin_bottom = 34.0
+rect_scale = Vector2( 1, 0.85 )
+custom_fonts/font = SubResource( 1 )
+text = "NAME
+HP:1    ATK:1    DEF:1
+MP:1    INT:1    MDF:1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Popup_Status/Frame/PC1/Sprite"]
+margin_left = -24.0
+margin_top = -23.2806
+margin_right = 24.0
+margin_bottom = 24.7194
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PC2" type="Node" parent="Popup_Status/Frame"]
+
+[node name="Sprite" type="Sprite" parent="Popup_Status/Frame/PC2"]
+position = Vector2( 171, 338 )
+scale = Vector2( 3.1, 3.1 )
+texture = ExtResource( 4 )
+hframes = 4
+vframes = 4
+frame = 4
+
+[node name="Info" type="Label" parent="Popup_Status/Frame/PC2/Sprite"]
+margin_left = 32.0
+margin_top = -20.0
+margin_right = 232.0
+margin_bottom = 34.0
+rect_scale = Vector2( 1, 0.85 )
+custom_fonts/font = SubResource( 1 )
+text = "NAME
+HP:1    ATK:1    DEF:1
+MP:1    INT:1    MDF:1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Popup_Status/Frame/PC2/Sprite"]
+margin_left = -24.0
+margin_top = -23.2806
+margin_right = 24.0
+margin_bottom = 24.7194
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PC3" type="Node" parent="Popup_Status/Frame"]
+
+[node name="Sprite" type="Sprite" parent="Popup_Status/Frame/PC3"]
+position = Vector2( 171, 495 )
+scale = Vector2( 3.1, 3.1 )
+texture = ExtResource( 4 )
+hframes = 4
+vframes = 4
+frame = 8
+
+[node name="Info" type="Label" parent="Popup_Status/Frame/PC3/Sprite"]
+margin_left = 32.0
+margin_top = -20.0
+margin_right = 232.0
+margin_bottom = 34.0
+rect_scale = Vector2( 1, 0.85 )
+custom_fonts/font = SubResource( 1 )
+text = "NAME
+HP:1    ATK:1    DEF:1
+MP:1    INT:1    MDF:1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Popup_Status/Frame/PC3/Sprite"]
+margin_left = -24.0
+margin_top = -23.2806
+margin_right = 24.0
+margin_bottom = 24.7194
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PC4" type="Node" parent="Popup_Status/Frame"]
+
+[node name="Sprite" type="Sprite" parent="Popup_Status/Frame/PC4"]
+position = Vector2( 171, 652 )
+scale = Vector2( 3.1, 3.1 )
+texture = ExtResource( 4 )
+hframes = 4
+vframes = 4
+frame = 12
+
+[node name="Info" type="Label" parent="Popup_Status/Frame/PC4/Sprite"]
+margin_left = 32.0
+margin_top = -20.0
+margin_right = 232.0
+margin_bottom = 34.0
+rect_scale = Vector2( 1, 0.85 )
+custom_fonts/font = SubResource( 1 )
+text = "NAME
+HP:1    ATK:1    DEF:1
+MP:1    INT:1    MDF:1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Popup_Status/Frame/PC4/Sprite"]
+margin_left = -24.0
+margin_top = -23.2806
+margin_right = 24.0
+margin_bottom = 24.7194
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
