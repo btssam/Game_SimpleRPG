@@ -121,7 +121,7 @@ func reset_follower():
 func check_for_death():
 	if hp <= 0:
 		hp = 0
-		get_node("../../Battlefield_Template").update_log("A party member died!")
+		get_node("../../Battlefield_Template").update_log("A party member is dead!")
 		isDead = true
 		if get_node("../../Battlefield_Template").turn_order.has(get_node(".")):
 			print('removing from turn_order')

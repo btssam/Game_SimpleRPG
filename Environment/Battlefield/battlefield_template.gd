@@ -65,6 +65,12 @@ func _ready():
 	initialize_log()
 	###turn_ordering
 	initialize_turn_order()
+	###keep_hp
+	player_node.check_for_death()
+	player_2_node.check_for_death()
+	player_3_node.check_for_death()
+	player_4_node.check_for_death()
+	act_in_order()
 
 func _input(event):
 	if isVictorious:
@@ -300,13 +306,14 @@ func close_scene():
 	get_node("../Party").isBattling = false
 	main_node.switch_scene('battle', 'overworld')
 	player_node.reset_battle_check()
-	player_node.hp = player_node.maxhp
-	player_2_node.hp = player_2_node.maxhp #add other players
-	player_3_node.hp = player_3_node.maxhp
-	player_4_node.hp = player_4_node.maxhp
 	current_selection = 0
 	isVictorious = false
 
+func reset_hp(): #currently unused
+	player_node.hp = player_node.maxhp
+	player_2_node.hp = player_2_node.maxhp
+	player_3_node.hp = player_3_node.maxhp
+	player_4_node.hp = player_4_node.maxhp
 
 ###updating UI
 #func initialize_enemy_UI():
@@ -352,7 +359,6 @@ func initialize_turn_order():
 	randomized_list.append(player_4_node)
 	randomized_list.shuffle()
 	turn_order = randomized_list
-	act_in_order()
 
 func act_in_order():
 	if not isVictorious:
