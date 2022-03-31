@@ -19,7 +19,7 @@ export var maxhp = 1
 var isDead = false
 ###nodes
 onready var main_node = get_node("../..")
-onready var dialogue_node = get_node("../../GUI/Dialogue_UI")
+onready var dialogue_node = get_node("../../CanvasLayer/GUI/Dialogue_UI")
 ###attacking
 var isAttacking = false
 

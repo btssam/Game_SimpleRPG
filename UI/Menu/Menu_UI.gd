@@ -1,7 +1,7 @@
 extends Control #How do I want the menu to behave in battle. Just inacessable entirely (a lot of games do that). Maybe can only Quit, Load, Status, Option
 
 onready var menu_node = get_node("Popup_Menu")
-onready var party_node = get_node("../../Party")
+onready var party_node = get_node("../../../Party")
 var isMenuOpen = false
 var current_selection = 1
 var isSubMenuOpen = false

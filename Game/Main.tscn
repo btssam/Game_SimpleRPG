@@ -16,14 +16,16 @@ position = Vector2( 0.755066, 0 )
 position = Vector2( 258.287, 396.082 )
 z_index = 1
 
-[node name="GUI" type="Control" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="GUI" type="Control" parent="CanvasLayer"]
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Dialogue_UI" parent="GUI" instance=ExtResource( 5 )]
+[node name="Dialogue_UI" parent="CanvasLayer/GUI" instance=ExtResource( 5 )]
 
-[node name="Menu_UI" parent="GUI" instance=ExtResource( 2 )]
+[node name="Menu_UI" parent="CanvasLayer/GUI" instance=ExtResource( 2 )]
 visible = false
 margin_left = 1017.6
 margin_top = 363.2

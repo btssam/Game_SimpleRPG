@@ -19,7 +19,7 @@ var gap_direction = 'down'
 
 var collision_direction_info
 
-onready var menu_node = get_node("../GUI/Menu_UI/")
+onready var menu_node = get_node("../CanvasLayer/GUI/Menu_UI/")
 
 #battle
 var isBattling = false #changed by PC_Template upon entering/leaving battle

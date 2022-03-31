@@ -12,7 +12,7 @@ var party_return_position
 onready var gap_test_node = party_node.get_node("PC_Template/Gap_Directions")
 var return_gap_direction
 
-onready var menu_node = get_node("GUI/Menu_UI/Popup_Menu")
+onready var menu_node = get_node("CanvasLayer/GUI/Menu_UI/Popup_Menu") #unused?
 
 
 
