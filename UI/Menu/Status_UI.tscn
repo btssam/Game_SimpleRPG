@@ -18,12 +18,8 @@ __meta__ = {
 }
 
 [node name="Popup_Status" type="Popup" parent="."]
-visible = true
 anchor_right = 1.0
 anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="ColorRect" type="ColorRect" parent="Popup_Status"]
 anchor_right = 1.0
@@ -57,7 +53,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PC1" type="Node" parent="Popup_Status/Frame"]
+[node name="PC1" type="Control" parent="Popup_Status/Frame"]
 
 [node name="Sprite" type="Sprite" parent="Popup_Status/Frame/PC1"]
 position = Vector2( 171, 181 )
@@ -90,7 +86,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PC2" type="Node" parent="Popup_Status/Frame"]
+[node name="PC2" type="Control" parent="Popup_Status/Frame"]
 
 [node name="Sprite" type="Sprite" parent="Popup_Status/Frame/PC2"]
 position = Vector2( 171, 338 )
@@ -124,7 +120,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PC3" type="Node" parent="Popup_Status/Frame"]
+[node name="PC3" type="Control" parent="Popup_Status/Frame"]
 
 [node name="Sprite" type="Sprite" parent="Popup_Status/Frame/PC3"]
 position = Vector2( 171, 495 )
@@ -158,7 +154,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PC4" type="Node" parent="Popup_Status/Frame"]
+[node name="PC4" type="Control" parent="Popup_Status/Frame"]
 
 [node name="Sprite" type="Sprite" parent="Popup_Status/Frame/PC4"]
 position = Vector2( 171, 652 )

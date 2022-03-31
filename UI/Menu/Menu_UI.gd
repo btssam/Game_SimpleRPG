@@ -132,6 +132,7 @@ func open_submenu():
 	if current_selection == 3:
 		var status = load(status_node).instance()
 		add_child(status)
+		get_node("Status_UI/Popup_Status").show()
 
 func close_submenu():
 	isSubMenuOpen = false
