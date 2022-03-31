@@ -21,6 +21,9 @@ __meta__ = {
 visible = true
 anchor_right = 1.0
 anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ColorRect" type="ColorRect" parent="Popup_Status"]
 anchor_right = 1.0
@@ -72,7 +75,7 @@ rect_scale = Vector2( 1, 0.85 )
 custom_fonts/font = SubResource( 1 )
 text = "NAME
 HP:1    ATK:1    DEF:1
-MP:1    INT:1    MDF:1"
+MP:1    INT:1   	 SPD:1"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -106,7 +109,7 @@ rect_scale = Vector2( 1, 0.85 )
 custom_fonts/font = SubResource( 1 )
 text = "NAME
 HP:1    ATK:1    DEF:1
-MP:1    INT:1    MDF:1"
+MP:1    INT:1    SPD:1"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -140,7 +143,7 @@ rect_scale = Vector2( 1, 0.85 )
 custom_fonts/font = SubResource( 1 )
 text = "NAME
 HP:1    ATK:1    DEF:1
-MP:1    INT:1    MDF:1"
+MP:1    INT:1    SPD:1"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -174,7 +177,7 @@ rect_scale = Vector2( 1, 0.85 )
 custom_fonts/font = SubResource( 1 )
 text = "NAME
 HP:1    ATK:1    DEF:1
-MP:1    INT:1    MDF:1"
+MP:1    INT:1    SPD:1"
 __meta__ = {
 "_edit_use_anchors_": false
 }

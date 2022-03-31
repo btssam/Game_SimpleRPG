@@ -32,7 +32,7 @@ func _ready():
 	add_followers(3)
 
 func _process(delta):
-	if not isBattling and not menu_node.isMenuOpen:
+	if not isBattling and not menu_node.isMenuOpen and not menu_node.isSubMenuOpen:
 #	if not isBattling:
 		if(Input.is_action_pressed("up")):
 			direction = Vector2(0,-1)

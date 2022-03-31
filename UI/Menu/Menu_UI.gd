@@ -4,6 +4,10 @@ onready var menu_node = get_node("Popup_Menu")
 onready var party_node = get_node("../../Party")
 var isMenuOpen = false
 var current_selection = 1
+var isSubMenuOpen = false
+
+var status_node = "res://UI/Menu/Status_UI.tscn"
+var current_submenu_node
 
 
 func _ready():
@@ -18,12 +22,14 @@ func _process(delta):
 func _input(event):
 	if event.is_action_pressed("start"):
 		if !isMenuOpen:
-			enable_selector()
-			menu_node.show()
-			isMenuOpen = true
-		else:
-			menu_node.hide()
-			isMenuOpen = false
+			open_menu()
+		elif !isSubMenuOpen: #menu open but submenu closed (main menu)
+			disable_selector()
+			close_menu()
+		
+		if isSubMenuOpen:
+			close_submenu()
+			
 	if isMenuOpen:
 		if event.is_action_pressed("down"):
 			if current_selection < 8:
@@ -96,7 +102,7 @@ func process_selection():
 	elif current_selection == 2:
 		print('Skills')
 	elif current_selection == 3:
-		print('Status')
+		open_submenu()
 	elif current_selection == 4:
 		print('Quests')
 	elif current_selection == 5:
@@ -107,3 +113,27 @@ func process_selection():
 		print('Load')
 	elif current_selection == 8:
 		get_tree().quit() #Should probably quit to a main menu
+
+func open_menu():
+	enable_selector()
+	menu_node.show()
+	isMenuOpen = true
+
+func close_menu():
+	menu_node.hide()
+	isMenuOpen = false
+	current_selection = 1
+
+func open_submenu():
+	disable_selector()
+	isSubMenuOpen = true
+	isMenuOpen = false
+	menu_node.hide()
+	if current_selection == 3:
+		var status = load(status_node).instance()
+		add_child(status)
+
+func close_submenu():
+	isSubMenuOpen = false
+	if current_selection == 3:
+		remove_child(get_node("Status_UI"))
