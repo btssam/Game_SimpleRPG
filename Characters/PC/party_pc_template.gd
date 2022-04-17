@@ -21,11 +21,21 @@ var current_direction = Vector2()
 var initial_direction
 
 var animation_name
+###stats
+var player_name = ''
+export var attack = 1
+export var defence = 1
+export var intellect = 1
+export var speed = 1
+export var mp = 1
+export var maxmp = 1
 
 func _ready():
 	#movement
 	$AnimatedSprite.animation = "walk_down"
 	$AnimatedSprite.frame = 1
+	#stats
+	set_player_name()
 
 func _process(delta):
 	move_follower()
@@ -131,3 +141,11 @@ func check_for_death():
 		yield($AnimatedSprite, "animation_finished")
 		if get_parent().isPartyDead:
 			main_node.switch_scene('battle', 'gameover')
+
+func set_player_name():
+	if name == 'Party_PC_Template1':
+		player_name = 'Brigit'
+	if name == 'Party_PC_Template2':
+		player_name = 'Set'
+	if name == 'Party_PC_Template3':
+		player_name = 'Alastor'

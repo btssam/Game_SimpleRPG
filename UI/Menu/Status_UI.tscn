@@ -70,8 +70,8 @@ margin_bottom = 34.0
 rect_scale = Vector2( 1, 0.85 )
 custom_fonts/font = SubResource( 1 )
 text = "NAME
-HP:1    ATK:1    DEF:1
-MP:1    INT:1   	 SPD:1"
+HP:1/1 ATK:1 DEF:1
+MP:1/1 INT:1 SPD:1"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -104,8 +104,8 @@ margin_bottom = 34.0
 rect_scale = Vector2( 1, 0.85 )
 custom_fonts/font = SubResource( 1 )
 text = "NAME
-HP:1    ATK:1    DEF:1
-MP:1    INT:1    SPD:1"
+HP:1/1 ATK:1 DEF:1
+MP:1/1 INT:1 SPD:1"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -138,8 +138,8 @@ margin_bottom = 34.0
 rect_scale = Vector2( 1, 0.85 )
 custom_fonts/font = SubResource( 1 )
 text = "NAME
-HP:1    ATK:1    DEF:1
-MP:1    INT:1    SPD:1"
+HP:1/1 ATK:1 DEF:1
+MP:1/1 INT:1 SPD:1"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -172,8 +172,8 @@ margin_bottom = 34.0
 rect_scale = Vector2( 1, 0.85 )
 custom_fonts/font = SubResource( 1 )
 text = "NAME
-HP:1    ATK:1    DEF:1
-MP:1    INT:1    SPD:1"
+HP:1/1 ATK:1 DEF:1
+MP:1/1 INT:1 SPD:1"
 __meta__ = {
 "_edit_use_anchors_": false
 }

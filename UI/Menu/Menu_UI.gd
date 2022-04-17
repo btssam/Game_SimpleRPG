@@ -9,6 +9,11 @@ var isSubMenuOpen = false
 var status_node = "res://UI/Menu/Status_UI.tscn"
 var current_submenu_node
 
+#status
+onready var player1_node = get_node("../../../Party/PC_Template")
+onready var player2_node = get_node("../../../Party/Party_PC_Template1")
+onready var player3_node = get_node("../../../Party/Party_PC_Template2")
+onready var player4_node = get_node("../../../Party/Party_PC_Template3")
 
 func _ready():
 	pass
@@ -132,9 +137,23 @@ func open_submenu():
 	if current_selection == 3:
 		var status = load(status_node).instance()
 		add_child(status)
+		call_deferred("update_status")
+#		update_status()
 		get_node("Status_UI/Popup_Status").show()
 
 func close_submenu():
 	isSubMenuOpen = false
 	if current_selection == 3:
 		remove_child(get_node("Status_UI"))
+
+func update_status():
+	var current_status_node = get_node("Status_UI/Popup_Status/Frame")
+#	pass #grab the current hp from each player, likely should note maxhp
+	var status_1 = current_status_node.get_node("PC1/Sprite/Info")
+	var status_2 = current_status_node.get_node("PC2/Sprite/Info")
+	var status_3 = current_status_node.get_node("PC3/Sprite/Info")
+	var status_4 = current_status_node.get_node("PC4/Sprite/Info")
+	status_1.text = player1_node.player_name + '\n' + 'HP:' + str(player1_node.hp) + '/' + str(player1_node.maxhp) + ' ATK:' + str(player1_node.attack) + ' DEF:' + str(player1_node.defence) + '\n' + 'MP:' + str(player1_node.mp) + '/' + str(player2_node.maxmp) + ' INT:' + str(player1_node.intellect) + ' SPD:' + str(player1_node.speed)
+	status_2.text = player2_node.player_name + '\n' + 'HP:' + str(player2_node.hp) + '/' + str(player2_node.maxhp) + ' ATK:' + str(player2_node.attack) + ' DEF:' + str(player2_node.defence) + '\n' + 'MP:' + str(player2_node.mp) + '/' + str(player2_node.maxmp) + ' INT:' + str(player2_node.intellect) + ' SPD:' + str(player2_node.speed)
+	status_3.text = player3_node.player_name + '\n' + 'HP:' + str(player3_node.hp) + '/' + str(player3_node.maxhp) + ' ATK:' + str(player3_node.attack) + ' DEF:' + str(player3_node.defence) + '\n' + 'MP:' + str(player3_node.mp) + '/' + str(player3_node.maxmp) + ' INT:' + str(player3_node.intellect) + ' SPD:' + str(player3_node.speed)
+	status_4.text = player4_node.player_name + '\n' + 'HP:' + str(player4_node.hp) + '/' + str(player4_node.maxhp) + ' ATK:' + str(player4_node.attack) + ' DEF:' + str(player4_node.defence) + '\n' + 'MP:' + str(player4_node.mp) + '/' + str(player4_node.maxmp) + ' INT:' + str(player4_node.intellect) + ' SPD:' + str(player4_node.speed)

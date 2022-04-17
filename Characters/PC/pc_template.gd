@@ -22,6 +22,15 @@ onready var main_node = get_node("../..")
 onready var dialogue_node = get_node("../../CanvasLayer/GUI/Dialogue_UI")
 ###attacking
 var isAttacking = false
+###stats
+export var player_name = "Frey"
+export var attack = 1
+export var defence = 1
+export var intellect = 1
+export var speed = 1
+export var mp = 1
+export var maxmp = 1
+
 
 
 func _ready():
