@@ -47,15 +47,15 @@ onready var player_3_node = get_node("../Party/Party_PC_Template2")
 onready var player_4_node = get_node("../Party/Party_PC_Template3")
 var active_party_member = 1 #set during act_in_order. around isPlayersTurn
 ###skills
-var isSelectingSkill = false
 onready var skill_card_1 = $BattleUI/Command_Card/Skill_Card
 onready var skill_card_2 = $BattleUI/Command_Card2/Skill_Card
 onready var skill_card_3 = $BattleUI/Command_Card3/Skill_Card
 onready var skill_card_4 = $BattleUI/Command_Card4/Skill_Card
+var isSelectingSkill = false
 var current_skill_selection = 0
+var number_of_skill_selections = 0
 var skill_card_selector_sprite
 var skill_card_animation_player
-var number_of_skill_selections = 0
 
 func _ready():
 	####initialize
@@ -80,14 +80,14 @@ func _ready():
 	player_2_node.check_for_death()
 	player_3_node.check_for_death()
 	player_4_node.check_for_death()
+
 	act_in_order()
 
 func _input(event):
 	if isVictorious:
 		if event.is_action_pressed("interact"):
 			close_scene()
-#	if not player_node.isDead and not party_node.isAttacking: #can't do anything when dead. should be isTeamDead #party_node.isPartyDead
-	if not party_node.isPartyDead and not party_node.isAttacking:
+	if not party_node.isPartyDead and not party_node.isAttacking: #cant interact while mid animation
 		###targeting
 		if isPlayersTurn:
 			if isSelectingTarget:
@@ -100,7 +100,7 @@ func _input(event):
 		###commandcard
 			elif not isSelectingTarget:
 				if event.is_action_pressed("interact"):
-					process_command()
+					process_command() #popup command_card
 		
 			if isSelectingCommand:
 				if event.is_action_pressed("up"):
@@ -110,10 +110,8 @@ func _input(event):
 		###skillcard
 			if isSelectingSkill:
 				if event.is_action_pressed("up"):
-					print('move skill up')
 					change_skill("up")
 				if event.is_action_pressed("down"):
-					print('move skill down')
 					change_skill("down")
 		###testing
 		if event.is_action_pressed("test_key"):
@@ -123,7 +121,7 @@ func _input(event):
 
 ###initialize
 #spawn enemies
-func get_random_number_of_units():
+func get_random_number_of_units(): # 1-3
 	randomize()
 	number_of_units = randi()%3 + 1
 	targetable_number_of_units = number_of_units
@@ -156,7 +154,7 @@ func add_enemies():
 		call_deferred('change_enemy_position')
 	targetable_enemy_list = enemy_list.duplicate()
 
-func change_enemy_position():
+func change_enemy_position(): # only account for up to 3 enemies
 	for i in range(0, number_of_units):
 		if number_of_units == 3:
 			enemy_list[i].position = Vector2(224, 256 + 128 * i)
@@ -167,13 +165,12 @@ func change_enemy_position():
 
 
 ####commandcard
-func process_command():
-	if isPlayersTurn: #which players?
+func process_command(): #which action occurs when space is pressed:
+	if isPlayersTurn: #disallows interaction if not players turn
 		get_card_nodes()
 
 		if not isSelectingTarget:
 			if not cardIsVisible: #pop up card
-#				command_card_1.show()
 				if active_party_member == 1:
 					command_card_1.show()
 				elif active_party_member == 2:
@@ -218,13 +215,15 @@ func process_command():
 						skill_card_4.show()
 					
 					enable_skill_card_selector_sprite()
-					#popup another card. populate the contents dynamically based on which character (which spells available)
-					#select_target()
 				elif current_selection == 1 and isSelectingSkill == true:
-					select_target()
+					skill_card_animation_player.stop()
+					skill_card_selector_sprite.show()
+					select_target() #shouldnt always select_target, should depend of selection. eg some target allies
 				elif current_selection == 2: #item
 					update_log('You have no items.')
 					isSelectingCommand = false
+					current_selection = 0 #will need to move this to after I process item selection
+					current_command  = 0 #''
 				elif current_selection == 3: #flee
 					isSelectingCommand = false
 					close_scene()
@@ -242,7 +241,6 @@ func change_command(direction):
 			enable_card_selector_sprite()
 
 func get_card_nodes():
-#	var commands_list = command_card_1.get_node("TextureRect").get_children()
 	var commands_list
 	if active_party_member == 1:
 		commands_list = command_card_1.get_node("TextureRect").get_children()
@@ -304,16 +302,11 @@ func return_target():
 	isSelectingTarget = false
 	disable_selector_sprite()
 	get_command()
-#	shift_turn_order()
-#	act_in_order()
 
 #respond_to_command
 func get_command():
 	if current_command == 0: #attack
 		party_node.isAttacking = true
-#		player_node.get_node("AnimationPlayer").play("attack")
-#		yield(player_node.get_node("AnimatedSprite"), "animation_finished")
-#		player_node.update_animation("battling")
 		if active_party_member == 1:
 			player_node.get_node("AnimationPlayer").play("attack")
 			yield(player_node.get_node("AnimatedSprite"), "animation_finished")
@@ -335,12 +328,11 @@ func get_command():
 			player_4_node.update_animation("battling")
 			targetable_enemy_list[current_target].hp -= player_4_node.attack
 		party_node.isAttacking = false
-#		targetable_enemy_list[current_target].hp -= 1 #switching to be dependent on attack value
 		check_enemy_death()
 		update_enemy_UI()
 		shift_turn_order()
 		act_in_order()
-	if current_command == 1: #and current_skill = x: do something determined by skill
+	if current_command == 1:
 		if active_party_member == 1:
 			command_card_1.hide()
 			skill_card_1.hide()
@@ -355,7 +347,7 @@ func get_command():
 			skill_card_4.hide()
 		cardIsVisible = false
 		party_node.isAttacking = true
-		if current_skill_selection == 0:
+		if current_skill_selection == 0: #different skills for different PCs. check skill_selection and active_party_member
 			print('fire')
 			print(current_target)
 		if current_skill_selection == 1:
@@ -366,7 +358,8 @@ func get_command():
 		party_node.isAttacking = false
 		shift_turn_order()
 		act_in_order()
-#	isPlayersTurn = false #which Players? use active_party_member to clarify
+	current_selection = 0
+	current_command = 0
 
 
 ###other
@@ -377,32 +370,18 @@ func close_scene():
 	current_selection = 0
 	isVictorious = false
 
-func reset_hp(): #currently unused
-	player_node.hp = player_node.maxhp
-	player_2_node.hp = player_2_node.maxhp
-	player_3_node.hp = player_3_node.maxhp
-	player_4_node.hp = player_4_node.maxhp
 
 ###updating UI
-#func initialize_enemy_UI():
-#	for i in range(0, number_of_units):
-#		enemy_stats_node.text += enemy_list[i].enemy_name + ': ' + str(enemy_list[i].hp) + '\n'
-
 func update_enemy_UI():
 	var newText = ''
 	for i in range(0, number_of_units):
 		newText += enemy_list[i].enemy_name + ': ' + str(enemy_list[i].hp) + '\n'
 	enemy_stats_node.text = newText
 
-#func initialize_PC_UI():
-#	pc_stats_node.text += 'Player 1: ' + str(player_node.hp) + '\n' + 'Player 2: ' + str(player_2_node.hp) + '\n' #need to integrate multiple PC's. Should be backwards (Player 1 last), so that it aligns with the PC positions
-
 func update_PC_UI():
 	var newText = ''
 	newText = 'Player 4: ' + str(player_4_node.hp) + '\n' + 'Player 3: ' + str(player_3_node.hp) + '\n' + 'Player 2: ' + str(player_2_node.hp) + '\n' + 'Player 1: ' + str(player_node.hp) + '\n'  #need to integrate multiple PC's
 	pc_stats_node.text = newText
-	
-	#couldnt I just use update_UI instead of initialize (it sets with = rather than +=)
 
 func initialize_log():
 	ui_log_node.bbcode_text = ''
@@ -447,8 +426,8 @@ func act_in_order():
 				active_party_member = 4
 				isPlayersTurn = true
 		else:
-			if party_node.isPartyDead: #check all 4/check isPartyDead #maybe this is my problem.
-				turn_order = [] #maybe just erase all party_members? trying to stop all activity then
+			if party_node.isPartyDead:
+				turn_order = []
 			else:
 				update_log("It is [color=red]" + turn_order[0].enemy_name + "[/color]'s turn!")
 				isPlayersTurn = false
@@ -470,34 +449,28 @@ func enemy_attack():
 	yield(enemy_animationPlayer_node, "animation_finished")
 	randomize()
 	var random_player_target = randi()%4 + 1 #check if player is alive, then pick a different target
-	while !hasSelected: #sometimes doesnt work, wont ever pick a target
+	while !hasSelected: #set a loop to pick a random target. maybe based on an aggro stat or player hp
 		if random_player_target == 1 and !player_node.isDead:
-			player_node.hp -= 1 #set a loop to pick a random target. maybe based on an aggro stat
-			print('target acquired')
+			player_node.hp -= 1
 			player_node.check_for_death()
 			hasSelected = true
 		elif random_player_target == 2 and !player_2_node.isDead:
 			player_2_node.hp -= 1
-			print('target acquired')
 			player_2_node.check_for_death()
 			hasSelected = true
 		elif random_player_target == 3 and !player_3_node.isDead:
 			player_3_node.hp -= 1
-			print('target acquired')
 			player_3_node.check_for_death()
 			hasSelected = true
 		elif random_player_target == 4 and !player_4_node.isDead:
 			player_4_node.hp -= 1
-			print('target acquired')
 			player_4_node.check_for_death()
 			hasSelected = true
 		if random_player_target < 4:
 			random_player_target += 1
 		else:
 			random_player_target = 1
-		print('Selecting Player Target Loop Iteration')
 	call_deferred("update_PC_UI") #if i dont defer, player goes to -1 as it is updated too quickly
-#	call_deferred('shift_turn_order')
 	shift_turn_order()
 	act_in_order()
 
@@ -523,7 +496,6 @@ func get_skills():
 	number_of_skill_selections = 2 #needs changes
 
 func get_skill_card_nodes():
-#	var commands_list = command_card_1.get_node("TextureRect").get_children()
 	var skills_list
 	if active_party_member == 1:
 		skills_list = skill_card_1.get_node("TextureRect").get_children()
@@ -537,13 +509,11 @@ func get_skill_card_nodes():
 	skill_card_animation_player = skills_list[current_skill_selection].get_node("AnimationPlayer")
 
 func enable_skill_card_selector_sprite():
-	print('enable_skill_card_selector_sprite')
 	get_skill_card_nodes()
 	skill_card_selector_sprite.visible = true
 	skill_card_animation_player.play('blink')
 
 func disable_skill_card_selector_sprite():
-	print('disable_skill_card_selector_sprite')
 	get_skill_card_nodes()
 	skill_card_selector_sprite.visible = false
 	skill_card_animation_player.stop()
@@ -551,16 +521,11 @@ func disable_skill_card_selector_sprite():
 func change_skill(direction):
 	if direction == 'up':
 		if current_skill_selection > 0 :
-			print('moving skill up')
 			disable_skill_card_selector_sprite()
 			current_skill_selection -= 1
 			enable_skill_card_selector_sprite()
 	elif direction == 'down':
 		if current_skill_selection < number_of_skill_selections - 1:
-			print('moving skill down')
 			disable_skill_card_selector_sprite()
 			current_skill_selection += 1
 			enable_skill_card_selector_sprite()
-
-func return_skill():
-	pass
