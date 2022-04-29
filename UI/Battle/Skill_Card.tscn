@@ -28,4 +28,6 @@ text = "Fire"
 [node name="Skill2" parent="TextureRect" instance=ExtResource( 1 )]
 margin_top = 6.5
 margin_bottom = 30.5
-text = "Fire"
+text = "Print"
+
+[editable path="TextureRect/Skill2"]

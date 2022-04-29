@@ -55,6 +55,7 @@ onready var skill_card_4 = $BattleUI/Command_Card4/Skill_Card
 var current_skill_selection = 0
 var skill_card_selector_sprite
 var skill_card_animation_player
+var number_of_skill_selections = 0
 
 func _ready():
 	####initialize
@@ -185,8 +186,8 @@ func process_command():
 				isSelectingCommand = true
 				enable_card_selector_sprite()
 			else: #make selection. hide card
+				disable_card_selector_sprite()
 				if current_selection != 1: #hide if not selectin a skill
-					disable_card_selector_sprite()
 					if active_party_member == 1:
 						command_card_1.hide()
 					elif active_party_member == 2:
@@ -199,7 +200,7 @@ func process_command():
 				current_command = current_selection  #do this here so dif. skills may target differently
 				if current_selection == 0: #attack
 					select_target()
-				elif current_selection == 1: #skill
+				elif current_selection == 1 and isSelectingSkill == false: #skill
 					update_log('You have no skills.')
 					isSelectingCommand = false
 					isSelectingSkill = true
@@ -219,6 +220,8 @@ func process_command():
 					enable_skill_card_selector_sprite()
 					#popup another card. populate the contents dynamically based on which character (which spells available)
 					#select_target()
+				elif current_selection == 1 and isSelectingSkill == true:
+					select_target()
 				elif current_selection == 2: #item
 					update_log('You have no items.')
 					isSelectingCommand = false
@@ -267,6 +270,7 @@ func disable_card_selector_sprite():
 #targeting an enemy
 func select_target():
 	isSelectingCommand = false
+	isSelectingSkill = false
 	isSelectingTarget = true #I at one point needed to use set_deferred
 	enable_selector_sprite()
 
@@ -334,6 +338,32 @@ func get_command():
 #		targetable_enemy_list[current_target].hp -= 1 #switching to be dependent on attack value
 		check_enemy_death()
 		update_enemy_UI()
+		shift_turn_order()
+		act_in_order()
+	if current_command == 1: #and current_skill = x: do something determined by skill
+		if active_party_member == 1:
+			command_card_1.hide()
+			skill_card_1.hide()
+		elif active_party_member == 2:
+			command_card_2.hide()
+			skill_card_2.hide()
+		elif active_party_member == 3:
+			command_card_3.hide()
+			skill_card_3.hide()
+		elif active_party_member == 4:
+			command_card_4.hide()
+			skill_card_4.hide()
+		cardIsVisible = false
+		party_node.isAttacking = true
+		if current_skill_selection == 0:
+			print('fire')
+			print(current_target)
+		if current_skill_selection == 1:
+			print('print')
+			print(current_target)
+		current_skill_selection = 0
+		number_of_skill_selections = 0
+		party_node.isAttacking = false
 		shift_turn_order()
 		act_in_order()
 #	isPlayersTurn = false #which Players? use active_party_member to clarify
@@ -490,7 +520,7 @@ func check_enemy_death():
 func get_skills():
 #	if active_party_member == 1: #determine based on party_member. add list of skills to pc_template for each
 #		command_card_1.add_child()
-	number_of_selections = 2 #needs changes
+	number_of_skill_selections = 2 #needs changes
 
 func get_skill_card_nodes():
 #	var commands_list = command_card_1.get_node("TextureRect").get_children()
@@ -526,8 +556,11 @@ func change_skill(direction):
 			current_skill_selection -= 1
 			enable_skill_card_selector_sprite()
 	elif direction == 'down':
-		if current_skill_selection < number_of_selections - 1:
+		if current_skill_selection < number_of_skill_selections - 1:
 			print('moving skill down')
 			disable_skill_card_selector_sprite()
 			current_skill_selection += 1
 			enable_skill_card_selector_sprite()
+
+func return_skill():
+	pass
