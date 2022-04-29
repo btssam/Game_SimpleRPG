@@ -24,3 +24,8 @@ __meta__ = {
 
 [node name="Skill" parent="TextureRect" instance=ExtResource( 1 )]
 text = "Fire"
+
+[node name="Skill2" parent="TextureRect" instance=ExtResource( 1 )]
+margin_top = 6.5
+margin_bottom = 30.5
+text = "Fire"

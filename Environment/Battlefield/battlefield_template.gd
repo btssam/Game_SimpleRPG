@@ -52,6 +52,9 @@ onready var skill_card_1 = $BattleUI/Command_Card/Skill_Card
 onready var skill_card_2 = $BattleUI/Command_Card2/Skill_Card
 onready var skill_card_3 = $BattleUI/Command_Card3/Skill_Card
 onready var skill_card_4 = $BattleUI/Command_Card4/Skill_Card
+var current_skill_selection = 0
+var skill_card_selector_sprite
+var skill_card_animation_player
 
 func _ready():
 	####initialize
@@ -103,6 +106,14 @@ func _input(event):
 					change_command("up")
 				if event.is_action_pressed("down"):
 					change_command("down")
+		###skillcard
+			if isSelectingSkill:
+				if event.is_action_pressed("up"):
+					print('move skill up')
+					change_skill("up")
+				if event.is_action_pressed("down"):
+					print('move skill down')
+					change_skill("down")
 		###testing
 		if event.is_action_pressed("test_key"):
 				close_scene()
@@ -174,7 +185,7 @@ func process_command():
 				isSelectingCommand = true
 				enable_card_selector_sprite()
 			else: #make selection. hide card
-				if current_selection != 1:
+				if current_selection != 1: #hide if not selectin a skill
 					disable_card_selector_sprite()
 					if active_party_member == 1:
 						command_card_1.hide()
@@ -190,16 +201,22 @@ func process_command():
 					select_target()
 				elif current_selection == 1: #skill
 					update_log('You have no skills.')
-#					isSelectingCommand = false
+					isSelectingCommand = false
 					isSelectingSkill = true
 					if active_party_member == 1:
+						get_skills()
 						skill_card_1.show()
 					elif active_party_member == 2:
+						get_skills()
 						skill_card_2.show()
 					elif active_party_member == 3:
+						get_skills()
 						skill_card_3.show()
 					elif active_party_member == 4:
+						get_skills()
 						skill_card_4.show()
+					
+					enable_skill_card_selector_sprite()
 					#popup another card. populate the contents dynamically based on which character (which spells available)
 					#select_target()
 				elif current_selection == 2: #item
@@ -470,7 +487,47 @@ func check_enemy_death():
 		update_log('You are victorious!')
 
 #skills
-func popup_skillcard():
+func get_skills():
+#	if active_party_member == 1: #determine based on party_member. add list of skills to pc_template for each
+#		command_card_1.add_child()
+	number_of_selections = 2 #needs changes
+
+func get_skill_card_nodes():
+#	var commands_list = command_card_1.get_node("TextureRect").get_children()
+	var skills_list
 	if active_party_member == 1:
-		command_card_1.add_child()
-	pass
+		skills_list = skill_card_1.get_node("TextureRect").get_children()
+	elif active_party_member == 2:
+		skills_list = skill_card_2.get_node("TextureRect").get_children()
+	elif active_party_member == 3:
+		skills_list = skill_card_3.get_node("TextureRect").get_children()
+	elif active_party_member == 4:
+		skills_list = skill_card_4.get_node("TextureRect").get_children()
+	skill_card_selector_sprite = skills_list[current_skill_selection].get_node("Selector")
+	skill_card_animation_player = skills_list[current_skill_selection].get_node("AnimationPlayer")
+
+func enable_skill_card_selector_sprite():
+	print('enable_skill_card_selector_sprite')
+	get_skill_card_nodes()
+	skill_card_selector_sprite.visible = true
+	skill_card_animation_player.play('blink')
+
+func disable_skill_card_selector_sprite():
+	print('disable_skill_card_selector_sprite')
+	get_skill_card_nodes()
+	skill_card_selector_sprite.visible = false
+	skill_card_animation_player.stop()
+
+func change_skill(direction):
+	if direction == 'up':
+		if current_skill_selection > 0 :
+			print('moving skill up')
+			disable_skill_card_selector_sprite()
+			current_skill_selection -= 1
+			enable_skill_card_selector_sprite()
+	elif direction == 'down':
+		if current_skill_selection < number_of_selections - 1:
+			print('moving skill down')
+			disable_skill_card_selector_sprite()
+			current_skill_selection += 1
+			enable_skill_card_selector_sprite()
