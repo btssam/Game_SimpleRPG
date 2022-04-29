@@ -293,7 +293,7 @@ func get_command():
 			yield(player_4_node.get_node("AnimatedSprite"), "animation_finished")
 			player_4_node.update_animation("battling")
 		party_node.isAttacking = false
-		targetable_enemy_list[current_target].hp -= 1
+		targetable_enemy_list[current_target].hp -= 1 #switching to be dependent on attack value
 		check_enemy_death()
 		update_enemy_UI()
 		shift_turn_order()
