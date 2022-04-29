@@ -46,6 +46,12 @@ onready var player_2_node = get_node("../Party/Party_PC_Template1")
 onready var player_3_node = get_node("../Party/Party_PC_Template2")
 onready var player_4_node = get_node("../Party/Party_PC_Template3")
 var active_party_member = 1 #set during act_in_order. around isPlayersTurn
+###skills
+var isSelectingSkill = false
+onready var skill_card_1 = $BattleUI/Command_Card/Skill_Card
+onready var skill_card_2 = $BattleUI/Command_Card2/Skill_Card
+onready var skill_card_3 = $BattleUI/Command_Card3/Skill_Card
+onready var skill_card_4 = $BattleUI/Command_Card4/Skill_Card
 
 func _ready():
 	####initialize
@@ -168,23 +174,34 @@ func process_command():
 				isSelectingCommand = true
 				enable_card_selector_sprite()
 			else: #make selection. hide card
-				disable_card_selector_sprite()
-#				command_card_1.hide()
-				if active_party_member == 1:
-					command_card_1.hide()
-				elif active_party_member == 2:
-					command_card_2.hide()
-				elif active_party_member == 3:
-					command_card_3.hide()
-				elif active_party_member == 4:
-					command_card_4.hide()
-				cardIsVisible = false
+				if current_selection != 1:
+					disable_card_selector_sprite()
+					if active_party_member == 1:
+						command_card_1.hide()
+					elif active_party_member == 2:
+						command_card_2.hide()
+					elif active_party_member == 3:
+						command_card_3.hide()
+					elif active_party_member == 4:
+						command_card_4.hide()
+					cardIsVisible = false
 				current_command = current_selection  #do this here so dif. skills may target differently
 				if current_selection == 0: #attack
 					select_target()
 				elif current_selection == 1: #skill
 					update_log('You have no skills.')
-					isSelectingCommand = false
+#					isSelectingCommand = false
+					isSelectingSkill = true
+					if active_party_member == 1:
+						skill_card_1.show()
+					elif active_party_member == 2:
+						skill_card_2.show()
+					elif active_party_member == 3:
+						skill_card_3.show()
+					elif active_party_member == 4:
+						skill_card_4.show()
+					#popup another card. populate the contents dynamically based on which character (which spells available)
+					#select_target()
 				elif current_selection == 2: #item
 					update_log('You have no items.')
 					isSelectingCommand = false
@@ -451,3 +468,9 @@ func check_enemy_death():
 		victory_node.visible = true
 		isVictorious = true
 		update_log('You are victorious!')
+
+#skills
+func popup_skillcard():
+	if active_party_member == 1:
+		command_card_1.add_child()
+	pass
