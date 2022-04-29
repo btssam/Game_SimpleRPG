@@ -280,20 +280,24 @@ func get_command():
 			player_node.get_node("AnimationPlayer").play("attack")
 			yield(player_node.get_node("AnimatedSprite"), "animation_finished")
 			player_node.update_animation("battling")
+			targetable_enemy_list[current_target].hp -= player_node.attack
 		elif active_party_member == 2:
 			player_2_node.get_node("AnimationPlayer").play("attack")
 			yield(player_2_node.get_node("AnimatedSprite"), "animation_finished")
 			player_2_node.update_animation("battling")
+			targetable_enemy_list[current_target].hp -= player_2_node.attack
 		elif active_party_member == 3:
 			player_3_node.get_node("AnimationPlayer").play("attack")
 			yield(player_3_node.get_node("AnimatedSprite"), "animation_finished")
 			player_3_node.update_animation("battling")
+			targetable_enemy_list[current_target].hp -= player_3_node.attack
 		elif active_party_member == 4:
 			player_4_node.get_node("AnimationPlayer").play("attack")
 			yield(player_4_node.get_node("AnimatedSprite"), "animation_finished")
 			player_4_node.update_animation("battling")
+			targetable_enemy_list[current_target].hp -= player_4_node.attack
 		party_node.isAttacking = false
-		targetable_enemy_list[current_target].hp -= 1 #switching to be dependent on attack value
+#		targetable_enemy_list[current_target].hp -= 1 #switching to be dependent on attack value
 		check_enemy_death()
 		update_enemy_UI()
 		shift_turn_order()
