@@ -491,16 +491,87 @@ func check_enemy_death():
 
 #skills
 func get_skills(party_member):
+	
 #	if active_party_member == 1: #determine based on party_member. add list of skills to pc_template for each
 #		command_card_1.add_child()
 	if party_member == 1:
+		skill_card_1.get_node("TextureRect/Skill1").text = '' #only need to make em blank once skills are updated in game
+		skill_card_1.get_node("TextureRect/Skill2").text = ''
+		skill_card_1.get_node("TextureRect/Skill3").text = ''
+		skill_card_1.get_node("TextureRect/Skill4").text = ''
+		skill_card_1.get_node("TextureRect/Skill5").text = ''
 		number_of_skill_selections = player_node.number_of_skills
+		for i in number_of_skill_selections:
+			print(number_of_skill_selections) #update names of skills
+			if i == 0:
+				skill_card_1.get_node("TextureRect/Skill1").text = player_node.skill_1
+			if i == 1:
+				skill_card_1.get_node("TextureRect/Skill2").text = player_node.skill_2
+			if i == 2:
+				skill_card_1.get_node("TextureRect/Skill3").text = player_node.skill_3
+			if i == 3:
+				skill_card_1.get_node("TextureRect/Skill4").text = player_node.skill_4
+			if i == 4:
+				skill_card_1.get_node("TextureRect/Skill5").text = player_node.skill_5
 	elif party_member == 2:
+		skill_card_2.get_node("TextureRect/Skill1").text = ''
+		skill_card_2.get_node("TextureRect/Skill2").text = ''
+		skill_card_2.get_node("TextureRect/Skill3").text = ''
+		skill_card_2.get_node("TextureRect/Skill4").text = ''
+		skill_card_2.get_node("TextureRect/Skill5").text = ''
 		number_of_skill_selections = player_2_node.number_of_skills
+		for i in number_of_skill_selections:
+			print(number_of_skill_selections) #update names of skills
+			if i == 0:
+				skill_card_2.get_node("TextureRect/Skill1").text = player_2_node.skill_1
+			if i == 1:
+				skill_card_2.get_node("TextureRect/Skill2").text = player_2_node.skill_2
+			if i == 2:
+				skill_card_2.get_node("TextureRect/Skill3").text = player_2_node.skill_3
+			if i == 3:
+				skill_card_2.get_node("TextureRect/Skill4").text = player_2_node.skill_4
+			if i == 4:
+				skill_card_2.get_node("TextureRect/Skill5").text = player_2_node.skill_5
 	elif party_member == 3:
+		skill_card_3.get_node("TextureRect/Skill1").text = ''
+		skill_card_3.get_node("TextureRect/Skill2").text = ''
+		skill_card_3.get_node("TextureRect/Skill3").text = ''
+		skill_card_3.get_node("TextureRect/Skill4").text = ''
+		skill_card_3.get_node("TextureRect/Skill5").text = ''
 		number_of_skill_selections = player_3_node.number_of_skills
+		for i in number_of_skill_selections:
+			print(number_of_skill_selections) #update names of skills
+			if i == 0:
+				skill_card_3.get_node("TextureRect/Skill1").text = player_3_node.skill_1
+			if i == 1:
+				skill_card_3.get_node("TextureRect/Skill2").text = player_3_node.skill_2
+			if i == 2:
+				skill_card_3.get_node("TextureRect/Skill3").text = player_3_node.skill_3
+			if i == 3:
+				skill_card_3.get_node("TextureRect/Skill4").text = player_3_node.skill_4
+			if i == 4:
+				skill_card_3.get_node("TextureRect/Skill5").text = player_3_node.skill_5
 	elif party_member == 4:
+		skill_card_4.get_node("TextureRect/Skill1").text = ''
+		skill_card_4.get_node("TextureRect/Skill2").text = ''
+		skill_card_4.get_node("TextureRect/Skill3").text = ''
+		skill_card_4.get_node("TextureRect/Skill4").text = ''
+		skill_card_4.get_node("TextureRect/Skill5").text = ''
 		number_of_skill_selections = player_4_node.number_of_skills
+		for i in number_of_skill_selections:
+			print(number_of_skill_selections) #update names of skills
+			if i == 0:
+				skill_card_4.get_node("TextureRect/Skill1").text = player_4_node.skill_1
+			if i == 1:
+				skill_card_4.get_node("TextureRect/Skill2").text = player_4_node.skill_2
+			if i == 2:
+				skill_card_4.get_node("TextureRect/Skill3").text = player_4_node.skill_3
+			if i == 3:
+				skill_card_4.get_node("TextureRect/Skill4").text = player_4_node.skill_4
+			if i == 4:
+				skill_card_4.get_node("TextureRect/Skill5").text = player_4_node.skill_5
+		
+	
 
 func get_skill_card_nodes():
 	var skills_list

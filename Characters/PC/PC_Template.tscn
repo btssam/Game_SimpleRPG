@@ -173,11 +173,11 @@ collision_mask = 6
 script = ExtResource( 2 )
 hp = 5
 maxhp = 5
-skill_1 = "light"
-skill_2 = "medium"
-skill_3 = "heavy"
-skill_4 = "all"
-skill_5 = "pass"
+skill_1 = "Light"
+skill_2 = "Med"
+skill_3 = "Heavy"
+skill_4 = "All"
+skill_5 = "Pass"
 number_of_skills = 5
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
