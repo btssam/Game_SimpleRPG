@@ -30,6 +30,13 @@ export var intellect = 1
 export var speed = 1
 export var mp = 1
 export var maxmp = 1
+#skills
+export var skill_1 = "null"
+export var skill_2 = "null"
+export var skill_3 = "null"
+export var skill_4 = "null"
+export var skill_5 = "null"
+export var number_of_skills = 0
 
 
 

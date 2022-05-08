@@ -202,16 +202,16 @@ func process_command(): #which action occurs when space is pressed:
 					isSelectingCommand = false
 					isSelectingSkill = true
 					if active_party_member == 1:
-						get_skills()
+						get_skills(1)
 						skill_card_1.show()
 					elif active_party_member == 2:
-						get_skills()
+						get_skills(2)
 						skill_card_2.show()
 					elif active_party_member == 3:
-						get_skills()
+						get_skills(3)
 						skill_card_3.show()
 					elif active_party_member == 4:
-						get_skills()
+						get_skills(4)
 						skill_card_4.show()
 					
 					enable_skill_card_selector_sprite()
@@ -490,10 +490,17 @@ func check_enemy_death():
 		update_log('You are victorious!')
 
 #skills
-func get_skills():
+func get_skills(party_member):
 #	if active_party_member == 1: #determine based on party_member. add list of skills to pc_template for each
 #		command_card_1.add_child()
-	number_of_skill_selections = 2 #needs changes
+	if party_member == 1:
+		number_of_skill_selections = player_node.number_of_skills
+	elif party_member == 2:
+		number_of_skill_selections = player_2_node.number_of_skills
+	elif party_member == 3:
+		number_of_skill_selections = player_3_node.number_of_skills
+	elif party_member == 4:
+		number_of_skill_selections = player_4_node.number_of_skills
 
 func get_skill_card_nodes():
 	var skills_list
