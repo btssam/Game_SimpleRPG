@@ -17,6 +17,7 @@ onready var command_card_1 = $BattleUI/Command_Card
 onready var command_card_2 = $BattleUI/Command_Card2
 onready var command_card_3 = $BattleUI/Command_Card3
 onready var command_card_4 = $BattleUI/Command_Card4
+onready var command_cards = [command_card_1, command_card_2, command_card_3, command_card_4]
 
 var card_selector_sprite
 var card_animation_player
@@ -45,12 +46,14 @@ onready var party_node = get_node("../Party")
 onready var player_2_node = get_node("../Party/Party_PC_Template1")
 onready var player_3_node = get_node("../Party/Party_PC_Template2")
 onready var player_4_node = get_node("../Party/Party_PC_Template3")
+onready var players = [player_node, player_2_node, player_3_node, player_4_node]
 var active_party_member = 1 #set during act_in_order. around isPlayersTurn
 ###skills
 onready var skill_card_1 = $BattleUI/Command_Card/Skill_Card
 onready var skill_card_2 = $BattleUI/Command_Card2/Skill_Card
 onready var skill_card_3 = $BattleUI/Command_Card3/Skill_Card
 onready var skill_card_4 = $BattleUI/Command_Card4/Skill_Card
+onready var skill_cards = [skill_card_1, skill_card_2, skill_card_3, skill_card_4]
 var isSelectingSkill = false
 var current_skill_selection = 0
 var number_of_skill_selections = 0
@@ -171,28 +174,14 @@ func process_command(): #which action occurs when space is pressed:
 
 		if not isSelectingTarget:
 			if not cardIsVisible: #pop up card
-				if active_party_member == 1:
-					command_card_1.show()
-				elif active_party_member == 2:
-					command_card_2.show()
-				elif active_party_member == 3:
-					command_card_3.show()
-				elif active_party_member == 4:
-					command_card_4.show()
+				command_cards[active_party_member - 1].show()
 				cardIsVisible = true
 				isSelectingCommand = true
 				enable_card_selector_sprite()
 			else: #make selection. hide card
 				disable_card_selector_sprite()
-				if current_selection != 1: #hide if not selectin a skill
-					if active_party_member == 1:
-						command_card_1.hide()
-					elif active_party_member == 2:
-						command_card_2.hide()
-					elif active_party_member == 3:
-						command_card_3.hide()
-					elif active_party_member == 4:
-						command_card_4.hide()
+				if current_selection != 1: #hide if not selecting a skill
+					command_cards[active_party_member - 1].hide()
 					cardIsVisible = false
 				current_command = current_selection  #do this here so dif. skills may target differently
 				if current_selection == 0: #attack
@@ -201,18 +190,8 @@ func process_command(): #which action occurs when space is pressed:
 					update_log('You have no skills.')
 					isSelectingCommand = false
 					isSelectingSkill = true
-					if active_party_member == 1:
-						get_skills(1)
-						skill_card_1.show()
-					elif active_party_member == 2:
-						get_skills(2)
-						skill_card_2.show()
-					elif active_party_member == 3:
-						get_skills(3)
-						skill_card_3.show()
-					elif active_party_member == 4:
-						get_skills(4)
-						skill_card_4.show()
+					get_skills(active_party_member)
+					skill_cards[active_party_member - 1].show()
 					
 					enable_skill_card_selector_sprite()
 				elif current_selection == 1 and isSelectingSkill == true:
@@ -229,27 +208,18 @@ func process_command(): #which action occurs when space is pressed:
 					close_scene()
 
 func change_command(direction):
+	disable_card_selector_sprite()
 	if direction == 'up':
 		if current_selection > 0 :
-			disable_card_selector_sprite()
 			current_selection -= 1
-			enable_card_selector_sprite()
 	elif direction == 'down':
 		if current_selection < number_of_selections - 1:
-			disable_card_selector_sprite()
 			current_selection += 1
-			enable_card_selector_sprite()
+	enable_card_selector_sprite()
 
 func get_card_nodes():
 	var commands_list
-	if active_party_member == 1:
-		commands_list = command_card_1.get_node("TextureRect").get_children()
-	elif active_party_member == 2:
-		commands_list = command_card_2.get_node("TextureRect").get_children()
-	elif active_party_member == 3:
-		commands_list = command_card_3.get_node("TextureRect").get_children()
-	elif active_party_member == 4:
-		commands_list = command_card_4.get_node("TextureRect").get_children()
+	commands_list = command_cards[active_party_member - 1].get_node("TextureRect").get_children()
 	card_selector_sprite = commands_list[current_selection].get_node("Selector")
 	card_animation_player = commands_list[current_selection].get_node("AnimationPlayer")
 
@@ -273,16 +243,14 @@ func select_target():
 	enable_selector_sprite()
 
 func change_target(direction):
+	disable_selector_sprite()
 	if direction == 'up':
 		if current_target > 0:
-			disable_selector_sprite()
 			current_target -= 1
-			enable_selector_sprite()
 	elif direction == 'down':
 		if current_target < targetable_number_of_units - 1:
-			disable_selector_sprite()
 			current_target += 1
-			enable_selector_sprite()
+	enable_selector_sprite()
 	
 func get_target_nodes():
 	target_selector_sprite = targetable_enemy_list[current_target].get_node("Selector")
@@ -307,44 +275,18 @@ func return_target():
 func get_command():
 	if current_command == 0: #attack
 		party_node.isAttacking = true
-		if active_party_member == 1:
-			player_node.get_node("AnimationPlayer").play("attack")
-			yield(player_node.get_node("AnimatedSprite"), "animation_finished")
-			player_node.update_animation("battling")
-			targetable_enemy_list[current_target].hp -= player_node.attack
-		elif active_party_member == 2:
-			player_2_node.get_node("AnimationPlayer").play("attack")
-			yield(player_2_node.get_node("AnimatedSprite"), "animation_finished")
-			player_2_node.update_animation("battling")
-			targetable_enemy_list[current_target].hp -= player_2_node.attack
-		elif active_party_member == 3:
-			player_3_node.get_node("AnimationPlayer").play("attack")
-			yield(player_3_node.get_node("AnimatedSprite"), "animation_finished")
-			player_3_node.update_animation("battling")
-			targetable_enemy_list[current_target].hp -= player_3_node.attack
-		elif active_party_member == 4:
-			player_4_node.get_node("AnimationPlayer").play("attack")
-			yield(player_4_node.get_node("AnimatedSprite"), "animation_finished")
-			player_4_node.update_animation("battling")
-			targetable_enemy_list[current_target].hp -= player_4_node.attack
+		players[active_party_member - 1].get_node("AnimationPlayer").play("attack")
+		yield(players[active_party_member - 1].get_node("AnimatedSprite"), "animation_finished")
+		players[active_party_member - 1].update_animation("battling")
+		targetable_enemy_list[current_target].hp -= players[active_party_member - 1].attack
 		party_node.isAttacking = false
 		check_enemy_death()
 		update_enemy_UI()
 		shift_turn_order()
 		act_in_order()
-	if current_command == 1:
-		if active_party_member == 1:
-			command_card_1.hide()
-			skill_card_1.hide()
-		elif active_party_member == 2:
-			command_card_2.hide()
-			skill_card_2.hide()
-		elif active_party_member == 3:
-			command_card_3.hide()
-			skill_card_3.hide()
-		elif active_party_member == 4:
-			command_card_4.hide()
-			skill_card_4.hide()
+	if current_command == 1: #skills
+		command_cards[active_party_member - 1].hide()
+		skill_cards[active_party_member - 1].hide()
 		cardIsVisible = false
 		party_node.isAttacking = true
 		if current_skill_selection == 0: #different skills for different PCs. check skill_selection and active_party_member
@@ -380,7 +322,7 @@ func update_enemy_UI():
 
 func update_PC_UI():
 	var newText = ''
-	newText = 'Player 4: ' + str(player_4_node.hp) + '\n' + 'Player 3: ' + str(player_3_node.hp) + '\n' + 'Player 2: ' + str(player_2_node.hp) + '\n' + 'Player 1: ' + str(player_node.hp) + '\n'  #need to integrate multiple PC's
+	newText = 'Player 4: ' + str(player_4_node.hp) + '\n' + 'Player 3: ' + str(player_3_node.hp) + '\n' + 'Player 2: ' + str(player_2_node.hp) + '\n' + 'Player 1: ' + str(player_node.hp) + '\n'
 	pc_stats_node.text = newText
 
 func initialize_log():
@@ -434,7 +376,7 @@ func act_in_order():
 				enemy_attack()
 
 func shift_turn_order(): #make sure this is called after death check, not before
-	var first_unit = turn_order[0] #move the turn order forward once someone goes
+	var first_unit = turn_order[0] #shift the turn order forward once someone goes
 	for i in range(0, turn_order.size()):
 		if i + 1 < turn_order.size():
 			turn_order[i] = turn_order[i+1]
@@ -450,26 +392,14 @@ func enemy_attack():
 	randomize()
 	var random_player_target = randi()%4 + 1 #check if player is alive, then pick a different target
 	while !hasSelected: #set a loop to pick a random target. maybe based on an aggro stat or player hp
-		if random_player_target == 1 and !player_node.isDead:
-			player_node.hp -= 1
-			player_node.check_for_death()
+		if !players[random_player_target - 1].isDead:
+			players[random_player_target - 1].hp -= 1
+			players[random_player_target - 1].check_for_death()
 			hasSelected = true
-		elif random_player_target == 2 and !player_2_node.isDead:
-			player_2_node.hp -= 1
-			player_2_node.check_for_death()
-			hasSelected = true
-		elif random_player_target == 3 and !player_3_node.isDead:
-			player_3_node.hp -= 1
-			player_3_node.check_for_death()
-			hasSelected = true
-		elif random_player_target == 4 and !player_4_node.isDead:
-			player_4_node.hp -= 1
-			player_4_node.check_for_death()
-			hasSelected = true
-		if random_player_target < 4:
+		if random_player_target < 4: #why is this here. it seems to break without it but I dont understand it
 			random_player_target += 1
 		else:
-			random_player_target = 1
+			random_player_target = 1 #why is this here
 	call_deferred("update_PC_UI") #if i dont defer, player goes to -1 as it is updated too quickly
 	shift_turn_order()
 	act_in_order()
@@ -489,100 +419,31 @@ func check_enemy_death():
 		isVictorious = true
 		update_log('You are victorious!')
 
+
+
 #skills
 func get_skills(party_member):
-	
-#	if active_party_member == 1: #determine based on party_member. add list of skills to pc_template for each
-#		command_card_1.add_child()
-	if party_member == 1:
-		skill_card_1.get_node("TextureRect/Skill1").text = '' #only need to make em blank once skills are updated in game
-		skill_card_1.get_node("TextureRect/Skill2").text = ''
-		skill_card_1.get_node("TextureRect/Skill3").text = ''
-		skill_card_1.get_node("TextureRect/Skill4").text = ''
-		skill_card_1.get_node("TextureRect/Skill5").text = ''
-		number_of_skill_selections = player_node.number_of_skills
-		for i in number_of_skill_selections:
-			print(number_of_skill_selections) #update names of skills
-			if i == 0:
-				skill_card_1.get_node("TextureRect/Skill1").text = player_node.skill_1
-			if i == 1:
-				skill_card_1.get_node("TextureRect/Skill2").text = player_node.skill_2
-			if i == 2:
-				skill_card_1.get_node("TextureRect/Skill3").text = player_node.skill_3
-			if i == 3:
-				skill_card_1.get_node("TextureRect/Skill4").text = player_node.skill_4
-			if i == 4:
-				skill_card_1.get_node("TextureRect/Skill5").text = player_node.skill_5
-	elif party_member == 2:
-		skill_card_2.get_node("TextureRect/Skill1").text = ''
-		skill_card_2.get_node("TextureRect/Skill2").text = ''
-		skill_card_2.get_node("TextureRect/Skill3").text = ''
-		skill_card_2.get_node("TextureRect/Skill4").text = ''
-		skill_card_2.get_node("TextureRect/Skill5").text = ''
-		number_of_skill_selections = player_2_node.number_of_skills
-		for i in number_of_skill_selections:
-			print(number_of_skill_selections) #update names of skills
-			if i == 0:
-				skill_card_2.get_node("TextureRect/Skill1").text = player_2_node.skill_1
-			if i == 1:
-				skill_card_2.get_node("TextureRect/Skill2").text = player_2_node.skill_2
-			if i == 2:
-				skill_card_2.get_node("TextureRect/Skill3").text = player_2_node.skill_3
-			if i == 3:
-				skill_card_2.get_node("TextureRect/Skill4").text = player_2_node.skill_4
-			if i == 4:
-				skill_card_2.get_node("TextureRect/Skill5").text = player_2_node.skill_5
-	elif party_member == 3:
-		skill_card_3.get_node("TextureRect/Skill1").text = ''
-		skill_card_3.get_node("TextureRect/Skill2").text = ''
-		skill_card_3.get_node("TextureRect/Skill3").text = ''
-		skill_card_3.get_node("TextureRect/Skill4").text = ''
-		skill_card_3.get_node("TextureRect/Skill5").text = ''
-		number_of_skill_selections = player_3_node.number_of_skills
-		for i in number_of_skill_selections:
-			print(number_of_skill_selections) #update names of skills
-			if i == 0:
-				skill_card_3.get_node("TextureRect/Skill1").text = player_3_node.skill_1
-			if i == 1:
-				skill_card_3.get_node("TextureRect/Skill2").text = player_3_node.skill_2
-			if i == 2:
-				skill_card_3.get_node("TextureRect/Skill3").text = player_3_node.skill_3
-			if i == 3:
-				skill_card_3.get_node("TextureRect/Skill4").text = player_3_node.skill_4
-			if i == 4:
-				skill_card_3.get_node("TextureRect/Skill5").text = player_3_node.skill_5
-	elif party_member == 4:
-		skill_card_4.get_node("TextureRect/Skill1").text = ''
-		skill_card_4.get_node("TextureRect/Skill2").text = ''
-		skill_card_4.get_node("TextureRect/Skill3").text = ''
-		skill_card_4.get_node("TextureRect/Skill4").text = ''
-		skill_card_4.get_node("TextureRect/Skill5").text = ''
-		number_of_skill_selections = player_4_node.number_of_skills
-		for i in number_of_skill_selections:
-			print(number_of_skill_selections) #update names of skills
-			if i == 0:
-				skill_card_4.get_node("TextureRect/Skill1").text = player_4_node.skill_1
-			if i == 1:
-				skill_card_4.get_node("TextureRect/Skill2").text = player_4_node.skill_2
-			if i == 2:
-				skill_card_4.get_node("TextureRect/Skill3").text = player_4_node.skill_3
-			if i == 3:
-				skill_card_4.get_node("TextureRect/Skill4").text = player_4_node.skill_4
-			if i == 4:
-				skill_card_4.get_node("TextureRect/Skill5").text = player_4_node.skill_5
-		
-	
+	skill_cards[party_member - 1].get_node("TextureRect/Skill1").text = '' #only need to make em blank once skills are updated in game
+	skill_cards[party_member - 1].get_node("TextureRect/Skill2").text = ''
+	skill_cards[party_member - 1].get_node("TextureRect/Skill3").text = ''
+	skill_cards[party_member - 1].get_node("TextureRect/Skill4").text = ''
+	skill_cards[party_member - 1].get_node("TextureRect/Skill5").text = ''
+	number_of_skill_selections = players[party_member - 1].number_of_skills
+	for i in number_of_skill_selections: #update names of skills
+		if i == 0:
+			skill_cards[party_member - 1].get_node("TextureRect/Skill1").text = players[party_member - 1].skill_1
+		if i == 1:
+			skill_cards[party_member - 1].get_node("TextureRect/Skill2").text = players[party_member - 1].skill_2
+		if i == 2:
+			skill_cards[party_member - 1].get_node("TextureRect/Skill3").text = players[party_member - 1].skill_3
+		if i == 3:
+			skill_cards[party_member - 1].get_node("TextureRect/Skill4").text = players[party_member - 1].skill_4
+		if i == 4:
+			skill_cards[party_member - 1].get_node("TextureRect/Skill5").text = players[party_member - 1].skill_5
 
 func get_skill_card_nodes():
 	var skills_list
-	if active_party_member == 1:
-		skills_list = skill_card_1.get_node("TextureRect").get_children()
-	elif active_party_member == 2:
-		skills_list = skill_card_2.get_node("TextureRect").get_children()
-	elif active_party_member == 3:
-		skills_list = skill_card_3.get_node("TextureRect").get_children()
-	elif active_party_member == 4:
-		skills_list = skill_card_4.get_node("TextureRect").get_children()
+	skills_list = skill_cards[active_party_member - 1].get_node("TextureRect").get_children()
 	skill_card_selector_sprite = skills_list[current_skill_selection].get_node("Selector")
 	skill_card_animation_player = skills_list[current_skill_selection].get_node("AnimationPlayer")
 
