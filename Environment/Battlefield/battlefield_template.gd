@@ -422,24 +422,23 @@ func check_enemy_death():
 
 
 #skills
-func get_skills(party_member):
-	skill_cards[party_member - 1].get_node("TextureRect/Skill1").text = '' #only need to make em blank once skills are updated in game
-	skill_cards[party_member - 1].get_node("TextureRect/Skill2").text = ''
-	skill_cards[party_member - 1].get_node("TextureRect/Skill3").text = ''
-	skill_cards[party_member - 1].get_node("TextureRect/Skill4").text = ''
-	skill_cards[party_member - 1].get_node("TextureRect/Skill5").text = ''
+func get_skills(party_member): #could maybe use arrays for the skill_card text node
+	var skills_text = [skill_cards[party_member - 1].get_node("TextureRect/Skill1"), skill_cards[party_member - 1].get_node("TextureRect/Skill2"), skill_cards[party_member - 1].get_node("TextureRect/Skill3"), skill_cards[party_member - 1].get_node("TextureRect/Skill4"), skill_cards[party_member - 1].get_node("TextureRect/Skill5")]
+	for i in 5:
+		skills_text[i].text = ''
 	number_of_skill_selections = players[party_member - 1].number_of_skills
 	for i in number_of_skill_selections: #update names of skills
-		if i == 0:
-			skill_cards[party_member - 1].get_node("TextureRect/Skill1").text = players[party_member - 1].skill_1
-		if i == 1:
-			skill_cards[party_member - 1].get_node("TextureRect/Skill2").text = players[party_member - 1].skill_2
-		if i == 2:
-			skill_cards[party_member - 1].get_node("TextureRect/Skill3").text = players[party_member - 1].skill_3
-		if i == 3:
-			skill_cards[party_member - 1].get_node("TextureRect/Skill4").text = players[party_member - 1].skill_4
-		if i == 4:
-			skill_cards[party_member - 1].get_node("TextureRect/Skill5").text = players[party_member - 1].skill_5
+		skills_text[i].text = players[party_member - 1].skills[i]
+#		if i == 0:
+#			skill_cards[party_member - 1].get_node("TextureRect/Skill1").text = players[party_member - 1].skill_1
+#		if i == 1:
+#			skill_cards[party_member - 1].get_node("TextureRect/Skill2").text = players[party_member - 1].skill_2
+#		if i == 2:
+#			skill_cards[party_member - 1].get_node("TextureRect/Skill3").text = players[party_member - 1].skill_3
+#		if i == 3:
+#			skill_cards[party_member - 1].get_node("TextureRect/Skill4").text = players[party_member - 1].skill_4
+#		if i == 4:
+#			skill_cards[party_member - 1].get_node("TextureRect/Skill5").text = players[party_member - 1].skill_5
 
 func get_skill_card_nodes():
 	var skills_list

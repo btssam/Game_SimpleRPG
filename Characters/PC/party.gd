@@ -6,6 +6,7 @@ var previous_direction = Vector2(0,0)
 onready var follower_1 = preload("res://Characters/PC/Party_PC_Template1.tscn")
 onready var follower_2 = preload("res://Characters/PC/Party_PC_Template2.tscn")
 onready var follower_3 = preload("res://Characters/PC/Party_PC_Template3.tscn")
+onready var followers = [follower_1, follower_2, follower_3]
 var follower_instance
 var collision_info
 var isAgainstAWall = false
@@ -13,9 +14,10 @@ var collision_direction = Vector2(0,0)
 var isStartingToMove = false
 var isStopped = false
 
-var animation_name
+var animation_name = 'stop'
 
 var gap_direction = 'down'
+var gap_difference_dict = {'left' : Vector2(gap,0), 'right': Vector2(-gap,0), 'up': Vector2(0, gap), 'down': Vector2(0, -gap)}
 
 var collision_direction_info
 
@@ -93,25 +95,13 @@ func move_party():
 func add_follower():
 	var previous_follower = get_child(get_child_count() -1 )
 	add_child(follower_instance)
-	if gap_direction == 'left':
-		follower_instance.position = previous_follower.position + Vector2(gap, 0)
-	elif gap_direction == 'right':
-		follower_instance.position = previous_follower.position + Vector2(-gap, 0)
-	elif gap_direction == 'up':
-		follower_instance.position = previous_follower.position + Vector2(0, gap)
-	elif gap_direction == 'down':
-		follower_instance.position = previous_follower.position + Vector2(0, -gap)
+	follower_instance.position = previous_follower.position + gap_difference_dict[gap_direction]
 	for i in range(1, get_child_count()): #too early if I instead run on follower's _ready(). Then, followers dont move
 		get_child(i).get_initial_direction()
 	
 func add_followers(number_of_followers):
 	for i in range(1, number_of_followers + 1):
-		if i == 1:
-			follower_instance = follower_1.instance()
-		elif i == 2:
-			follower_instance = follower_2.instance()
-		elif i == 3:
-			follower_instance = follower_3.instance()
+		follower_instance = followers[i-1].instance()
 		add_follower()
 
 func stop_party():
@@ -151,15 +141,9 @@ func party_has_begun_moving():
 func reset_party_position():
 	var leader_position = get_node("PC_Template").position
 	for i in range(1, get_child_count()):
-		if gap_direction == 'left':
-			get_child(i).position = get_child(i-1).position + Vector2(gap,0)
-		elif gap_direction == 'right':
-			get_child(i).position = get_child(i-1).position + Vector2(-gap, 0)
-		elif gap_direction == 'up':
-			get_child(i).position = get_child(i-1).position + Vector2(0, gap)
-		elif gap_direction == 'down':
-			get_child(i).position = get_child(i-1).position + Vector2(0, -gap)
-		elif gap_direction == 'battling':
+		if gap_direction != 'battling':
+			get_child(i).position = get_child(i-1).position + gap_difference_dict[gap_direction]
+		else:
 			get_child(i).position = get_child(i-1).position + Vector2(0, -80)
 		get_child(i).reset_follower()
 		previous_direction = Vector2(0,0)
@@ -190,10 +174,8 @@ func move_and_collide_test_collision_direction():
 func check_if_party_is_dead():
 	var number_dead = 0
 	for i in range(0, get_child_count()):
-#		print('listing possible dead party_members' + str(get_child(i).name))
 		if get_child(i).isDead == true:
 			number_dead += 1
-	print('check_if_party_is_dead. number_dead: ' + str(number_dead))
 	if number_dead == 4:
 		print('Party is Dead!')
 		isPartyDead = true

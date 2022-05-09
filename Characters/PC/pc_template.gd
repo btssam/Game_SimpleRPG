@@ -20,6 +20,8 @@ var isDead = false
 ###nodes
 onready var main_node = get_node("../..")
 onready var dialogue_node = get_node("../../CanvasLayer/GUI/Dialogue_UI")
+###movement
+onready var animation_dict = {'up': 'walk_up', 'down': 'walk_down', 'left': 'walk_left', 'right': 'walk_right'}
 ###attacking
 var isAttacking = false
 ###stats
@@ -36,6 +38,7 @@ export var skill_2 = "null"
 export var skill_3 = "null"
 export var skill_4 = "null"
 export var skill_5 = "null"
+onready var skills = [skill_1, skill_2, skill_3, skill_4, skill_5]
 export var number_of_skills = 0
 
 
@@ -60,17 +63,8 @@ func _input(event):
 
 
 ###movement
-func update_animation(animation):
-	if animation == 'up':
-		$AnimatedSprite.play("walk_up")
-#		$AnimatedSprite.advance(0) # I do not remember why I had this here at all
-	elif animation == 'down':
-		$AnimatedSprite.play("walk_down")
-	elif animation == 'left':
-		$AnimatedSprite.play("walk_left")
-	elif animation == 'right':
-		$AnimatedSprite.play("walk_right")
-	elif animation == 'stop':
+func update_animation(animation): #cant use because apparently is being called with null on start
+	if animation == 'stop':
 		$AnimatedSprite.stop()
 		$AnimatedSprite.frame = 1
 	elif animation == 'battling':
@@ -81,6 +75,8 @@ func update_animation(animation):
 		$AnimatedSprite.play("walk_down")
 		$AnimatedSprite.stop()
 		$AnimatedSprite.frame = 1
+	else:
+		$AnimatedSprite.play(animation_dict[animation])
 
 
 

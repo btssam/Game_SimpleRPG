@@ -2,7 +2,7 @@ extends Control
 
 var isCurrentlyInteracting = false
 var isDialogueFinished = false
-
+#maybe an array with dialogue
 
 
 func print_dialogue(body):

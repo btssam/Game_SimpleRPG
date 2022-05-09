@@ -21,6 +21,7 @@ var current_direction = Vector2()
 var initial_direction
 
 var animation_name
+onready var animation_dict = {'up': 'walk_up', 'down': 'walk_down', 'left': 'walk_left', 'right': 'walk_right'}
 ###stats
 var player_name = ''
 export var attack = 1
@@ -35,6 +36,7 @@ export var skill_2 = "null"
 export var skill_3 = "null"
 export var skill_4 = "null"
 export var skill_5 = "null"
+onready var skills = [skill_1, skill_2, skill_3, skill_4, skill_5]
 export var number_of_skills = 0
 
 func _ready():
@@ -101,15 +103,7 @@ func convert_movement_to_string(direction):
 		return('right')
 
 func update_animation(animation):
-	if animation == 'up':
-		$AnimatedSprite.play("walk_up")
-	elif animation == 'down':
-		$AnimatedSprite.play("walk_down")
-	elif animation == 'left':
-		$AnimatedSprite.play("walk_left")
-	elif animation == 'right':
-		$AnimatedSprite.play("walk_right")
-	elif animation == 'stop':
+	if animation == 'stop':
 		$AnimatedSprite.stop()
 		$AnimatedSprite.frame = 1
 	elif animation == 'battling':
@@ -120,7 +114,8 @@ func update_animation(animation):
 		$AnimatedSprite.play("walk_down")
 		$AnimatedSprite.stop()
 		$AnimatedSprite.frame = 1
-
+	else:
+		$AnimatedSprite.play(animation_dict[animation])
 
 ###scene_change
 func reset_follower():
@@ -141,7 +136,6 @@ func check_for_death():
 		get_node("../../Battlefield_Template").update_log("A party member is dead!")
 		isDead = true
 		if get_node("../../Battlefield_Template").turn_order.has(get_node(".")):
-			print('removing from turn_order')
 			get_node("../../Battlefield_Template").turn_order.erase(get_node("."))
 		get_parent().check_if_party_is_dead()
 		$AnimatedSprite.play("dying")

@@ -14,6 +14,8 @@ onready var player1_node = get_node("../../../Party/PC_Template")
 onready var player2_node = get_node("../../../Party/Party_PC_Template1")
 onready var player3_node = get_node("../../../Party/Party_PC_Template2")
 onready var player4_node = get_node("../../../Party/Party_PC_Template3")
+onready var players = [player1_node, player2_node, player3_node, player4_node]
+onready var number_of_party_members = 4
 
 func _ready():
 	pass
@@ -153,7 +155,6 @@ func update_status():
 	var status_2 = current_status_node.get_node("PC2/Sprite/Info")
 	var status_3 = current_status_node.get_node("PC3/Sprite/Info")
 	var status_4 = current_status_node.get_node("PC4/Sprite/Info")
-	status_1.text = player1_node.player_name + '\n' + 'HP:' + str(player1_node.hp) + '/' + str(player1_node.maxhp) + ' ATK:' + str(player1_node.attack) + ' DEF:' + str(player1_node.defence) + '\n' + 'MP:' + str(player1_node.mp) + '/' + str(player2_node.maxmp) + ' INT:' + str(player1_node.intellect) + ' SPD:' + str(player1_node.speed)
-	status_2.text = player2_node.player_name + '\n' + 'HP:' + str(player2_node.hp) + '/' + str(player2_node.maxhp) + ' ATK:' + str(player2_node.attack) + ' DEF:' + str(player2_node.defence) + '\n' + 'MP:' + str(player2_node.mp) + '/' + str(player2_node.maxmp) + ' INT:' + str(player2_node.intellect) + ' SPD:' + str(player2_node.speed)
-	status_3.text = player3_node.player_name + '\n' + 'HP:' + str(player3_node.hp) + '/' + str(player3_node.maxhp) + ' ATK:' + str(player3_node.attack) + ' DEF:' + str(player3_node.defence) + '\n' + 'MP:' + str(player3_node.mp) + '/' + str(player3_node.maxmp) + ' INT:' + str(player3_node.intellect) + ' SPD:' + str(player3_node.speed)
-	status_4.text = player4_node.player_name + '\n' + 'HP:' + str(player4_node.hp) + '/' + str(player4_node.maxhp) + ' ATK:' + str(player4_node.attack) + ' DEF:' + str(player4_node.defence) + '\n' + 'MP:' + str(player4_node.mp) + '/' + str(player4_node.maxmp) + ' INT:' + str(player4_node.intellect) + ' SPD:' + str(player4_node.speed)
+	var status_array = [status_1, status_2, status_3, status_4]
+	for i in number_of_party_members:
+		status_array[i].text = players[i].player_name + '\n' + 'HP:' + str(players[i].hp) + '/' + str(players[i].maxhp) + ' ATK:' + str(players[i].attack) + ' DEF:' + str(players[i].defence) + '\n' + 'MP:' + str(players[i].mp) + '/' + str(players[i].maxmp) + ' INT:' + str(players[i].intellect) + ' SPD:' + str(players[i].speed)

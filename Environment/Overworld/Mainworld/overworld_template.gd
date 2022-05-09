@@ -7,7 +7,7 @@ onready var main_node = get_node("..")
 
 
 func _ready():
-	get_node("../Party/PC_Template/Delta_Position1").start()
+	get_node("../Party/PC_Template/Delta_Position1").start() #start battle timer
 
 
 func _on_Area2D_To_Town_body_entered(body):

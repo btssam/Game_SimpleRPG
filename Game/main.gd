@@ -31,7 +31,7 @@ func _input(event):
 
 
 
-func switch_scene(from_scene, to_scene): 
+func switch_scene(from_scene, to_scene):
 	if from_scene == "town":
 		if to_scene == "overworld":
 			var overworld = load(overworld_node).instance()
@@ -67,7 +67,6 @@ func switch_scene(from_scene, to_scene):
 			var gameover = load(gameover_node).instance()
 			party_node.gap_direction = 'up'
 			party_node.get_node("PC_Template").position = Vector2(0,0)
-#			party_node.position = Vector2(512, 384)
 			party_node.position = gameover.get_node("Spawn_Points/Initial").position
 			load_scene(gameover)
 			call_deferred("remove_child", $Battlefield_Template)
@@ -78,7 +77,6 @@ func switch_scene(from_scene, to_scene):
 			var town = load(town_node).instance()
 			party_node.gap_direction = 'down'
 			party_node.get_node("PC_Template").position = Vector2(0,0)
-#			party_node.position = Vector2(512, 384)
 			party_node.position = town.get_node("Spawn_Points/From_Overworld").position
 			load_scene(town)
 			call_deferred("remove_child", $Game_Over)
@@ -89,7 +87,7 @@ func load_scene(scene_name):
 	call_deferred("add_child", scene_name)
 
 #return from battle
-func test_gap_direction(): #doesn't test again other collision types beside enviornment
+func test_gap_direction(): #doesn't test against other collision types beside enviornment
 	var gap_direction_confirmed = false
 	return_gap_direction = 'down'
 	var collision_node = get_node("Overworld_Template/Collision")
