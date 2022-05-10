@@ -170,8 +170,6 @@ script = ExtResource( 1 )
 hp = 5
 maxhp = 5
 attack = 4
-skill_1 = "Cure"
-skill_2 = "Heal"
 number_of_skills = 2
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]

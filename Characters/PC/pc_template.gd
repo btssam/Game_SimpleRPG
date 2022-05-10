@@ -33,11 +33,12 @@ export var speed = 1
 export var mp = 1
 export var maxmp = 1
 #skills
-export var skill_1 = "null"
-export var skill_2 = "null"
-export var skill_3 = "null"
-export var skill_4 = "null"
-export var skill_5 = "null"
+export var skill_1 = {"name": "null", "targets": "null", "effect_type": "null", "effect": "null"}
+#export var skill_1 = "null"
+export var skill_2 = {"name": "null", "targets": "null", "effect_type": "null", "effect": "null"}
+export var skill_3 = {"name": "null", "targets": "null", "effect_type": "null", "effect": "null"}
+export var skill_4 = {"name": "null", "targets": "null", "effect_type": "null", "effect": "null"}
+export var skill_5 = {"name": "null", "targets": "null", "effect_type": "null", "effect": "null"}
 onready var skills = [skill_1, skill_2, skill_3, skill_4, skill_5]
 export var number_of_skills = 0
 
@@ -147,6 +148,10 @@ func check_for_death():
 		if get_node("../../Battlefield_Template").turn_order.has(get_node(".")):
 			print('removing from turn_order')
 			get_node("../../Battlefield_Template").turn_order.erase(get_node("."))
+		if get_node("../../Battlefield_Template").targetable_ally_list.has(get_node(".")):
+			print(get_node("../../Battlefield_Template").targetable_ally_list)
+			print('removing from targetable players')
+			get_node("../../Battlefield_Template").targetable_ally_list.erase(get_node("."))
 		get_parent().check_if_party_is_dead()
 		$AnimatedSprite.play("dying")
 		yield($AnimatedSprite, "animation_finished")

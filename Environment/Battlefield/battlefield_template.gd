@@ -6,6 +6,7 @@ var number_of_units = 0
 var enemy_list = []
 ###targeting
 var isSelectingTarget = false
+var target_type = "enemy"
 var current_target = 0
 var isSelectingCommand = false
 var current_command = 0
@@ -59,6 +60,8 @@ var current_skill_selection = 0
 var number_of_skill_selections = 0
 var skill_card_selector_sprite
 var skill_card_animation_player
+var targetable_ally_list = []
+var targetable_number_of_allies
 
 func _ready():
 	####initialize
@@ -79,6 +82,7 @@ func _ready():
 	###turn_ordering
 	initialize_turn_order()
 	###keep_hp
+	initalize_targetable_ally_list()
 	player_node.check_for_death()
 	player_2_node.check_for_death()
 	player_3_node.check_for_death()
@@ -180,13 +184,13 @@ func process_command(): #which action occurs when space is pressed:
 				enable_card_selector_sprite()
 			else: #make selection. hide card
 				disable_card_selector_sprite()
-				if current_selection != 1: #hide if not selecting a skill
+				if current_selection != 1: #hide main card if not selecting a skill
 					command_cards[active_party_member - 1].hide()
 					cardIsVisible = false
 				current_command = current_selection  #do this here so dif. skills may target differently
 				if current_selection == 0: #attack
 					select_target()
-				elif current_selection == 1 and isSelectingSkill == false: #skill
+				elif current_selection == 1 and isSelectingSkill == false: #open skill menu
 					update_log('You have no skills.')
 					isSelectingCommand = false
 					isSelectingSkill = true
@@ -194,9 +198,8 @@ func process_command(): #which action occurs when space is pressed:
 					skill_cards[active_party_member - 1].show()
 					
 					enable_skill_card_selector_sprite()
-				elif current_selection == 1 and isSelectingSkill == true:
+				elif current_selection == 1 and isSelectingSkill == true: #select the skill
 					skill_card_animation_player.stop()
-					skill_card_selector_sprite.show()
 					select_target() #shouldnt always select_target, should depend of selection. eg some target allies
 				elif current_selection == 2: #item
 					update_log('You have no items.')
@@ -243,14 +246,16 @@ func select_target():
 	enable_selector_sprite()
 
 func change_target(direction):
-	disable_selector_sprite()
+	if target_type == "enemy":
+		disable_selector_sprite()
 	if direction == 'up':
 		if current_target > 0:
 			current_target -= 1
 	elif direction == 'down':
 		if current_target < targetable_number_of_units - 1:
 			current_target += 1
-	enable_selector_sprite()
+	if target_type == "enemy":
+		enable_selector_sprite()
 	
 func get_target_nodes():
 	target_selector_sprite = targetable_enemy_list[current_target].get_node("Selector")
@@ -396,10 +401,10 @@ func enemy_attack():
 			players[random_player_target - 1].hp -= 1
 			players[random_player_target - 1].check_for_death()
 			hasSelected = true
-		if random_player_target < 4: #why is this here. it seems to break without it but I dont understand it
+		if random_player_target < 4: #why is this here. so that when they randomize a dead target, it goes onto the next
 			random_player_target += 1
 		else:
-			random_player_target = 1 #why is this here
+			random_player_target = 1 #could use targetable ally list
 	call_deferred("update_PC_UI") #if i dont defer, player goes to -1 as it is updated too quickly
 	shift_turn_order()
 	act_in_order()
@@ -428,17 +433,7 @@ func get_skills(party_member): #could maybe use arrays for the skill_card text n
 		skills_text[i].text = ''
 	number_of_skill_selections = players[party_member - 1].number_of_skills
 	for i in number_of_skill_selections: #update names of skills
-		skills_text[i].text = players[party_member - 1].skills[i]
-#		if i == 0:
-#			skill_cards[party_member - 1].get_node("TextureRect/Skill1").text = players[party_member - 1].skill_1
-#		if i == 1:
-#			skill_cards[party_member - 1].get_node("TextureRect/Skill2").text = players[party_member - 1].skill_2
-#		if i == 2:
-#			skill_cards[party_member - 1].get_node("TextureRect/Skill3").text = players[party_member - 1].skill_3
-#		if i == 3:
-#			skill_cards[party_member - 1].get_node("TextureRect/Skill4").text = players[party_member - 1].skill_4
-#		if i == 4:
-#			skill_cards[party_member - 1].get_node("TextureRect/Skill5").text = players[party_member - 1].skill_5
+		skills_text[i].text = players[party_member - 1].skills[i].name
 
 func get_skill_card_nodes():
 	var skills_list
@@ -467,3 +462,10 @@ func change_skill(direction):
 			disable_skill_card_selector_sprite()
 			current_skill_selection += 1
 			enable_skill_card_selector_sprite()
+
+func get_skill_effect(targets, effect_type, effect):
+	pass
+
+func initalize_targetable_ally_list():
+	targetable_ally_list = players.duplicate()
+	targetable_number_of_allies = players.size()
