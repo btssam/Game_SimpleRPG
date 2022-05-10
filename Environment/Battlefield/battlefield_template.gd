@@ -7,7 +7,7 @@ var enemy_list = []
 ###targeting
 var isSelectingTarget = false
 #var target_type = "enemy"
-var target_type = "enemy"
+var target_type = "ally"
 var current_target = 0
 var isSelectingCommand = false
 var current_command = 0
@@ -200,7 +200,8 @@ func process_command(): #which action occurs when space is pressed:
 					
 					enable_skill_card_selector_sprite()
 				elif current_selection == 1 and isSelectingSkill == true: #select the skill
-					skill_card_animation_player.stop()
+#					skill_card_animation_player.stop()
+					disable_skill_card_selector_sprite()
 					select_target() #shouldnt always select_target, should depend of selection. eg some target allies
 				elif current_selection == 2: #item
 					update_log('You have no items.')

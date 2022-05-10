@@ -186,6 +186,14 @@ script = ExtResource( 1 )
 hp = 1
 maxhp = 1
 attack = 3
+skill_1 = {
+"description": "Blast the enemy with flame, dealing damage.",
+"effect": "INT_3.00",
+"effect_type": "damage",
+"mp": "3",
+"name": "Fire",
+"targets": "enemy"
+}
 number_of_skills = 1
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]

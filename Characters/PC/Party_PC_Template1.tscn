@@ -187,9 +187,11 @@ hp = 1
 maxhp = 1
 attack = 2
 skill_1 = {
-"effect": "1",
+"description": "Rain arrows upon all enemies, dealing damage.",
+"effect": "ATK_2.00",
 "effect_type": "damage",
-"name": "rain",
+"mp": "5",
+"name": "Rain",
 "targets": "enemies"
 }
 number_of_skills = 1

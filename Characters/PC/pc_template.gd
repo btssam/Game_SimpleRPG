@@ -33,12 +33,11 @@ export var speed = 1
 export var mp = 1
 export var maxmp = 1
 #skills
-export var skill_1 = {"name": "null", "targets": "null", "effect_type": "null", "effect": "null"}
-#export var skill_1 = "null"
-export var skill_2 = {"name": "null", "targets": "null", "effect_type": "null", "effect": "null"}
-export var skill_3 = {"name": "null", "targets": "null", "effect_type": "null", "effect": "null"}
-export var skill_4 = {"name": "null", "targets": "null", "effect_type": "null", "effect": "null"}
-export var skill_5 = {"name": "null", "targets": "null", "effect_type": "null", "effect": "null"}
+export var skill_1 = {"name": "null", "targets": "null", "effect_type": "null", "effect": "null", "mp": "null", "description": "null"}
+export var skill_2 = {"name": "null", "targets": "null", "effect_type": "null", "effect": "null", "mp": "null", "description": "null"}
+export var skill_3 = {"name": "null", "targets": "null", "effect_type": "null", "effect": "null", "mp": "null", "description": "null"}
+export var skill_4 = {"name": "null", "targets": "null", "effect_type": "null", "effect": "null", "mp": "null", "description": "null"}
+export var skill_5 = {"name": "null", "targets": "null", "effect_type": "null", "effect": "null", "mp": "null", "description": "null"}
 onready var skills = [skill_1, skill_2, skill_3, skill_4, skill_5]
 export var number_of_skills = 0
 

@@ -186,6 +186,22 @@ script = ExtResource( 1 )
 hp = 5
 maxhp = 5
 attack = 4
+skill_1 = {
+"description": "Cures an allies wounds, restoring HP.",
+"effect": "INT_4.00",
+"effect_type": "heal",
+"mp": "4",
+"name": "Cure",
+"targets": "ally"
+}
+skill_2 = {
+"description": "Heal your entire party, restoring their HP.",
+"effect": "INT_1.00",
+"effect_type": "heal",
+"mp": "4",
+"name": "Heal",
+"targets": "allies"
+}
 number_of_skills = 2
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]

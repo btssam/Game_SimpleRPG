@@ -189,6 +189,46 @@ collision_mask = 6
 script = ExtResource( 2 )
 hp = 5
 maxhp = 5
+skill_1 = {
+"description": "Deals small damage to an enemy.",
+"effect": "ATK_1.00",
+"effect_type": "damage",
+"mp": "1",
+"name": "Light",
+"targets": "enemy"
+}
+skill_2 = {
+"description": "Deals medium damage to an enemy.",
+"effect": "ATK_2.00",
+"effect_type": "damage",
+"mp": "2",
+"name": "Med",
+"targets": "enemy"
+}
+skill_3 = {
+"description": "Deals heavy damage to an enemy.",
+"effect": "ATK_3.00",
+"effect_type": "damage",
+"mp": "3",
+"name": "Heavy",
+"targets": "enemy"
+}
+skill_4 = {
+"description": "Spins your weapon, damaging all enemies.",
+"effect": "ATK_1.00",
+"effect_type": "damage",
+"mp": "3",
+"name": "Spin",
+"targets": "enemies"
+}
+skill_5 = {
+"description": "Rest, restoring MP and HP.",
+"effect": "INT_1.00",
+"effect_type": "heal",
+"mp": "-1",
+"name": "Rest",
+"targets": "none"
+}
 number_of_skills = 5
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
