@@ -1,9 +1,10 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://Characters/PC/PC_Spritesheet.png" type="Texture" id=1]
 [ext_resource path="res://Characters/PC/pc_template.gd" type="Script" id=2]
 [ext_resource path="res://Characters/PC/Battle/PC_Battle_Spritesheet.png" type="Texture" id=3]
 [ext_resource path="res://Characters/PC/Gap_Directions.tscn" type="PackedScene" id=4]
+[ext_resource path="res://UI/GFX/Selector.png" type="Texture" id=5]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 1 )
@@ -139,31 +140,46 @@ extents = Vector2( 19, 28 )
 
 [sub_resource type="Animation" id=26]
 resource_name = "attack"
-tracks/0/type = "value"
-tracks/0/path = NodePath("AnimatedSprite:offset")
+tracks/0/type = "method"
+tracks/0/path = NodePath("AnimatedSprite")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0.1, 0.5, 0.8, 1 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 0.5, -1 ), Vector2( -19.5, -1 ), Vector2( -19.5, -1 ), Vector2( 0.5, -1 ) ]
-}
-tracks/1/type = "method"
-tracks/1/path = NodePath("AnimatedSprite")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [ "attack", false ],
 "method": "play"
 } ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("AnimatedSprite:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.1, 0.5, 0.8, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.5, -1 ), Vector2( -19.5, -1 ), Vector2( -19.5, -1 ), Vector2( 0.5, -1 ) ]
+}
+
+[sub_resource type="Animation" id=27]
+resource_name = "blink"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Selector:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
 }
 
 [node name="PC_Template" type="KinematicBody2D"]
@@ -197,10 +213,16 @@ one_shot = true
 wait_time = 0.5
 one_shot = true
 
+[node name="Gap_Directions" parent="." instance=ExtResource( 4 )]
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/attack = SubResource( 26 )
+anims/blink = SubResource( 27 )
 
-[node name="Gap_Directions" parent="." instance=ExtResource( 4 )]
+[node name="Selector" type="Sprite" parent="."]
+visible = false
+position = Vector2( 16.5, 0 )
+texture = ExtResource( 5 )
 
 [connection signal="body_entered" from="Area2D_Interact" to="." method="_on_Area2D_Interact_body_entered"]
 [connection signal="body_exited" from="Area2D_Interact" to="." method="_on_Area2D_Interact_body_exited"]

@@ -6,6 +6,7 @@ var number_of_units = 0
 var enemy_list = []
 ###targeting
 var isSelectingTarget = false
+#var target_type = "enemy"
 var target_type = "enemy"
 var current_target = 0
 var isSelectingCommand = false
@@ -246,28 +247,36 @@ func select_target():
 	enable_selector_sprite()
 
 func change_target(direction):
+	disable_selector_sprite()
 	if target_type == "enemy":
-		disable_selector_sprite()
-	if direction == 'up':
-		if current_target > 0:
+		if direction == 'up' and current_target > 0:
 			current_target -= 1
-	elif direction == 'down':
-		if current_target < targetable_number_of_units - 1:
+		elif direction == 'down' and current_target < targetable_number_of_units - 1:
 			current_target += 1
-	if target_type == "enemy":
-		enable_selector_sprite()
+	elif target_type == "ally": #inverse for allies, as the positioning is inverse
+		if direction == 'up' and current_target < targetable_number_of_allies - 1:
+			current_target += 1
+		elif direction == 'down' and current_target > 0:
+			current_target -= 1
+	enable_selector_sprite()
 	
 func get_target_nodes():
 	target_selector_sprite = targetable_enemy_list[current_target].get_node("Selector")
 	target_animation_player = targetable_enemy_list[current_target].get_node("AnimationPlayer")
 	
 func enable_selector_sprite():
-	get_target_nodes()
+	if target_type == "enemy":
+		get_target_nodes()
+	elif target_type == "ally":
+		get_target_ally_nodes()
 	target_selector_sprite.visible = true
 	target_animation_player.play('blink')
 
 func disable_selector_sprite():
-	get_target_nodes()
+	if target_type == "enemy":
+		get_target_nodes()
+	elif target_type == "ally":
+		get_target_ally_nodes()
 	target_selector_sprite.visible = false
 	target_animation_player.stop()
 
@@ -389,7 +398,7 @@ func shift_turn_order(): #make sure this is called after death check, not before
 			turn_order[i] = first_unit
 
 #enemy_AI
-func enemy_attack():
+func enemy_attack(): #could use targetable ally list
 	enemy_animationPlayer_node = turn_order[0].get_node("AnimationPlayer")
 	enemy_animationPlayer_node.play('attack')
 	var hasSelected =  false
@@ -404,7 +413,7 @@ func enemy_attack():
 		if random_player_target < 4: #why is this here. so that when they randomize a dead target, it goes onto the next
 			random_player_target += 1
 		else:
-			random_player_target = 1 #could use targetable ally list
+			random_player_target = 1
 	call_deferred("update_PC_UI") #if i dont defer, player goes to -1 as it is updated too quickly
 	shift_turn_order()
 	act_in_order()
@@ -469,3 +478,10 @@ func get_skill_effect(targets, effect_type, effect):
 func initalize_targetable_ally_list():
 	targetable_ally_list = players.duplicate()
 	targetable_number_of_allies = players.size()
+
+func target_an_ally():
+	pass
+
+func get_target_ally_nodes():
+	target_selector_sprite = targetable_ally_list[current_target].get_node("Selector")
+	target_animation_player = targetable_ally_list[current_target].get_node("AnimationPlayer")

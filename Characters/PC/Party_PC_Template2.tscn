@@ -1,8 +1,9 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://Characters/PC/party_pc_template.gd" type="Script" id=1]
 [ext_resource path="res://Characters/PC/PC_Spritesheet.png" type="Texture" id=2]
 [ext_resource path="res://Characters/PC/Battle/PC_Battle_Spritesheet.png" type="Texture" id=3]
+[ext_resource path="res://UI/GFX/Selector.png" type="Texture" id=4]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 2 )
@@ -162,6 +163,21 @@ tracks/1/keys = {
 "values": [ Vector2( 0.5, -1 ), Vector2( -19.5, -1 ), Vector2( -19.5, -1 ), Vector2( 0.5, -1 ) ]
 }
 
+[sub_resource type="Animation" id=26]
+resource_name = "blink"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Selector:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
 [node name="Party_PC_Template2" type="KinematicBody2D"]
 scale = Vector2( 1.6, 2.2 )
 z_index = 1
@@ -182,3 +198,9 @@ shape = SubResource( 24 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/attack = SubResource( 25 )
+anims/blink = SubResource( 26 )
+
+[node name="Selector" type="Sprite" parent="."]
+visible = false
+position = Vector2( 16.5, 0 )
+texture = ExtResource( 4 )
