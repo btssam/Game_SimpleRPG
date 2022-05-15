@@ -151,6 +151,8 @@ func check_for_death():
 			print(get_node("../../Battlefield_Template").targetable_ally_list)
 			print('removing from targetable players')
 			get_node("../../Battlefield_Template").targetable_ally_list.erase(get_node("."))
+			get_node("../../Battlefield_Template").targetable_number_of_allies -= 1
+			print(get_node("../../Battlefield_Template").targetable_ally_list)
 		get_parent().check_if_party_is_dead()
 		$AnimatedSprite.play("dying")
 		yield($AnimatedSprite, "animation_finished")

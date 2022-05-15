@@ -202,7 +202,8 @@ func process_command(): #which action occurs when space is pressed:
 				elif current_selection == 1 and isSelectingSkill == true: #select the skill
 #					skill_card_animation_player.stop()
 					disable_skill_card_selector_sprite()
-					select_target() #shouldnt always select_target, should depend of selection. eg some target allies
+					get_skill_effect()
+#					select_target() #shouldnt always select_target, should depend of selection. eg some target allies
 				elif current_selection == 2: #item
 					update_log('You have no items.')
 					isSelectingCommand = false
@@ -317,6 +318,7 @@ func get_command():
 		act_in_order()
 	current_selection = 0
 	current_command = 0
+	current_target = 0
 
 
 ###other
@@ -473,8 +475,12 @@ func change_skill(direction):
 			current_skill_selection += 1
 			enable_skill_card_selector_sprite()
 
-func get_skill_effect(targets, effect_type, effect):
-	pass
+func get_skill_effect():
+	if players[active_party_member - 1].skills[current_skill_selection].targets == "enemy":
+		target_type = "enemy"
+	elif players[active_party_member - 1].skills[current_skill_selection].targets == "ally":
+		target_type = "ally"
+	select_target()
 
 func initalize_targetable_ally_list():
 	targetable_ally_list = players.duplicate()
