@@ -263,7 +263,9 @@ func change_target(direction):
 	elif target_type == "enemies":
 		pass
 	elif target_type == 'allies':
-		pass #can delete these 2 if statement
+		pass #can delete these 3 if statement
+	elif target_type == 'none':
+		pass
 	enable_selector_sprite()
 	
 func get_target_nodes():
@@ -283,6 +285,8 @@ func enable_selector_sprite():
 		enable_enemies_selector()
 	elif target_type == "allies":
 		enable_allies_selector()
+	elif target_type == "none":
+		enable_self_selector()
 
 func disable_selector_sprite():
 	if target_type == "enemy":
@@ -297,6 +301,8 @@ func disable_selector_sprite():
 		disable_enemies_selector()
 	elif target_type == "allies":
 		disable_allies_selector()
+	elif target_type == "none":
+		disable_self_selector()
 
 func return_target():
 	isSelectingTarget = false
@@ -503,6 +509,8 @@ func get_skill_effect():
 		target_type = "enemies"
 	elif players[active_party_member - 1].skills[current_skill_selection].targets == "allies":
 		target_type = "allies"
+	elif players[active_party_member - 1].skills[current_skill_selection].targets == "none":
+		target_type = "none"
 	select_target()
 
 func initalize_targetable_ally_list():
@@ -531,15 +539,27 @@ func disable_enemies_selector():
 		target_animation_player.stop()
 
 func enable_allies_selector():
-	for i in targetable_number_of_units:
+	for i in targetable_number_of_allies:
 		target_selector_sprite = targetable_ally_list[i].get_node("Selector")
 		target_animation_player = targetable_ally_list[i].get_node("AnimationPlayer")
 		target_selector_sprite.visible = true
 		target_animation_player.play('blink')
 		
 func disable_allies_selector():
-	for i in targetable_number_of_units:
+	for i in targetable_number_of_allies:
 		target_selector_sprite = targetable_ally_list[i].get_node("Selector")
 		target_animation_player = targetable_ally_list[i].get_node("AnimationPlayer")
 		target_selector_sprite.visible = false
 		target_animation_player.stop()
+
+func enable_self_selector():
+	target_selector_sprite = players[active_party_member - 1].get_node("Selector")
+	target_animation_player = players[active_party_member - 1].get_node("AnimationPlayer")
+	target_selector_sprite.visible = true
+	target_animation_player.play('blink')
+	
+func disable_self_selector():
+	target_selector_sprite = players[active_party_member - 1].get_node("Selector")
+	target_animation_player = players[active_party_member - 1].get_node("AnimationPlayer")
+	target_selector_sprite.visible = false
+	target_animation_player.stop()
