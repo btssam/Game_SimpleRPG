@@ -255,6 +255,8 @@ func change_target(direction):
 			current_target -= 1
 		elif direction == 'down' and current_target < targetable_number_of_units - 1:
 			current_target += 1
+	if target_type == "enemies":
+		pass
 	elif target_type == "ally": #inverse for allies, as the positioning is inverse
 		if direction == 'up' and current_target < targetable_number_of_allies - 1:
 			current_target += 1
@@ -269,18 +271,26 @@ func get_target_nodes():
 func enable_selector_sprite():
 	if target_type == "enemy":
 		get_target_nodes()
+		target_selector_sprite.visible = true
+		target_animation_player.play('blink')
 	elif target_type == "ally":
 		get_target_ally_nodes()
-	target_selector_sprite.visible = true
-	target_animation_player.play('blink')
+		target_selector_sprite.visible = true
+		target_animation_player.play('blink')
+	elif target_type == "enemies":
+		enable_enemies_selector()
 
 func disable_selector_sprite():
 	if target_type == "enemy":
 		get_target_nodes()
+		target_selector_sprite.visible = false
+		target_animation_player.stop()
 	elif target_type == "ally":
 		get_target_ally_nodes()
-	target_selector_sprite.visible = false
-	target_animation_player.stop()
+		target_selector_sprite.visible = false
+		target_animation_player.stop()
+	elif target_type == "enemies":
+		disable_enemies_selector()
 
 func return_target():
 	isSelectingTarget = false
@@ -305,7 +315,7 @@ func get_command():
 		skill_cards[active_party_member - 1].hide()
 		cardIsVisible = false
 		party_node.isAttacking = true
-		if current_skill_selection == 0: #different skills for different PCs. check skill_selection and active_party_member
+		if current_skill_selection == 0: #different skills for different PCs. check skill_selection and active_party_member. need to return multiple targets for aoe spells
 			print('fire')
 			print(current_target)
 		if current_skill_selection == 1:
@@ -476,10 +486,15 @@ func change_skill(direction):
 			enable_skill_card_selector_sprite()
 
 func get_skill_effect():
+	#can easily replace this whole if chain with:
+	#target_type = players[active_party_member - 1].skills[current_skill_selection].targets == "enemy"
+	#once all 4 are implemented
 	if players[active_party_member - 1].skills[current_skill_selection].targets == "enemy":
 		target_type = "enemy"
 	elif players[active_party_member - 1].skills[current_skill_selection].targets == "ally":
 		target_type = "ally"
+	elif players[active_party_member - 1].skills[current_skill_selection].targets == "enemies":
+		target_type = "enemies"
 	select_target()
 
 func initalize_targetable_ally_list():
@@ -492,3 +507,17 @@ func target_an_ally():
 func get_target_ally_nodes():
 	target_selector_sprite = targetable_ally_list[current_target].get_node("Selector")
 	target_animation_player = targetable_ally_list[current_target].get_node("AnimationPlayer")
+
+func enable_enemies_selector():
+	for i in targetable_number_of_units:
+		target_selector_sprite = targetable_enemy_list[i].get_node("Selector")
+		target_animation_player = targetable_enemy_list[i].get_node("AnimationPlayer")
+		target_selector_sprite.visible = true
+		target_animation_player.play('blink')
+		
+func disable_enemies_selector():
+	for i in targetable_number_of_units:
+		target_selector_sprite = targetable_enemy_list[i].get_node("Selector")
+		target_animation_player = targetable_enemy_list[i].get_node("AnimationPlayer")
+		target_selector_sprite.visible = false
+		target_animation_player.stop()
