@@ -182,7 +182,7 @@ func change_enemy_position(): # only account for up to 3 enemies
 
 
 ####commandcard
-func process_command(): #which action occurs when space is pressed:
+func process_command(): #which action occurs when space is pressed: (process_input)
 	if isPlayersTurn: #disallows interaction if not players turn
 		get_card_nodes()
 
@@ -209,10 +209,8 @@ func process_command(): #which action occurs when space is pressed:
 					
 					enable_skill_card_selector_sprite()
 				elif current_selection == 1 and isSelectingSkill == true: #select the skill
-#					skill_card_animation_player.stop()
 					disable_skill_card_selector_sprite()
 					get_skill_effect()
-#					select_target() #shouldnt always select_target, should depend of selection. eg some target allies
 				elif current_selection == 2: #item
 					update_log('You have no items.')
 					isSelectingCommand = false
@@ -269,12 +267,6 @@ func change_target(direction):
 			current_target += 1
 		elif direction == 'down' and current_target > 0:
 			current_target -= 1
-	elif target_type == "enemies":
-		pass
-	elif target_type == 'allies':
-		pass #can delete these 3 if statement
-	elif target_type == 'none':
-		pass
 	enable_selector_sprite()
 	
 func get_target_nodes():
@@ -327,10 +319,6 @@ func get_command():
 		players[active_party_member - 1].update_animation("battling")
 		targetable_enemy_list[current_target].hp -= players[active_party_member - 1].attack
 		party_node.isAttacking = false
-#		check_enemy_death()
-#		update_enemy_UI()
-#		shift_turn_order()
-#		act_in_order()
 	if current_command == 1: #skills. this needs to be updated when a new type of skill is add
 		command_cards[active_party_member - 1].hide()
 		skill_cards[active_party_member - 1].hide()
@@ -341,7 +329,6 @@ func get_command():
 		players[active_party_member - 1].update_animation("battling")
 		if target_type == 'enemy':
 			if current_skill_effect_type == 'damage':
-#				print(str(targetable_enemy_list[current_target].hp - (float(current_skill_stat) * int(current_skill_multi))))
 				targetable_enemy_list[current_target].hp -= current_skill_total_effect
 		if target_type == 'enemies':
 			if current_skill_effect_type ==  'damage':
@@ -364,20 +351,10 @@ func get_command():
 				players[active_party_member - 1].hp += current_skill_total_effect
 			check_max_player_health()
 			update_PC_UI()
-#		if current_skill_selection == 0: #different skills for different PCs. check skill_selection and active_party_member. need to return multiple targets for aoe spells
-##			print('fire')
-##			print(current_target)
-#			pass
-#		if current_skill_selection == 1:
-##			print('print')
-##			print(current_target)
-#			pass
 		print(target_type)
 		current_skill_selection = 0
 		number_of_skill_selections = 0
 		party_node.isAttacking = false
-#		shift_turn_order()
-#		act_in_order()
 	check_enemy_death()
 	update_enemy_UI()
 	shift_turn_order()
@@ -409,8 +386,6 @@ func update_PC_UI():
 	for i in 4:
 		var player_number = 4-i
 		newText += 'P' + str(player_number) + ' [color=#CD5C5C]HP[/color]: ' + str(players[player_number-1].hp) + '/' + str(players[player_number-1].maxhp) + ' [color=#1E90FF]MP[/color]: ' + str(players[player_number-1].mp)  + '/' + str(players[player_number-1].maxmp) + '\n'
-#	newText = 'P4 [color=red]HP[/color]/: ' + str(player_4_node.hp) + '/' + str(player_4_node.maxhp) + ' MP: ' + str(player_4_node.mp)  + '/' + str(player_4_node.maxmp) + '\n' + 'P3 HP: ' + str(player_3_node.hp) + '/' + str(player_3_node.maxhp) + ' MP: ' + str(player_3_node.mp)  + '/' + str(player_3_node.maxmp) + '\n' + 'P2 HP: ' + str(player_2_node.hp) + '/' + str(player_2_node.maxhp) + ' MP: ' + str(player_2_node.mp)  + '/' + str(player_2_node.maxmp) + '\n' + 'P1 HP: ' + str(player_node.hp) + '/' + str(player_node.maxhp) + ' MP: ' + str(player_node.mp)  + '/' + str(player_node.maxmp)
-	#this should be a loop
 	pc_stats_node.bbcode_text = newText
 
 func initialize_log():
@@ -427,7 +402,7 @@ func update_log(message):
 
 
 ###turn ordering
-func initialize_turn_order():
+func initialize_turn_order(): # would like to base on speed stat. likely would need enemy speed stats. and different enemy types
 	randomize()
 	var randomized_list = enemy_list.duplicate()
 	randomized_list.append(player_node)
@@ -463,7 +438,7 @@ func act_in_order():
 				isPlayersTurn = false
 				enemy_attack()
 
-func shift_turn_order(): #make sure this is called after death check, not before
+func shift_turn_order():
 	var first_unit = turn_order[0] #shift the turn order forward once someone goes
 	for i in range(0, turn_order.size()):
 		if i + 1 < turn_order.size():
@@ -493,7 +468,7 @@ func enemy_attack(): #could use targetable ally list
 	act_in_order()
 
 func check_enemy_death():
-	for i in range(0, targetable_number_of_units): #issue when all are killed at once
+	for i in range(0, targetable_number_of_units):
 		if targetable_enemy_list[i-1].hp <= 0:
 			targetable_enemy_list[i-1].hp = 0
 			update_log("[color=#8B0000]" + targetable_enemy_list[i-1].enemy_name  + "[/color]" +  " has perished!")
@@ -510,7 +485,7 @@ func check_enemy_death():
 
 
 #skills
-func get_skills(party_member): #could maybe use arrays for the skill_card text node
+func get_skills(party_member):
 	var skills_text = [skill_cards[party_member - 1].get_node("TextureRect/Skill1"), skill_cards[party_member - 1].get_node("TextureRect/Skill2"), skill_cards[party_member - 1].get_node("TextureRect/Skill3"), skill_cards[party_member - 1].get_node("TextureRect/Skill4"), skill_cards[party_member - 1].get_node("TextureRect/Skill5")]
 	for i in 5:
 		skills_text[i].text = ''
@@ -547,32 +522,18 @@ func change_skill(direction):
 			enable_skill_card_selector_sprite()
 
 func get_skill_effect():
-	#can easily replace this whole if chain with:
 	target_type = players[active_party_member - 1].skills[current_skill_selection].targets
-	#once all 4 are implemented
-#	if players[active_party_member - 1].skills[current_skill_selection].targets == "enemy":
-#		target_type = "enemy"
-#	elif players[active_party_member - 1].skills[current_skill_selection].targets == "ally":
-#		target_type = "ally"
-#	elif players[active_party_member - 1].skills[current_skill_selection].targets == "enemies":
-#		target_type = "enemies"
-#	elif players[active_party_member - 1].skills[current_skill_selection].targets == "allies":
-#		target_type = "allies"
-#	elif players[active_party_member - 1].skills[current_skill_selection].targets == "none":
-#		target_type = "none"
 	current_skill_effect_type = players[active_party_member - 1].skills[current_skill_selection].effect_type
 	current_skill_effect = players[active_party_member - 1].skills[current_skill_selection].effect
 	current_skill_mp = players[active_party_member - 1].skills[current_skill_selection].mp
 	current_skill_description = players[active_party_member - 1].skills[current_skill_selection].description
 	current_skill_stat = current_skill_effect.left(3)
 	current_skill_multi = current_skill_effect.right(4).to_float()
-	print('current_skill_effect.right(4): ' + str(current_skill_effect.right(4)))
 	skill_stat_assigner = {'ATK': players[active_party_member - 1].attack, 'DEF': players[active_party_member - 1].defence, 'INT': players[active_party_member - 1].intellect, 'SPD': players[active_party_member - 1].speed}
 	current_skill_stat = skill_stat_assigner[current_skill_stat]
 	current_skill_total_effect = current_skill_stat * current_skill_multi
 	print('Current_skill_effect_type: ' + str(current_skill_effect_type) +
-	'\nCurrent_skill_stat: ' + str(current_skill_stat) +
-	'\nCurrent_skill_multi: ' + str(current_skill_multi) +
+	'\nCurrent_skill_total_effect' + str(current_skill_total_effect) +
 	'\nCurrent_skill_mp: ' + str(current_skill_mp) +
 	'\nCurrent_skill_description: ' + str(current_skill_description))
 	select_target()
