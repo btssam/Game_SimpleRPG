@@ -71,6 +71,7 @@ var current_skill_description = ''
 var current_skill_multi = 0.0
 var current_skill_stat = 0
 var skill_stat_assigner = 0
+var current_skill_total_effect = 0
 
 func _ready():
 	####initialize
@@ -330,26 +331,39 @@ func get_command():
 #		update_enemy_UI()
 #		shift_turn_order()
 #		act_in_order()
-	if current_command == 1: #skills
+	if current_command == 1: #skills. this needs to be updated when a new type of skill is add
 		command_cards[active_party_member - 1].hide()
 		skill_cards[active_party_member - 1].hide()
 		cardIsVisible = false
 		party_node.isAttacking = true
+		players[active_party_member - 1].get_node("AnimationPlayer").play("attack")
+		yield(players[active_party_member - 1].get_node("AnimatedSprite"), "animation_finished")
+		players[active_party_member - 1].update_animation("battling")
 		if target_type == 'enemy':
 			if current_skill_effect_type == 'damage':
 #				print(str(targetable_enemy_list[current_target].hp - (float(current_skill_stat) * int(current_skill_multi))))
-				targetable_enemy_list[current_target].hp -= current_skill_stat * current_skill_multi
+				targetable_enemy_list[current_target].hp -= current_skill_total_effect
 		if target_type == 'enemies':
 			if current_skill_effect_type ==  'damage':
 				for i in targetable_number_of_units:
-					targetable_enemy_list[i-1].hp -= current_skill_stat * current_skill_multi
+					targetable_enemy_list[i-1].hp -= current_skill_total_effect
 					check_enemy_death()
 		if target_type == 'ally':
 			if current_skill_effect_type == 'heal':
-				targetable_ally_list[current_target].hp += current_skill_stat * current_skill_multi
+				targetable_ally_list[current_target].hp += current_skill_total_effect
 				check_max_player_health()
 				update_PC_UI()
-					
+		if target_type == 'allies':
+			if current_skill_effect_type == 'heal':
+				for i in 4:
+					players[i].hp += current_skill_total_effect
+				check_max_player_health()
+				update_PC_UI()
+		if target_type == 'none':
+			if current_skill_effect_type == 'heal':
+				players[active_party_member - 1].hp += current_skill_total_effect
+			check_max_player_health()
+			update_PC_UI()
 #		if current_skill_selection == 0: #different skills for different PCs. check skill_selection and active_party_member. need to return multiple targets for aoe spells
 ##			print('fire')
 ##			print(current_target)
@@ -555,6 +569,7 @@ func get_skill_effect():
 	print('current_skill_effect.right(4): ' + str(current_skill_effect.right(4)))
 	skill_stat_assigner = {'ATK': players[active_party_member - 1].attack, 'DEF': players[active_party_member - 1].defence, 'INT': players[active_party_member - 1].intellect, 'SPD': players[active_party_member - 1].speed}
 	current_skill_stat = skill_stat_assigner[current_skill_stat]
+	current_skill_total_effect = current_skill_stat * current_skill_multi
 	print('Current_skill_effect_type: ' + str(current_skill_effect_type) +
 	'\nCurrent_skill_stat: ' + str(current_skill_stat) +
 	'\nCurrent_skill_multi: ' + str(current_skill_multi) +
