@@ -344,6 +344,11 @@ func get_command():
 				for i in targetable_number_of_units:
 					targetable_enemy_list[i-1].hp -= current_skill_stat * current_skill_multi
 					check_enemy_death()
+		if target_type == 'ally':
+			if current_skill_effect_type == 'heal':
+				targetable_ally_list[current_target].hp += current_skill_stat * current_skill_multi
+				check_max_player_health()
+				update_PC_UI()
 					
 #		if current_skill_selection == 0: #different skills for different PCs. check skill_selection and active_party_member. need to return multiple targets for aoe spells
 ##			print('fire')
@@ -604,4 +609,9 @@ func disable_self_selector():
 	target_animation_player = players[active_party_member - 1].get_node("AnimationPlayer")
 	target_selector_sprite.visible = false
 	target_animation_player.stop()
+
+func check_max_player_health():
+	for i in 4:
+		if players[i].hp > players[i].maxhp:
+			players[i].hp = players[i].maxhp
 	
