@@ -114,6 +114,7 @@ anchor_bottom = 1.0
 margin_bottom = -84.0
 rect_scale = Vector2( 1, 2 )
 theme = SubResource( 2 )
+text = "P4 HP : 999/999 MP: 999/999"
 autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false

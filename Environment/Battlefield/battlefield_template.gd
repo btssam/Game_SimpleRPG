@@ -371,7 +371,7 @@ func update_enemy_UI():
 
 func update_PC_UI():
 	var newText = ''
-	newText = 'Player 4: ' + str(player_4_node.hp) + '\n' + 'Player 3: ' + str(player_3_node.hp) + '\n' + 'Player 2: ' + str(player_2_node.hp) + '\n' + 'Player 1: ' + str(player_node.hp) + '\n'
+	newText = 'P4 HP: ' + str(player_4_node.hp) + '/' + str(player_4_node.maxhp) + ' MP: ' + str(player_4_node.mp)  + '/' + str(player_4_node.maxmp) + '\n' + 'P3 HP: ' + str(player_3_node.hp) + '/' + str(player_3_node.maxhp) + ' MP: ' + str(player_3_node.mp)  + '/' + str(player_3_node.maxmp) + '\n' + 'P2 HP: ' + str(player_2_node.hp) + '/' + str(player_2_node.maxhp) + ' MP: ' + str(player_2_node.mp)  + '/' + str(player_2_node.maxmp) + '\n' + 'P1 HP: ' + str(player_node.hp) + '/' + str(player_node.maxhp) + ' MP: ' + str(player_node.mp)  + '/' + str(player_node.maxmp)
 	pc_stats_node.text = newText
 
 func initialize_log():
@@ -531,7 +531,7 @@ func get_skill_effect():
 	'\nCurrent_skill_stat: ' + str(current_skill_stat) +
 	'\nCurrent_skill_multi: ' + str(current_skill_multi) +
 	'\nCurrent_skill_mp: ' + str(current_skill_mp) +
-	'\nCurrent_skill_description ' + str(current_skill_description))
+	'\nCurrent_skill_description: ' + str(current_skill_description))
 	select_target()
 
 func initalize_targetable_ally_list():
