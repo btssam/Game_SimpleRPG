@@ -351,18 +351,18 @@ func get_command():
 			if current_skill_effect_type == 'heal':
 				targetable_ally_list[current_target].hp += current_skill_total_effect
 				check_max_player_health()
-				update_PC_UI()
 		if target_type == 'allies':
 			if current_skill_effect_type == 'heal':
 				for i in 4:
 					players[i].hp += current_skill_total_effect
 				check_max_player_health()
-				update_PC_UI()
 		if target_type == 'none':
 			if current_skill_effect_type == 'heal':
 				players[active_party_member - 1].hp += current_skill_total_effect
 			check_max_player_health()
-			update_PC_UI()
+		players[active_party_member - 1].mp -= current_skill_mp
+		check_mp()
+		update_PC_UI()
 		current_skill_selection = 0
 		number_of_skill_selections = 0
 		party_node.isAttacking = false
@@ -536,7 +536,7 @@ func get_skill_effect():
 	target_type = players[active_party_member - 1].skills[current_skill_selection].targets
 	current_skill_effect_type = players[active_party_member - 1].skills[current_skill_selection].effect_type
 	current_skill_effect = players[active_party_member - 1].skills[current_skill_selection].effect
-	current_skill_mp = players[active_party_member - 1].skills[current_skill_selection].mp
+	current_skill_mp = players[active_party_member - 1].skills[current_skill_selection].mp.to_int()
 	current_skill_description = players[active_party_member - 1].skills[current_skill_selection].description
 	current_skill_stat = current_skill_effect.left(3)
 	current_skill_multi = current_skill_effect.right(4).to_float()
@@ -601,4 +601,12 @@ func check_max_player_health():
 	for i in 4:
 		if players[i].hp > players[i].maxhp:
 			players[i].hp = players[i].maxhp
-	
+
+func check_skills_mp():
+	pass
+
+func check_mp():
+	if players[active_party_member - 1].mp < 0:
+		players[active_party_member - 1].mp = 0
+	if players[active_party_member - 1].mp > players[active_party_member - 1].maxmp:
+		players[active_party_member - 1].mp = players[active_party_member - 1].maxmp
