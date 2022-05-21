@@ -19,14 +19,14 @@ tracks/0/keys = {
 "values": [ true, false ]
 }
 
-[node name="Skill" type="Label"]
+[node name="Skill" type="RichTextLabel"]
 margin_left = 3.0
 margin_top = 2.0
 margin_right = 75.0
 margin_bottom = 26.0
 rect_scale = Vector2( 0.4, 0.4 )
 theme = ExtResource( 1 )
-text = "Test"
+bbcode_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false
 }

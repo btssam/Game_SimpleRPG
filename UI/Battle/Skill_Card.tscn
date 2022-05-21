@@ -83,7 +83,7 @@ margin_top = 12.0
 margin_bottom = 36.0
 text = "Print"
 
-[node name="AnimationPlayer" parent="TextureRect/Skill3" index="1"]
+[node name="AnimationPlayer" parent="TextureRect/Skill3" index="2"]
 anims/blink = SubResource( 1 )
 
 [node name="Skill4" parent="TextureRect" instance=ExtResource( 1 )]
@@ -91,7 +91,7 @@ margin_top = 17.0
 margin_bottom = 41.0
 text = "Print"
 
-[node name="AnimationPlayer" parent="TextureRect/Skill4" index="1"]
+[node name="AnimationPlayer" parent="TextureRect/Skill4" index="2"]
 anims/blink = SubResource( 2 )
 
 [node name="Skill5" parent="TextureRect" instance=ExtResource( 1 )]
@@ -99,7 +99,7 @@ margin_top = 22.0
 margin_bottom = 46.0
 text = "Print"
 
-[node name="AnimationPlayer" parent="TextureRect/Skill5" index="1"]
+[node name="AnimationPlayer" parent="TextureRect/Skill5" index="2"]
 anims/blink = SubResource( 3 )
 
 [editable path="TextureRect/Skill1"]

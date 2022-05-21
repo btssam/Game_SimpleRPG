@@ -20,6 +20,7 @@ onready var command_card_2 = $BattleUI/Command_Card2
 onready var command_card_3 = $BattleUI/Command_Card3
 onready var command_card_4 = $BattleUI/Command_Card4
 onready var command_cards = [command_card_1, command_card_2, command_card_3, command_card_4]
+var active_command_card
 
 var card_selector_sprite
 var card_animation_player
@@ -50,12 +51,14 @@ onready var player_3_node = get_node("../Party/Party_PC_Template2")
 onready var player_4_node = get_node("../Party/Party_PC_Template3")
 onready var players = [player_node, player_2_node, player_3_node, player_4_node]
 var active_party_member = 1 #set during act_in_order. around isPlayersTurn
+var active_player
 ###skills
 onready var skill_card_1 = $BattleUI/Command_Card/Skill_Card
 onready var skill_card_2 = $BattleUI/Command_Card2/Skill_Card
 onready var skill_card_3 = $BattleUI/Command_Card3/Skill_Card
 onready var skill_card_4 = $BattleUI/Command_Card4/Skill_Card
 onready var skill_cards = [skill_card_1, skill_card_2, skill_card_3, skill_card_4]
+var active_skill_card
 var isSelectingSkill = false
 var current_skill_selection = 0
 var number_of_skill_selections = 0
@@ -139,7 +142,7 @@ func _input(event):
 					isSelectingSkill = false
 					isSelectingCommand = true
 					disable_skill_card_selector_sprite()
-					skill_cards[active_party_member - 1].hide()
+					active_skill_card.hide()
 					enable_card_selector_sprite()
 		###testing
 		if event.is_action_pressed("test_key"):
@@ -199,24 +202,23 @@ func process_command(): #which action occurs when space is pressed: (process_inp
 
 		if not isSelectingTarget:
 			if not cardIsVisible: #pop up card
-				command_cards[active_party_member - 1].show()
+				active_command_card.show()
 				cardIsVisible = true
 				isSelectingCommand = true
 				enable_card_selector_sprite()
 			else: #make selection. hide card
 				disable_card_selector_sprite()
 				if current_selection != 1: #hide main card if not selecting a skill
-					command_cards[active_party_member - 1].hide()
+					active_command_card.hide()
 					cardIsVisible = false
 				current_command = current_selection  #do this here so dif. skills may target differently
 				if current_selection == 0: #attack
 					select_target()
 				elif current_selection == 1 and isSelectingSkill == false: #open skill menu
-					update_log('You have no skills.')
 					isSelectingCommand = false
 					isSelectingSkill = true
 					get_skills(active_party_member)
-					skill_cards[active_party_member - 1].show()
+					active_skill_card.show()
 					
 					enable_skill_card_selector_sprite()
 				elif current_selection == 1 and isSelectingSkill == true: #select the skill
@@ -243,7 +245,7 @@ func change_command(direction):
 
 func get_card_nodes():
 	var commands_list
-	commands_list = command_cards[active_party_member - 1].get_node("TextureRect").get_children()
+	commands_list = active_command_card.get_node("TextureRect").get_children()
 	card_selector_sprite = commands_list[current_selection].get_node("Selector")
 	card_animation_player = commands_list[current_selection].get_node("AnimationPlayer")
 
@@ -326,19 +328,19 @@ func get_command():
 	if current_command == 0: #attack
 		target_type = 'enemy' #issue when selecting attack after canceling skill
 		party_node.isAttacking = true
-		players[active_party_member - 1].get_node("AnimationPlayer").play("attack")
-		yield(players[active_party_member - 1].get_node("AnimatedSprite"), "animation_finished")
-		players[active_party_member - 1].update_animation("battling")
-		targetable_enemy_list[current_target].hp -= players[active_party_member - 1].attack
+		active_player.get_node("AnimationPlayer").play("attack")
+		yield(active_player.get_node("AnimatedSprite"), "animation_finished")
+		active_player.update_animation("battling")
+		targetable_enemy_list[current_target].hp -= active_player.attack
 		party_node.isAttacking = false
 	if current_command == 1: #skills. this needs to be updated when a new type of skill is add
-		command_cards[active_party_member - 1].hide()
-		skill_cards[active_party_member - 1].hide()
+		active_command_card.hide()
+		active_skill_card.hide()
 		cardIsVisible = false
 		party_node.isAttacking = true
-		players[active_party_member - 1].get_node("AnimationPlayer").play("attack")
-		yield(players[active_party_member - 1].get_node("AnimatedSprite"), "animation_finished")
-		players[active_party_member - 1].update_animation("battling")
+		active_player.get_node("AnimationPlayer").play("attack")
+		yield(active_player.get_node("AnimatedSprite"), "animation_finished")
+		active_player.update_animation("battling")
 		if target_type == 'enemy':
 			if current_skill_effect_type == 'damage':
 				targetable_enemy_list[current_target].hp -= current_skill_total_effect
@@ -358,9 +360,9 @@ func get_command():
 				check_max_player_health()
 		if target_type == 'none':
 			if current_skill_effect_type == 'heal':
-				players[active_party_member - 1].hp += current_skill_total_effect
+				active_player.hp += current_skill_total_effect
 			check_max_player_health()
-		players[active_party_member - 1].mp -= current_skill_mp
+		active_player.mp -= current_skill_mp
 		check_mp()
 		update_PC_UI()
 		current_skill_selection = 0
@@ -448,6 +450,9 @@ func act_in_order():
 				update_log("It is [color=#8B0000]" + turn_order[0].enemy_name + "[/color]'s turn!")
 				isPlayersTurn = false
 				enemy_attack()
+		active_player = players[active_party_member - 1]
+		active_command_card = command_cards[active_party_member - 1]
+		active_skill_card = skill_cards[active_party_member - 1]
 
 func shift_turn_order():
 	var first_unit = turn_order[0] #shift the turn order forward once someone goes
@@ -499,14 +504,14 @@ func check_enemy_death():
 func get_skills(party_member):
 	var skills_text = [skill_cards[party_member - 1].get_node("TextureRect/Skill1"), skill_cards[party_member - 1].get_node("TextureRect/Skill2"), skill_cards[party_member - 1].get_node("TextureRect/Skill3"), skill_cards[party_member - 1].get_node("TextureRect/Skill4"), skill_cards[party_member - 1].get_node("TextureRect/Skill5")]
 	for i in 5:
-		skills_text[i].text = ''
+		skills_text[i].bbcode_text = ''
 	number_of_skill_selections = players[party_member - 1].number_of_skills
 	for i in number_of_skill_selections: #update names of skills
-		skills_text[i].text = players[party_member - 1].skills[i].name
+		check_skill_mp(i)
+		skills_text[i].bbcode_text = players[party_member - 1].skills[i].name
 
 func get_skill_card_nodes():
-	var skills_list
-	skills_list = skill_cards[active_party_member - 1].get_node("TextureRect").get_children()
+	var skills_list = active_skill_card.get_node("TextureRect").get_children()
 	skill_card_selector_sprite = skills_list[current_skill_selection].get_node("Selector")
 	skill_card_animation_player = skills_list[current_skill_selection].get_node("AnimationPlayer")
 
@@ -533,14 +538,14 @@ func change_skill(direction):
 			enable_skill_card_selector_sprite()
 
 func get_skill_effect():
-	target_type = players[active_party_member - 1].skills[current_skill_selection].targets
-	current_skill_effect_type = players[active_party_member - 1].skills[current_skill_selection].effect_type
-	current_skill_effect = players[active_party_member - 1].skills[current_skill_selection].effect
-	current_skill_mp = players[active_party_member - 1].skills[current_skill_selection].mp.to_int()
-	current_skill_description = players[active_party_member - 1].skills[current_skill_selection].description
+	target_type = active_player.skills[current_skill_selection].targets
+	current_skill_effect_type = active_player.skills[current_skill_selection].effect_type
+	current_skill_effect = active_player.skills[current_skill_selection].effect
+	current_skill_mp = active_player.skills[current_skill_selection].mp.to_int()
+	current_skill_description = active_player.skills[current_skill_selection].description
 	current_skill_stat = current_skill_effect.left(3)
 	current_skill_multi = current_skill_effect.right(4).to_float()
-	skill_stat_assigner = {'ATK': players[active_party_member - 1].attack, 'DEF': players[active_party_member - 1].defence, 'INT': players[active_party_member - 1].intellect, 'SPD': players[active_party_member - 1].speed}
+	skill_stat_assigner = {'ATK': active_player.attack, 'DEF': active_player.defence, 'INT': active_player.intellect, 'SPD': active_player.speed}
 	current_skill_stat = skill_stat_assigner[current_skill_stat]
 	current_skill_total_effect = current_skill_stat * current_skill_multi
 	print('Current_skill_effect_type: ' + str(current_skill_effect_type) +
@@ -586,14 +591,14 @@ func disable_allies_selector():
 		target_animation_player.stop()
 
 func enable_self_selector():
-	target_selector_sprite = players[active_party_member - 1].get_node("Selector")
-	target_animation_player = players[active_party_member - 1].get_node("AnimationPlayer")
+	target_selector_sprite = active_player.get_node("Selector")
+	target_animation_player = active_player.get_node("AnimationPlayer")
 	target_selector_sprite.visible = true
 	target_animation_player.play('blink')
 	
 func disable_self_selector():
-	target_selector_sprite = players[active_party_member - 1].get_node("Selector")
-	target_animation_player = players[active_party_member - 1].get_node("AnimationPlayer")
+	target_selector_sprite = active_player.get_node("Selector")
+	target_animation_player = active_player.get_node("AnimationPlayer")
 	target_selector_sprite.visible = false
 	target_animation_player.stop()
 
@@ -602,11 +607,23 @@ func check_max_player_health():
 		if players[i].hp > players[i].maxhp:
 			players[i].hp = players[i].maxhp
 
-func check_skills_mp():
-	pass
+func check_skill_mp(skill):
+	if active_player.mp >= active_player.skills[skill].mp.to_int():
+		print('castable') #set text to default. allow selection
+	else:
+		print('not castable') # set text to gray. instead of selecting a target, update log "insufficient MP" and return to skill select'
+
+
+#func get_skills(party_member):
+#	var skills_text = [skill_cards[party_member - 1].get_node("TextureRect/Skill1"), skill_cards[party_member - 1].get_node("TextureRect/Skill2"), skill_cards[party_member - 1].get_node("TextureRect/Skill3"), skill_cards[party_member - 1].get_node("TextureRect/Skill4"), skill_cards[party_member - 1].get_node("TextureRect/Skill5")]
+#	for i in 5:
+#		skills_text[i].bbcode_text = ''
+#	number_of_skill_selections = players[party_member - 1].number_of_skills
+#	for i in number_of_skill_selections: #update names of skills
+#		skills_text[i].bbcode_text = players[party_member - 1].skills[i].name
 
 func check_mp():
-	if players[active_party_member - 1].mp < 0:
-		players[active_party_member - 1].mp = 0
-	if players[active_party_member - 1].mp > players[active_party_member - 1].maxmp:
-		players[active_party_member - 1].mp = players[active_party_member - 1].maxmp
+	if active_player.mp < 0:
+		active_player.mp = 0
+	if active_player.mp > active_player.maxmp:
+		active_player.mp = active_player.maxmp
