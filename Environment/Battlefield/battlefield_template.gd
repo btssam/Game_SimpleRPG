@@ -7,7 +7,7 @@ var enemy_list = []
 ###targeting
 var isSelectingTarget = false
 #var target_type = "enemy"
-var target_type = "ally"
+var target_type = "enemy"
 var current_target = 0
 var isSelectingCommand = false
 var current_command = 0
@@ -63,6 +63,12 @@ var skill_card_selector_sprite
 var skill_card_animation_player
 var targetable_ally_list = []
 var targetable_number_of_allies
+var current_skill_effect_type = ''
+var current_skill_effect = ''
+var current_skill_mp = 0
+var current_skill_description = ''
+var current_skill_multi = 0
+var current_skill_stat = 0 
 
 func _ready():
 	####initialize
@@ -328,11 +334,14 @@ func get_command():
 		cardIsVisible = false
 		party_node.isAttacking = true
 		if current_skill_selection == 0: #different skills for different PCs. check skill_selection and active_party_member. need to return multiple targets for aoe spells
-			print('fire')
-			print(current_target)
+#			print('fire')
+#			print(current_target)
+			pass
 		if current_skill_selection == 1:
-			print('print')
-			print(current_target)
+#			print('print')
+#			print(current_target)
+			pass
+		print(target_type)
 		current_skill_selection = 0
 		number_of_skill_selections = 0
 		party_node.isAttacking = false
@@ -341,6 +350,7 @@ func get_command():
 	current_selection = 0
 	current_command = 0
 	current_target = 0
+	target_type = 'enemy'
 
 
 ###other
@@ -499,26 +509,34 @@ func change_skill(direction):
 
 func get_skill_effect():
 	#can easily replace this whole if chain with:
-	#target_type = players[active_party_member - 1].skills[current_skill_selection].targets == "enemy"
+	target_type = players[active_party_member - 1].skills[current_skill_selection].targets
 	#once all 4 are implemented
-	if players[active_party_member - 1].skills[current_skill_selection].targets == "enemy":
-		target_type = "enemy"
-	elif players[active_party_member - 1].skills[current_skill_selection].targets == "ally":
-		target_type = "ally"
-	elif players[active_party_member - 1].skills[current_skill_selection].targets == "enemies":
-		target_type = "enemies"
-	elif players[active_party_member - 1].skills[current_skill_selection].targets == "allies":
-		target_type = "allies"
-	elif players[active_party_member - 1].skills[current_skill_selection].targets == "none":
-		target_type = "none"
+#	if players[active_party_member - 1].skills[current_skill_selection].targets == "enemy":
+#		target_type = "enemy"
+#	elif players[active_party_member - 1].skills[current_skill_selection].targets == "ally":
+#		target_type = "ally"
+#	elif players[active_party_member - 1].skills[current_skill_selection].targets == "enemies":
+#		target_type = "enemies"
+#	elif players[active_party_member - 1].skills[current_skill_selection].targets == "allies":
+#		target_type = "allies"
+#	elif players[active_party_member - 1].skills[current_skill_selection].targets == "none":
+#		target_type = "none"
+	current_skill_effect_type = players[active_party_member - 1].skills[current_skill_selection].effect_type
+	current_skill_effect = players[active_party_member - 1].skills[current_skill_selection].effect
+	current_skill_mp = players[active_party_member - 1].skills[current_skill_selection].mp
+	current_skill_description = players[active_party_member - 1].skills[current_skill_selection].description
+	current_skill_stat = current_skill_effect.left(3)
+	current_skill_multi = current_skill_effect.right(3).to_int()
+	print('Current_skill_effect_type: ' + str(current_skill_effect_type) +
+	'\nCurrent_skill_stat: ' + str(current_skill_stat) +
+	'\nCurrent_skill_multi: ' + str(current_skill_multi) +
+	'\nCurrent_skill_mp: ' + str(current_skill_mp) +
+	'\nCurrent_skill_description ' + str(current_skill_description))
 	select_target()
 
 func initalize_targetable_ally_list():
 	targetable_ally_list = players.duplicate()
 	targetable_number_of_allies = players.size()
-
-func target_an_ally():
-	pass
 
 func get_target_ally_nodes():
 	target_selector_sprite = targetable_ally_list[current_target].get_node("Selector")
@@ -563,3 +581,4 @@ func disable_self_selector():
 	target_animation_player = players[active_party_member - 1].get_node("AnimationPlayer")
 	target_selector_sprite.visible = false
 	target_animation_player.stop()
+	
