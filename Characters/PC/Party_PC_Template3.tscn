@@ -189,7 +189,7 @@ maxhp = 14
 attack = 2
 defence = 3
 intellect = 2
-mp = 10
+mp = 0
 maxmp = 10
 skill_1 = {
 "description": "Cures an allies wounds, restoring HP.",

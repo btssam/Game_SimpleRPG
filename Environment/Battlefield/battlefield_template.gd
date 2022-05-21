@@ -214,6 +214,7 @@ func process_command(): #which action occurs when space is pressed: (process_inp
 				current_command = current_selection  #do this here so dif. skills may target differently
 				if current_selection == 0: #attack
 					select_target()
+					print('attacking')
 				elif current_selection == 1 and isSelectingSkill == false: #open skill menu
 					isSelectingCommand = false
 					isSelectingSkill = true
@@ -288,6 +289,7 @@ func get_target_nodes():
 	
 func enable_selector_sprite():
 	if target_type == "enemy":
+		print('enablign_selector_sprite')
 		get_target_nodes()
 		target_selector_sprite.visible = true
 		target_animation_player.play('blink')
@@ -507,8 +509,10 @@ func get_skills(party_member):
 		skills_text[i].bbcode_text = ''
 	number_of_skill_selections = players[party_member - 1].number_of_skills
 	for i in number_of_skill_selections: #update names of skills
-		check_skill_mp(i)
-		skills_text[i].bbcode_text = players[party_member - 1].skills[i].name
+		if has_enough_mp(i):
+			skills_text[i].bbcode_text = players[party_member - 1].skills[i].name
+		else:
+			skills_text[i].bbcode_text = '[color=#A9A9A9]' + players[party_member - 1].skills[i].name + '[/color]'
 
 func get_skill_card_nodes():
 	var skills_list = active_skill_card.get_node("TextureRect").get_children()
@@ -552,7 +556,16 @@ func get_skill_effect():
 	'\nCurrent_skill_total_effect' + str(current_skill_total_effect) +
 	'\nCurrent_skill_mp: ' + str(current_skill_mp) +
 	'\nCurrent_skill_description: ' + str(current_skill_description))
-	select_target()
+	if has_enough_mp(current_skill_selection):
+		select_target()
+	else:
+		update_log("Insufficient MP!")
+#		disable_skill_card_selector_sprite()
+#		isSelectingSkill = true
+		current_skill_selection = 0
+		enable_skill_card_selector_sprite()
+		target_type = 'enemy'
+		
 
 func initalize_targetable_ally_list():
 	targetable_ally_list = players.duplicate()
@@ -607,11 +620,13 @@ func check_max_player_health():
 		if players[i].hp > players[i].maxhp:
 			players[i].hp = players[i].maxhp
 
-func check_skill_mp(skill):
+func has_enough_mp(skill):
 	if active_player.mp >= active_player.skills[skill].mp.to_int():
 		print('castable') #set text to default. allow selection
+		return true
 	else:
 		print('not castable') # set text to gray. instead of selecting a target, update log "insufficient MP" and return to skill select'
+		return false
 
 
 #func get_skills(party_member):
