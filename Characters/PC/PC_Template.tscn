@@ -188,8 +188,13 @@ scale = Vector2( 1.6, 2.2 )
 z_index = 1
 collision_mask = 6
 script = ExtResource( 2 )
-hp = 5
-maxhp = 5
+hp = 11
+maxhp = 11
+attack = 3
+defence = 3
+speed = 2
+mp = 10
+maxmp = 10
 skill_1 = {
 "description": "Deals small damage to an enemy.",
 "effect": "ATK_1.00",

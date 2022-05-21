@@ -63,12 +63,14 @@ var skill_card_selector_sprite
 var skill_card_animation_player
 var targetable_ally_list = []
 var targetable_number_of_allies
+
 var current_skill_effect_type = ''
 var current_skill_effect = ''
 var current_skill_mp = 0
 var current_skill_description = ''
-var current_skill_multi = 0
-var current_skill_stat = 0 
+var current_skill_multi = 0.0
+var current_skill_stat = 0
+var skill_stat_assigner = 0
 
 func _ready():
 	####initialize
@@ -324,29 +326,38 @@ func get_command():
 		players[active_party_member - 1].update_animation("battling")
 		targetable_enemy_list[current_target].hp -= players[active_party_member - 1].attack
 		party_node.isAttacking = false
-		check_enemy_death()
-		update_enemy_UI()
-		shift_turn_order()
-		act_in_order()
+#		check_enemy_death()
+#		update_enemy_UI()
+#		shift_turn_order()
+#		act_in_order()
 	if current_command == 1: #skills
 		command_cards[active_party_member - 1].hide()
 		skill_cards[active_party_member - 1].hide()
 		cardIsVisible = false
 		party_node.isAttacking = true
-		if current_skill_selection == 0: #different skills for different PCs. check skill_selection and active_party_member. need to return multiple targets for aoe spells
-#			print('fire')
-#			print(current_target)
-			pass
-		if current_skill_selection == 1:
-#			print('print')
-#			print(current_target)
-			pass
+		if target_type == 'enemy':
+			if current_skill_effect_type == 'damage':
+#				print(str(targetable_enemy_list[current_target].hp - (float(current_skill_stat) * int(current_skill_multi))))
+				targetable_enemy_list[current_target].hp -= (skill_stat_assigner[current_skill_stat] * current_skill_multi)
+				print(str(skill_stat_assigner[current_skill_stat]))
+#		if current_skill_selection == 0: #different skills for different PCs. check skill_selection and active_party_member. need to return multiple targets for aoe spells
+##			print('fire')
+##			print(current_target)
+#			pass
+#		if current_skill_selection == 1:
+##			print('print')
+##			print(current_target)
+#			pass
 		print(target_type)
 		current_skill_selection = 0
 		number_of_skill_selections = 0
 		party_node.isAttacking = false
-		shift_turn_order()
-		act_in_order()
+#		shift_turn_order()
+#		act_in_order()
+	check_enemy_death()
+	update_enemy_UI()
+	shift_turn_order()
+	act_in_order()
 	current_selection = 0
 	current_command = 0
 	current_target = 0
@@ -371,8 +382,12 @@ func update_enemy_UI():
 
 func update_PC_UI():
 	var newText = ''
-	newText = 'P4 HP: ' + str(player_4_node.hp) + '/' + str(player_4_node.maxhp) + ' MP: ' + str(player_4_node.mp)  + '/' + str(player_4_node.maxmp) + '\n' + 'P3 HP: ' + str(player_3_node.hp) + '/' + str(player_3_node.maxhp) + ' MP: ' + str(player_3_node.mp)  + '/' + str(player_3_node.maxmp) + '\n' + 'P2 HP: ' + str(player_2_node.hp) + '/' + str(player_2_node.maxhp) + ' MP: ' + str(player_2_node.mp)  + '/' + str(player_2_node.maxmp) + '\n' + 'P1 HP: ' + str(player_node.hp) + '/' + str(player_node.maxhp) + ' MP: ' + str(player_node.mp)  + '/' + str(player_node.maxmp)
-	pc_stats_node.text = newText
+	for i in 4:
+		var player_number = 4-i
+		newText += 'P' + str(player_number) + ' [color=red]HP[/color]: ' + str(players[player_number-1].hp) + '/' + str(players[player_number-1].maxhp) + ' [color=blue]MP[/color]: ' + str(players[player_number-1].mp)  + '/' + str(players[player_number-1].maxmp) + '\n'
+#	newText = 'P4 [color=red]HP[/color]/: ' + str(player_4_node.hp) + '/' + str(player_4_node.maxhp) + ' MP: ' + str(player_4_node.mp)  + '/' + str(player_4_node.maxmp) + '\n' + 'P3 HP: ' + str(player_3_node.hp) + '/' + str(player_3_node.maxhp) + ' MP: ' + str(player_3_node.mp)  + '/' + str(player_3_node.maxmp) + '\n' + 'P2 HP: ' + str(player_2_node.hp) + '/' + str(player_2_node.maxhp) + ' MP: ' + str(player_2_node.mp)  + '/' + str(player_2_node.maxmp) + '\n' + 'P1 HP: ' + str(player_node.hp) + '/' + str(player_node.maxhp) + ' MP: ' + str(player_node.mp)  + '/' + str(player_node.maxmp)
+	#this should be a loop
+	pc_stats_node.bbcode_text = newText
 
 func initialize_log():
 	ui_log_node.bbcode_text = ''
@@ -526,7 +541,9 @@ func get_skill_effect():
 	current_skill_mp = players[active_party_member - 1].skills[current_skill_selection].mp
 	current_skill_description = players[active_party_member - 1].skills[current_skill_selection].description
 	current_skill_stat = current_skill_effect.left(3)
-	current_skill_multi = current_skill_effect.right(3).to_int()
+	current_skill_multi = current_skill_effect.right(4).to_float()
+	print('current_skill_effect.right(4): ' + str(current_skill_effect.right(4)))
+	skill_stat_assigner = {'ATK': players[active_party_member - 1].attack, 'DEF': players[active_party_member - 1].defence, 'INT': players[active_party_member - 1].intellect, 'SPD': players[active_party_member - 1].speed}
 	print('Current_skill_effect_type: ' + str(current_skill_effect_type) +
 	'\nCurrent_skill_stat: ' + str(current_skill_stat) +
 	'\nCurrent_skill_multi: ' + str(current_skill_multi) +

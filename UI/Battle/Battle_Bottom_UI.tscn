@@ -83,16 +83,12 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="Enemies_Stats"]
+[node name="Label" type="RichTextLabel" parent="Enemies_Stats"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_bottom = -84.0
 rect_scale = Vector2( 1, 2 )
 theme = SubResource( 2 )
-autowrap = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="PCs_Stats" type="ColorRect" parent="."]
 anchor_left = 1.0
@@ -108,14 +104,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="PCs_Stats"]
+[node name="Label" type="RichTextLabel" parent="PCs_Stats"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_bottom = -84.0
 rect_scale = Vector2( 1, 2 )
 theme = SubResource( 2 )
-text = "P4 HP : 999/999 MP: 999/999"
-autowrap = true
+bbcode_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
