@@ -25,8 +25,6 @@ func _input(event):
 			$Battlefield_Template/AudioStreamPlayer.playing = !$Battlefield_Template/AudioStreamPlayer.playing
 		elif current_scene == "overworld":
 			$Overworld_Template/AudioStreamPlayer.playing = !$Overworld_Template/AudioStreamPlayer.playing
-#	if event.is_action_pressed("start"):
-#		get_tree().quit()
 		
 
 

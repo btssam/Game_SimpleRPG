@@ -114,6 +114,11 @@ func _input(event):
 					change_target("down")
 				if event.is_action_pressed("interact"):
 					return_target()
+				if event.is_action_pressed("esc"):
+					isSelectingTarget = false
+					disable_selector_sprite()
+					target_type = 'enemy' #prevent issues with attacking after skill
+					process_command() #enable cursor right away
 		###commandcard
 			elif not isSelectingTarget:
 				if event.is_action_pressed("interact"):
@@ -130,6 +135,12 @@ func _input(event):
 					change_skill("up")
 				if event.is_action_pressed("down"):
 					change_skill("down")
+				if event.is_action_pressed("esc"):
+					isSelectingSkill = false
+					isSelectingCommand = true
+					disable_skill_card_selector_sprite()
+					skill_cards[active_party_member - 1].hide()
+					enable_card_selector_sprite()
 		###testing
 		if event.is_action_pressed("test_key"):
 				close_scene()
@@ -313,6 +324,7 @@ func return_target():
 #respond_to_command
 func get_command():
 	if current_command == 0: #attack
+		target_type = 'enemy' #issue when selecting attack after canceling skill
 		party_node.isAttacking = true
 		players[active_party_member - 1].get_node("AnimationPlayer").play("attack")
 		yield(players[active_party_member - 1].get_node("AnimatedSprite"), "animation_finished")
@@ -351,7 +363,6 @@ func get_command():
 				players[active_party_member - 1].hp += current_skill_total_effect
 			check_max_player_health()
 			update_PC_UI()
-		print(target_type)
 		current_skill_selection = 0
 		number_of_skill_selections = 0
 		party_node.isAttacking = false

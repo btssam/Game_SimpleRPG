@@ -1,4 +1,4 @@
-extends Control #How do I want the menu to behave in battle. Just inacessable entirely (a lot of games do that). Maybe can only Quit, Load, Status, Option
+extends Control #How do I want the menu to behave in battle. Just inacessable entirely (a lot of games do that). Maybe can only Quit, Load, Status, Option. Inacessable because I want exit to be able to be used to back out of a command
 
 onready var menu_node = get_node("Popup_Menu")
 onready var party_node = get_node("../../../Party")
@@ -27,29 +27,30 @@ func _process(delta):
 		party_node.get_node("PC_Template").update_animation('stop')
 
 func _input(event):
-	if event.is_action_pressed("start"):
-		if !isMenuOpen:
-			open_menu()
-		elif !isSubMenuOpen: #menu open but submenu closed (main menu)
-			disable_selector()
-			close_menu()
-		
-		if isSubMenuOpen:
-			close_submenu()
+	if not party_node.isBattling:
+		if event.is_action_pressed("esc"):
+			if !isMenuOpen:
+				open_menu()
+			elif !isSubMenuOpen: #menu open but submenu closed (main menu)
+				disable_selector()
+				close_menu()
 			
-	if isMenuOpen:
-		if event.is_action_pressed("down"):
-			if current_selection < 8:
-				disable_selector()
-				current_selection += 1
-				enable_selector()
-		if event.is_action_pressed("up"):
-			if current_selection > 1:
-				disable_selector()
-				current_selection -= 1
-				enable_selector()
-		if event.is_action_pressed("interact"):
-			process_selection()
+			if isSubMenuOpen:
+				close_submenu()
+				
+		if isMenuOpen:
+			if event.is_action_pressed("down"):
+				if current_selection < 8:
+					disable_selector()
+					current_selection += 1
+					enable_selector()
+			if event.is_action_pressed("up"):
+				if current_selection > 1:
+					disable_selector()
+					current_selection -= 1
+					enable_selector()
+			if event.is_action_pressed("interact"):
+				process_selection()
 
 func enable_selector():
 	if current_selection == 1:
