@@ -53,6 +53,9 @@ It failed!
 Your Turn!
 You attack Dummy..."
 scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Label2" type="Label" parent="Log"]
 visible = false

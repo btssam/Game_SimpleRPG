@@ -338,8 +338,13 @@ func get_command():
 		if target_type == 'enemy':
 			if current_skill_effect_type == 'damage':
 #				print(str(targetable_enemy_list[current_target].hp - (float(current_skill_stat) * int(current_skill_multi))))
-				targetable_enemy_list[current_target].hp -= (skill_stat_assigner[current_skill_stat] * current_skill_multi)
-				print(str(skill_stat_assigner[current_skill_stat]))
+				targetable_enemy_list[current_target].hp -= current_skill_stat * current_skill_multi
+		if target_type == 'enemies':
+			if current_skill_effect_type ==  'damage':
+				for i in targetable_number_of_units:
+					targetable_enemy_list[i-1].hp -= current_skill_stat * current_skill_multi
+					check_enemy_death()
+					
 #		if current_skill_selection == 0: #different skills for different PCs. check skill_selection and active_party_member. need to return multiple targets for aoe spells
 ##			print('fire')
 ##			print(current_target)
@@ -384,7 +389,7 @@ func update_PC_UI():
 	var newText = ''
 	for i in 4:
 		var player_number = 4-i
-		newText += 'P' + str(player_number) + ' [color=red]HP[/color]: ' + str(players[player_number-1].hp) + '/' + str(players[player_number-1].maxhp) + ' [color=blue]MP[/color]: ' + str(players[player_number-1].mp)  + '/' + str(players[player_number-1].maxmp) + '\n'
+		newText += 'P' + str(player_number) + ' [color=#CD5C5C]HP[/color]: ' + str(players[player_number-1].hp) + '/' + str(players[player_number-1].maxhp) + ' [color=#1E90FF]MP[/color]: ' + str(players[player_number-1].mp)  + '/' + str(players[player_number-1].maxmp) + '\n'
 #	newText = 'P4 [color=red]HP[/color]/: ' + str(player_4_node.hp) + '/' + str(player_4_node.maxhp) + ' MP: ' + str(player_4_node.mp)  + '/' + str(player_4_node.maxmp) + '\n' + 'P3 HP: ' + str(player_3_node.hp) + '/' + str(player_3_node.maxhp) + ' MP: ' + str(player_3_node.mp)  + '/' + str(player_3_node.maxmp) + '\n' + 'P2 HP: ' + str(player_2_node.hp) + '/' + str(player_2_node.maxhp) + ' MP: ' + str(player_2_node.mp)  + '/' + str(player_2_node.maxmp) + '\n' + 'P1 HP: ' + str(player_node.hp) + '/' + str(player_node.maxhp) + ' MP: ' + str(player_node.mp)  + '/' + str(player_node.maxmp)
 	#this should be a loop
 	pc_stats_node.bbcode_text = newText
@@ -435,7 +440,7 @@ func act_in_order():
 			if party_node.isPartyDead:
 				turn_order = []
 			else:
-				update_log("It is [color=red]" + turn_order[0].enemy_name + "[/color]'s turn!")
+				update_log("It is [color=#8B0000]" + turn_order[0].enemy_name + "[/color]'s turn!")
 				isPlayersTurn = false
 				enemy_attack()
 
@@ -469,10 +474,10 @@ func enemy_attack(): #could use targetable ally list
 	act_in_order()
 
 func check_enemy_death():
-	for i in range(0, targetable_number_of_units):
+	for i in range(0, targetable_number_of_units): #issue when all are killed at once
 		if targetable_enemy_list[i-1].hp <= 0:
 			targetable_enemy_list[i-1].hp = 0
-			update_log("[color=red]" + targetable_enemy_list[i-1].enemy_name  + "[/color]" +  " has perished!")
+			update_log("[color=#8B0000]" + targetable_enemy_list[i-1].enemy_name  + "[/color]" +  " has perished!")
 			targetable_enemy_list[i-1].get_node("AnimationPlayer").play("dying")
 			turn_order.erase(targetable_enemy_list[i-1])
 			targetable_enemy_list.erase(targetable_enemy_list[i-1])
@@ -544,6 +549,7 @@ func get_skill_effect():
 	current_skill_multi = current_skill_effect.right(4).to_float()
 	print('current_skill_effect.right(4): ' + str(current_skill_effect.right(4)))
 	skill_stat_assigner = {'ATK': players[active_party_member - 1].attack, 'DEF': players[active_party_member - 1].defence, 'INT': players[active_party_member - 1].intellect, 'SPD': players[active_party_member - 1].speed}
+	current_skill_stat = skill_stat_assigner[current_skill_stat]
 	print('Current_skill_effect_type: ' + str(current_skill_effect_type) +
 	'\nCurrent_skill_stat: ' + str(current_skill_stat) +
 	'\nCurrent_skill_multi: ' + str(current_skill_multi) +
