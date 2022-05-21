@@ -1,7 +1,8 @@
 extends Node2D
 
 ###initialize
-var enemy_node = "res://Characters/NPC/Enemy/Enemy_Template.tscn"
+#var enemy_node = "res://Characters/NPC/Enemy/Enemy_Template.tscn"
+onready var enemy_nodes = ["res://Characters/NPC/Enemy/Earth_Nymph.tscn", "res://Characters/NPC/Enemy/Sea_Nymph.tscn", "res://Characters/NPC/Enemy/Brown_Wolf.tscn", "res://Characters/NPC/Enemy/Green_Wolf.tscn", "res://Characters/NPC/Enemy/Blood_Goblin.tscn", "res://Characters/NPC/Enemy/Bog_Goblin.tscn"]
 var number_of_units = 0
 var enemy_list = []
 ###targeting
@@ -160,26 +161,26 @@ func get_random_number_of_units(): # 1-3
 
 func get_random_unit():
 	randomize()
-	var random_enemy = randi()%6 #0-5
-	return random_enemy
+	return randi()%6 #0-5
 
 func add_enemies():
 	for i in range(0, number_of_units):
-		var enemy = load(enemy_node).instance()
-		var enemy_sprite = enemy.get_node("Sprite") #eventually will want different enemy scenes for each when they have dif functions
-		enemy_sprite.frame = get_random_unit()
-		if enemy_sprite.frame == 0:
-			enemy.enemy_name = "Blue Fairy"
-		elif enemy_sprite.frame == 1:
-			enemy.enemy_name = "Brown Fairy"
-		elif enemy_sprite.frame == 2:
-			enemy.enemy_name = "Brown Wolf"
-		elif enemy_sprite.frame == 3:
-			enemy.enemy_name = "Green Wolf"
-		elif enemy_sprite.frame == 4:
-			enemy.enemy_name = "Red Goblin"
-		elif enemy_sprite.frame == 5:
-			enemy.enemy_name = "Purple Goblin"
+		var enemy = load(enemy_nodes[get_random_unit()]).instance()
+#		var enemy = load(enemy_node).instance()
+#		var enemy_sprite = enemy.get_node("Sprite") #eventually will want different enemy scenes for each when they have dif functions
+#		enemy_sprite.frame = get_random_unit()
+#		if enemy_sprite.frame == 0:
+#			enemy.enemy_name = "Blue Fairy"
+#		elif enemy_sprite.frame == 1:
+#			enemy.enemy_name = "Brown Fairy"
+#		elif enemy_sprite.frame == 2:
+#			enemy.enemy_name = "Brown Wolf"
+#		elif enemy_sprite.frame == 3:
+#			enemy.enemy_name = "Green Wolf"
+#		elif enemy_sprite.frame == 4:
+#			enemy.enemy_name = "Red Goblin"
+#		elif enemy_sprite.frame == 5:
+#			enemy.enemy_name = "Purple Goblin"
 		call_deferred("add_child", enemy)
 		enemy_list.push_back(enemy)
 		call_deferred('change_enemy_position')
@@ -358,7 +359,8 @@ func get_command():
 		if target_type == 'allies':
 			if current_skill_effect_type == 'heal':
 				for i in 4:
-					players[i].hp += current_skill_total_effect
+					if players[i].hp > 0:
+						players[i].hp += current_skill_total_effect
 				check_max_player_health()
 		if target_type == 'none':
 			if current_skill_effect_type == 'heal':
@@ -474,7 +476,7 @@ func enemy_attack(): #could use targetable ally list
 	var random_player_target = randi()%4 + 1 #check if player is alive, then pick a different target
 	while !hasSelected: #set a loop to pick a random target. maybe based on an aggro stat or player hp
 		if !players[random_player_target - 1].isDead:
-			players[random_player_target - 1].hp -= 1
+			players[random_player_target - 1].hp -= turn_order[0].attack
 			players[random_player_target - 1].check_for_death()
 			hasSelected = true
 		if random_player_target < 4: #why is this here. so that when they randomize a dead target, it goes onto the next

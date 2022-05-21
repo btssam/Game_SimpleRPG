@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Characters/NPC/Enemy/Blood_Goblin.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Characters/NPC/Enemy/enemy_template.gd" type="Script" id=2]
+[ext_resource path="res://Characters/NPC/Enemy/Enemy_Spritesheet.png" type="Texture" id=3]
+
+[node name="Bog_Goblin" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+enemy_name = "Bog Goblin"
+attack = 2
+
+[node name="Sprite" parent="." index="0"]
+scale = Vector2( 2, 2 )
+texture = ExtResource( 3 )
+hframes = 2
+vframes = 3
+frame = 5
