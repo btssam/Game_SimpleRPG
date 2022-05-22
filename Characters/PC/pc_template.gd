@@ -32,6 +32,7 @@ export var intellect = 1
 export var speed = 1
 export var mp = 1
 export var maxmp = 1
+export var initiative = 0
 #skills
 export var skill_1 = {"name": "null", "targets": "null", "effect_type": "null", "effect": "null", "mp": "null", "description": "null"}
 export var skill_2 = {"name": "null", "targets": "null", "effect_type": "null", "effect": "null", "mp": "null", "description": "null"}

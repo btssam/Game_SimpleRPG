@@ -5,6 +5,7 @@
 [node name="Blood_Goblin" instance=ExtResource( 1 )]
 enemy_name = "Blood Goblin"
 attack = 4
+speed = 5
 
 [node name="Sprite" parent="." index="0"]
 frame = 4

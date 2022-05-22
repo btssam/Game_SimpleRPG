@@ -93,6 +93,9 @@ margin_bottom = -84.0
 rect_scale = Vector2( 1, 2 )
 theme = SubResource( 2 )
 bbcode_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="PCs_Stats" type="ColorRect" parent="."]
 anchor_left = 1.0

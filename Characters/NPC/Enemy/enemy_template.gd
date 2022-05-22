@@ -9,3 +9,4 @@ export var intellect = 1
 export var speed = 1
 export var mp = 1
 export var maxmp = 1
+export var initiative = 0

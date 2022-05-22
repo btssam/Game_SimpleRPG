@@ -187,6 +187,7 @@ script = ExtResource( 1 )
 hp = 13
 maxhp = 13
 intellect = 4
+speed = 3
 mp = 10
 maxmp = 10
 skill_1 = {

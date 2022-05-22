@@ -10,6 +10,7 @@ enemy_name = "Brown Wolf"
 hp = 5
 maxhp = 5
 attack = 1
+speed = 10
 
 [node name="Sprite" parent="." index="0"]
 scale = Vector2( 2, 2 )
