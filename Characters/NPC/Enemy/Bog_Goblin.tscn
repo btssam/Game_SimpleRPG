@@ -7,7 +7,7 @@
 [node name="Bog_Goblin" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 enemy_name = "Bog Goblin"
-attack = 2
+attack = 5
 
 [node name="Sprite" parent="." index="0"]
 scale = Vector2( 2, 2 )

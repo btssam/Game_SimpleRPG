@@ -165,22 +165,7 @@ func get_random_unit():
 
 func add_enemies():
 	for i in range(0, number_of_units):
-		var enemy = load(enemy_nodes[get_random_unit()]).instance()
-#		var enemy = load(enemy_node).instance()
-#		var enemy_sprite = enemy.get_node("Sprite") #eventually will want different enemy scenes for each when they have dif functions
-#		enemy_sprite.frame = get_random_unit()
-#		if enemy_sprite.frame == 0:
-#			enemy.enemy_name = "Blue Fairy"
-#		elif enemy_sprite.frame == 1:
-#			enemy.enemy_name = "Brown Fairy"
-#		elif enemy_sprite.frame == 2:
-#			enemy.enemy_name = "Brown Wolf"
-#		elif enemy_sprite.frame == 3:
-#			enemy.enemy_name = "Green Wolf"
-#		elif enemy_sprite.frame == 4:
-#			enemy.enemy_name = "Red Goblin"
-#		elif enemy_sprite.frame == 5:
-#			enemy.enemy_name = "Purple Goblin"
+		var enemy = load(enemy_nodes[get_random_unit()]).instance() #could just randi()%6
 		call_deferred("add_child", enemy)
 		enemy_list.push_back(enemy)
 		call_deferred('change_enemy_position')
@@ -335,6 +320,7 @@ func get_command():
 		yield(active_player.get_node("AnimatedSprite"), "animation_finished")
 		active_player.update_animation("battling")
 		targetable_enemy_list[current_target].hp -= active_player.attack
+		update_log(str(targetable_enemy_list[current_target].name.capitalize()) + ' takes [color=#CD5C5C]' + str(active_player.attack) + '[/color] damage!')
 		party_node.isAttacking = false
 	if current_command == 1: #skills. this needs to be updated when a new type of skill is add
 		active_command_card.hide()
@@ -347,24 +333,29 @@ func get_command():
 		if target_type == 'enemy':
 			if current_skill_effect_type == 'damage':
 				targetable_enemy_list[current_target].hp -= current_skill_total_effect
+				update_log(str(targetable_enemy_list[current_target].name.capitalize()) + ' takes [color=#CD5C5C]' + str(current_skill_total_effect) + '[/color] damage!')
 		if target_type == 'enemies':
 			if current_skill_effect_type ==  'damage':
+				update_log('Enemies take [color=#CD5C5C]' + str(current_skill_total_effect) + '[/color] damage!')
 				for i in targetable_number_of_units:
 					targetable_enemy_list[i-1].hp -= current_skill_total_effect
 					check_enemy_death()
 		if target_type == 'ally':
 			if current_skill_effect_type == 'heal':
 				targetable_ally_list[current_target].hp += current_skill_total_effect
+				update_log(str(targetable_ally_list[current_target].player_name) + ' is healed by [color=#CD5C5C]' + str(current_skill_total_effect) + '[/color] HP!')
 				check_max_player_health()
 		if target_type == 'allies':
 			if current_skill_effect_type == 'heal':
 				for i in 4:
 					if players[i].hp > 0:
 						players[i].hp += current_skill_total_effect
+				update_log('Allies are healed by [color=#CD5C5C]' + str(current_skill_total_effect) + '[/color] HP!')
 				check_max_player_health()
 		if target_type == 'none':
 			if current_skill_effect_type == 'heal':
 				active_player.hp += current_skill_total_effect
+				update_log(str(active_player.player_name) + ' is healed by [color=#CD5C5C]' + str(current_skill_total_effect) + '[/color] HP!')
 			check_max_player_health()
 		active_player.mp -= current_skill_mp
 		check_mp()
@@ -395,8 +386,8 @@ func close_scene():
 func update_enemy_UI():
 	var newText = ''
 	for i in range(0, number_of_units):
-		newText += enemy_list[i].enemy_name + ': ' + str(enemy_list[i].hp) + '\n'
-	enemy_stats_node.text = newText
+		newText += enemy_list[i].enemy_name + ' [color=#CD5C5C]HP[/color]: ' + str(enemy_list[i].hp) + '\n'
+	enemy_stats_node.bbcode_text = newText
 
 func update_PC_UI():
 	var newText = ''
@@ -432,19 +423,19 @@ func initialize_turn_order(): # would like to base on speed stat. likely would n
 func act_in_order():
 	if not isVictorious:
 		if turn_order[0].name == "PC_Template":
-				update_log("It is Player 1's turn!")
+				update_log("Player 1's turn!")
 				active_party_member = 1
 				isPlayersTurn = true
 		elif turn_order[0].name == "Party_PC_Template1":
-				update_log("It is Player 2's turn!")
+				update_log("Player 2's turn!")
 				active_party_member = 2
 				isPlayersTurn = true
 		elif turn_order[0].name == "Party_PC_Template2":
-				update_log("It is Player 3's turn!")
+				update_log("Player 3's turn!")
 				active_party_member = 3
 				isPlayersTurn = true
 		elif turn_order[0].name == "Party_PC_Template3":
-				update_log("It is Player 4's turn!")
+				update_log("Player 4's turn!")
 				active_party_member = 4
 				isPlayersTurn = true
 		else:
@@ -474,9 +465,13 @@ func enemy_attack(): #could use targetable ally list
 	yield(enemy_animationPlayer_node, "animation_finished")
 	randomize()
 	var random_player_target = randi()%4 + 1 #check if player is alive, then pick a different target
-	while !hasSelected: #set a loop to pick a random target. maybe based on an aggro stat or player hp
+	while !hasSelected: #random target loop. maybe based on an aggro stat or player hp
 		if !players[random_player_target - 1].isDead:
-			players[random_player_target - 1].hp -= turn_order[0].attack
+			var damage = turn_order[0].attack - players[random_player_target - 1].defence
+			if damage < 1:
+				damage = 1
+			update_log('P' + str(random_player_target) + " takes [color=#CD5C5C]" + str(damage) + '[/color] damage!')
+			players[random_player_target - 1].hp -= damage
 			players[random_player_target - 1].check_for_death()
 			hasSelected = true
 		if random_player_target < 4: #why is this here. so that when they randomize a dead target, it goes onto the next

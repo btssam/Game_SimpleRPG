@@ -6,7 +6,7 @@
 enemy_name = "Sea Nymph"
 hp = 15
 maxhp = 15
-attack = 2
+attack = 5
 
 [node name="Sprite" parent="." index="0"]
 frame = 0

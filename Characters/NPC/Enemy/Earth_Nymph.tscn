@@ -6,7 +6,7 @@
 enemy_name = "Earth Nymph"
 hp = 20
 maxhp = 20
-attack = 1
+attack = 4
 
 [node name="Sprite" parent="." index="0"]
 frame = 1
