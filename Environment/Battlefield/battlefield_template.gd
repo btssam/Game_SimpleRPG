@@ -200,7 +200,6 @@ func process_command(): #which action occurs when space is pressed: (process_inp
 				current_command = current_selection  #do this here so dif. skills may target differently
 				if current_selection == 0: #attack
 					select_target()
-					print('attacking')
 				elif current_selection == 1 and isSelectingSkill == false: #open skill menu
 					isSelectingCommand = false
 					isSelectingSkill = true
@@ -275,7 +274,6 @@ func get_target_nodes():
 	
 func enable_selector_sprite():
 	if target_type == "enemy":
-		print('enablign_selector_sprite')
 		get_target_nodes()
 		target_selector_sprite.visible = true
 		target_animation_player.play('blink')
@@ -413,64 +411,39 @@ func update_log(message):
 func initialize_turn_order(): # would like to base on speed stat. likely would need enemy speed stats. and different enemy types
 	randomize()
 	var randomized_list = []
-	var total = enemy_list.size() + players.size()
 	var node_list = []
 	var initiative_list = []
 	for i in enemy_list.size():
-		print('Enemy ' + str(i+1) + ' initiative:')
 		var enemy = enemy_list[i]
 		enemy.initiative = randi()%20 + enemy.speed
 		node_list.append(enemy)
-		print(str(enemy.initiative))
 	for i in players.size():
-		print('Player ' + str(i+1) + ' initiative:')
 		var player = players[i]
 		player.initiative = randi()%20 + player.speed
 		node_list.append(player)
-		print(str(player.initiative))
-	print('Total' + str(total))
-#	while randomized_list.size() < total:
 	for i in node_list.size():
 		var current_unit = node_list[i]
 		var current_initiative = current_unit.initiative
-#			print(str(current_initiative))
-#			break
-#		break
 		if randomized_list.size() == 0:
 			randomized_list.append(current_unit)
 			initiative_list.append(current_initiative)
-			print('initial')
 		elif current_initiative > initiative_list.max():
 			randomized_list.push_front(current_unit)
 			initiative_list.push_front(current_initiative)
-			print('new max')
 		elif current_initiative < initiative_list.min():
 			randomized_list.push_back(current_unit)
 			initiative_list.push_back(current_initiative)
-			print('new min')
 		else:
-			print('should be a new entry')
 			print(current_initiative)
 			for c in randomized_list.size() - 1:
-				print('new entry iteration')
 				if current_initiative <= initiative_list[c] and current_initiative >= initiative_list[c+1]:
-#					var randomized_temp = randomized_list[c+1]
-#					var initiative_temp = initiative_list[c+1]
 					randomized_list.insert(c+1, current_unit)
 					initiative_list.insert(c+1, current_initiative)
-					print('new entry')
 					break
 	print(randomized_list)
 	print(initiative_list)
 	
 	#consider trying the sort_custom method
-#
-#	var randomized_list = enemy_list.duplicate()
-#	randomized_list.append(player_node)
-#	randomized_list.append(player_2_node)
-#	randomized_list.append(player_3_node)
-#	randomized_list.append(player_4_node)
-#	randomized_list.shuffle()
 
 	turn_order = randomized_list
 
@@ -673,11 +646,9 @@ func check_max_player_health():
 
 func has_enough_mp(skill):
 	if active_player.mp >= active_player.skills[skill].mp.to_int():
-		print('castable') #set text to default. allow selection
-		return true
+		return true  #set text to default. allow selection
 	else:
-		print('not castable') # set text to gray. instead of selecting a target, update log "insufficient MP" and return to skill select'
-		return false
+		return false # set text to gray. instead of selecting a target, update log "insufficient MP" and return to skill select'
 
 
 #func get_skills(party_member):

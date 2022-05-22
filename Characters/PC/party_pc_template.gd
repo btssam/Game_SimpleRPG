@@ -137,14 +137,10 @@ func check_for_death():
 		get_node("../../Battlefield_Template").update_log("A party member is dead!")
 		isDead = true
 		if get_node("../../Battlefield_Template").turn_order.has(get_node(".")):
-			print('removing from turn_order')
 			get_node("../../Battlefield_Template").turn_order.erase(get_node("."))
 		if get_node("../../Battlefield_Template").targetable_ally_list.has(get_node(".")):
-			print(get_node("../../Battlefield_Template").targetable_ally_list)
-			print('removing from targetable players')
 			get_node("../../Battlefield_Template").targetable_ally_list.erase(get_node("."))
 			get_node("../../Battlefield_Template").targetable_number_of_allies -= 1
-			print(get_node("../../Battlefield_Template").targetable_ally_list)
 		get_parent().check_if_party_is_dead()
 		$AnimatedSprite.play("dying")
 		yield($AnimatedSprite, "animation_finished")

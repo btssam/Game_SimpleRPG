@@ -177,7 +177,6 @@ func check_if_party_is_dead():
 		if get_child(i).isDead == true:
 			number_dead += 1
 	if number_dead == 4:
-		print('Party is Dead!')
 		isPartyDead = true
 	else:
 		number_dead = 0
