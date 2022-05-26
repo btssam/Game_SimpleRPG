@@ -7,6 +7,7 @@ var current_selection = 1
 var isSubMenuOpen = false
 
 var status_node = "res://UI/Menu/Status_UI.tscn"
+var skills_node = "res://UI/Menu/Skills_UI.tscn"
 var current_submenu_node
 
 #status
@@ -53,62 +54,18 @@ func _input(event):
 				process_selection()
 
 func enable_selector():
-	if current_selection == 1:
-		$Popup_Menu/Frame/Options/Items/Selector.show()
-		$Popup_Menu/Frame/Options/Items/AnimationPlayer.play("blink")
-	elif current_selection == 2:
-		$Popup_Menu/Frame/Options/Skills/Selector.show()
-		$Popup_Menu/Frame/Options/Skills/AnimationPlayer.play("blink")
-	elif current_selection == 3:
-		$Popup_Menu/Frame/Options/Status/Selector.show()
-		$Popup_Menu/Frame/Options/Status/AnimationPlayer.play("blink")
-	elif current_selection == 4:
-		$Popup_Menu/Frame/Options/Quests/Selector.show()
-		$Popup_Menu/Frame/Options/Quests/AnimationPlayer.play("blink")
-	elif current_selection == 5:
-		$Popup_Menu/Frame/Options/Option/Selector.show()
-		$Popup_Menu/Frame/Options/Option/AnimationPlayer.play("blink")
-	elif current_selection == 6:
-		$Popup_Menu/Frame/Options/Save/Selector.show()
-		$Popup_Menu/Frame/Options/Save/AnimationPlayer.play("blink")
-	elif current_selection == 7:
-		$Popup_Menu/Frame/Options/Load/Selector.show()
-		$Popup_Menu/Frame/Options/Load/AnimationPlayer.play("blink")
-	elif current_selection == 8:
-		$Popup_Menu/Frame/Options/Quit/Selector.show()
-		$Popup_Menu/Frame/Options/Quit/AnimationPlayer.play("blink")
+	$Popup_Menu/Frame/Options.get_child(current_selection-1).get_child(0).show() #Selector
+	$Popup_Menu/Frame/Options.get_child(current_selection-1).get_child(1).play("blink") #AP
 
 func disable_selector():
-	if current_selection == 1:
-		$Popup_Menu/Frame/Options/Items/Selector.hide()
-		$Popup_Menu/Frame/Options/Items/AnimationPlayer.stop()
-	elif current_selection == 2:
-		$Popup_Menu/Frame/Options/Skills/Selector.hide()
-		$Popup_Menu/Frame/Options/Skills/AnimationPlayer.stop()
-	elif current_selection == 3:
-		$Popup_Menu/Frame/Options/Status/Selector.hide()
-		$Popup_Menu/Frame/Options/Status/AnimationPlayer.stop()
-	elif current_selection == 4:
-		$Popup_Menu/Frame/Options/Quests/Selector.hide()
-		$Popup_Menu/Frame/Options/Quests/AnimationPlayer.stop()
-	elif current_selection == 5:
-		$Popup_Menu/Frame/Options/Option/Selector.hide()
-		$Popup_Menu/Frame/Options/Option/AnimationPlayer.stop()
-	elif current_selection == 6:
-		$Popup_Menu/Frame/Options/Save/Selector.hide()
-		$Popup_Menu/Frame/Options/Save/AnimationPlayer.stop()
-	elif current_selection == 7:
-		$Popup_Menu/Frame/Options/Load/Selector.hide()
-		$Popup_Menu/Frame/Options/Load/AnimationPlayer.stop()
-	elif current_selection == 8:
-		$Popup_Menu/Frame/Options/Quit/Selector.hide()
-		$Popup_Menu/Frame/Options/Quit/AnimationPlayer.stop()
+	$Popup_Menu/Frame/Options.get_child(current_selection-1).get_child(0).hide() #Selector
+	$Popup_Menu/Frame/Options.get_child(current_selection-1).get_child(1).stop() #Anmplayer
 
 func process_selection():
 	if current_selection == 1:
 		print('Items')
 	elif current_selection == 2:
-		print('Skills')
+		open_submenu()
 	elif current_selection == 3:
 		open_submenu()
 	elif current_selection == 4:
@@ -137,7 +94,13 @@ func open_submenu():
 	isSubMenuOpen = true
 	isMenuOpen = false
 	menu_node.hide()
+	if current_selection == 2:
+		print('2')
+		var skills = load(skills_node).instance()
+		add_child(skills)
+		get_node("Skills_UI/Popup_Status").show()
 	if current_selection == 3:
+		print('3')
 		var status = load(status_node).instance()
 		add_child(status)
 		call_deferred("update_status")
@@ -146,6 +109,9 @@ func open_submenu():
 
 func close_submenu():
 	isSubMenuOpen = false
+	#should I set isMenuOpen to true?
+	if current_selection == 2:
+		remove_child(get_node("Skills_UI"))
 	if current_selection == 3:
 		remove_child(get_node("Status_UI"))
 

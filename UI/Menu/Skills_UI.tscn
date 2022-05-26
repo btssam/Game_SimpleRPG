@@ -1,5 +1,6 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
+[ext_resource path="res://UI/Menu/Skills_UI.gd" type="Script" id=1]
 [ext_resource path="res://UI/Menu/Menu_Theme.tres" type="Theme" id=2]
 [ext_resource path="res://UI/GFX/System_Frame.png" type="Texture" id=3]
 [ext_resource path="res://UI/Dialogue/GFX/Faceset.png" type="Texture" id=4]
@@ -70,9 +71,10 @@ tracks/0/keys = {
 "values": [ true, false ]
 }
 
-[node name="Status_UI" type="Control"]
+[node name="Skills_UI" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+script = ExtResource( 1 )
 __meta__ = {
 "_edit_lock_": true,
 "_edit_use_anchors_": false
@@ -143,6 +145,7 @@ patch_margin_top = 8
 patch_margin_right = 8
 patch_margin_bottom = 8
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
