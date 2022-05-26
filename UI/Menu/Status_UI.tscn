@@ -78,9 +78,9 @@ __meta__ = {
 
 [node name="NinePatchRect" type="NinePatchRect" parent="Popup_Status/Frame/PC1/Sprite"]
 margin_left = -24.0
-margin_top = -23.2806
+margin_top = -24.0
 margin_right = 24.0
-margin_bottom = 24.7194
+margin_bottom = 24.0
 texture = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -112,9 +112,9 @@ __meta__ = {
 
 [node name="NinePatchRect" type="NinePatchRect" parent="Popup_Status/Frame/PC2/Sprite"]
 margin_left = -24.0
-margin_top = -23.2806
+margin_top = -24.0
 margin_right = 24.0
-margin_bottom = 24.7194
+margin_bottom = 24.0
 texture = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -146,9 +146,9 @@ __meta__ = {
 
 [node name="NinePatchRect" type="NinePatchRect" parent="Popup_Status/Frame/PC3/Sprite"]
 margin_left = -24.0
-margin_top = -23.2806
+margin_top = -24.0
 margin_right = 24.0
-margin_bottom = 24.7194
+margin_bottom = 24.0
 texture = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -180,9 +180,9 @@ __meta__ = {
 
 [node name="NinePatchRect" type="NinePatchRect" parent="Popup_Status/Frame/PC4/Sprite"]
 margin_left = -24.0
-margin_top = -23.2806
+margin_top = -24.0
 margin_right = 24.0
-margin_bottom = 24.7194
+margin_bottom = 24.0
 texture = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false

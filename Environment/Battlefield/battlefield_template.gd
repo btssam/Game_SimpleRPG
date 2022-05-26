@@ -434,14 +434,11 @@ func initialize_turn_order(): # would like to base on speed stat. likely would n
 			randomized_list.push_back(current_unit)
 			initiative_list.push_back(current_initiative)
 		else:
-			print(current_initiative)
 			for c in randomized_list.size() - 1:
 				if current_initiative <= initiative_list[c] and current_initiative >= initiative_list[c+1]:
 					randomized_list.insert(c+1, current_unit)
 					initiative_list.insert(c+1, current_initiative)
 					break
-	print(randomized_list)
-	print(initiative_list)
 	
 	#consider trying the sort_custom method
 

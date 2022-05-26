@@ -149,7 +149,7 @@ func close_submenu():
 	if current_selection == 3:
 		remove_child(get_node("Status_UI"))
 
-func update_status():
+func update_status(): #could move this to Status_UI.tscn
 	var current_status_node = get_node("Status_UI/Popup_Status/Frame")
 #	pass #grab the current hp from each player, likely should note maxhp
 	var status_1 = current_status_node.get_node("PC1/Sprite/Info")

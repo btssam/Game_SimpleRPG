@@ -1,0 +1,328 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://UI/Menu/Menu_Theme.tres" type="Theme" id=2]
+[ext_resource path="res://UI/GFX/System_Frame.png" type="Texture" id=3]
+[ext_resource path="res://UI/Dialogue/GFX/Faceset.png" type="Texture" id=4]
+[ext_resource path="res://UI/Battle/Skill_Card.tscn" type="PackedScene" id=5]
+[ext_resource path="res://UI/Battle/Skill_Label.tscn" type="PackedScene" id=6]
+
+[sub_resource type="Animation" id=2]
+resource_name = "blink"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Selector:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "blink"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Selector:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "blink"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Selector:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "blink"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Selector:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
+[node name="Status_UI" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Popup_Status" type="Popup" parent="."]
+visible = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="ColorRect" type="ColorRect" parent="Popup_Status"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.105882, 0.105882, 0.105882, 0.713726 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Frame" type="NinePatchRect" parent="Popup_Status"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 0.356384
+margin_top = -0.133438
+margin_right = 0.356445
+margin_bottom = -0.133423
+rect_pivot_offset = Vector2( -0.161846, -0.107735 )
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="Popup_Status/Frame"]
+margin_left = 422.0
+margin_top = 38.0
+margin_right = 602.0
+margin_bottom = 105.0
+theme = ExtResource( 2 )
+text = "SKILLS"
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Choices" type="Control" parent="Popup_Status/Frame"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_pivot_offset = Vector2( 251.644, 175.133 )
+theme = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Popup_Status/Frame/Choices"]
+margin_left = 111.0
+margin_top = 135.0
+margin_right = 159.0
+margin_bottom = 183.0
+rect_scale = Vector2( 10, 11.65 )
+texture = ExtResource( 3 )
+patch_margin_left = 8
+patch_margin_top = 8
+patch_margin_right = 8
+patch_margin_bottom = 8
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Skill" parent="Popup_Status/Frame/Choices" instance=ExtResource( 6 )]
+margin_left = 166.0
+margin_top = 173.0
+margin_right = 238.0
+margin_bottom = 190.0
+rect_scale = Vector2( 6, 6 )
+text = "Skill"
+
+[node name="Skill2" parent="Popup_Status/Frame/Choices" instance=ExtResource( 6 )]
+margin_left = 166.0
+margin_top = 273.0
+margin_right = 238.0
+margin_bottom = 290.0
+rect_scale = Vector2( 6, 6 )
+text = "Skill"
+
+[node name="AnimationPlayer" parent="Popup_Status/Frame/Choices/Skill2" index="2"]
+anims/blink = SubResource( 2 )
+
+[node name="Skill3" parent="Popup_Status/Frame/Choices" instance=ExtResource( 6 )]
+margin_left = 166.0
+margin_top = 373.0
+margin_right = 238.0
+margin_bottom = 390.0
+rect_scale = Vector2( 6, 6 )
+text = "Skill"
+
+[node name="AnimationPlayer" parent="Popup_Status/Frame/Choices/Skill3" index="2"]
+anims/blink = SubResource( 3 )
+
+[node name="Skill4" parent="Popup_Status/Frame/Choices" instance=ExtResource( 6 )]
+margin_left = 166.0
+margin_top = 473.0
+margin_right = 238.0
+margin_bottom = 490.0
+rect_scale = Vector2( 6, 6 )
+text = "Skill"
+
+[node name="AnimationPlayer" parent="Popup_Status/Frame/Choices/Skill4" index="2"]
+anims/blink = SubResource( 4 )
+
+[node name="Skill5" parent="Popup_Status/Frame/Choices" instance=ExtResource( 6 )]
+margin_left = 166.0
+margin_top = 573.0
+margin_right = 238.0
+margin_bottom = 590.0
+rect_scale = Vector2( 6, 6 )
+text = "Skill"
+
+[node name="AnimationPlayer" parent="Popup_Status/Frame/Choices/Skill5" index="2"]
+anims/blink = SubResource( 5 )
+
+[node name="PC1" type="Control" parent="Popup_Status/Frame"]
+margin_left = 521.0
+margin_right = 521.0
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="Popup_Status/Frame/PC1"]
+position = Vector2( 171, 181 )
+scale = Vector2( 2.8, 3.1 )
+texture = ExtResource( 4 )
+hframes = 4
+vframes = 4
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Popup_Status/Frame/PC1/Sprite"]
+margin_left = -24.0
+margin_top = -24.0
+margin_right = 24.0
+margin_bottom = 24.0
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Skill_Card" parent="Popup_Status/Frame/PC1/Sprite" instance=ExtResource( 5 )]
+position = Vector2( 31, -24 )
+scale = Vector2( 1.6, 1.6 )
+
+[node name="PC2" type="Control" parent="Popup_Status/Frame"]
+margin_left = 521.0
+margin_right = 521.0
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="Popup_Status/Frame/PC2"]
+position = Vector2( 171, 338 )
+scale = Vector2( 2.8, 3.1 )
+texture = ExtResource( 4 )
+hframes = 4
+vframes = 4
+frame = 4
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Popup_Status/Frame/PC2/Sprite"]
+margin_left = -24.0
+margin_top = -24.0
+margin_right = 24.0
+margin_bottom = 24.0
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Skill_Card" parent="Popup_Status/Frame/PC2/Sprite" instance=ExtResource( 5 )]
+position = Vector2( 31, -24 )
+scale = Vector2( 1.6, 1.6 )
+
+[node name="PC3" type="Control" parent="Popup_Status/Frame"]
+margin_left = 521.0
+margin_right = 521.0
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="Popup_Status/Frame/PC3"]
+position = Vector2( 171, 495 )
+scale = Vector2( 2.8, 3.1 )
+texture = ExtResource( 4 )
+hframes = 4
+vframes = 4
+frame = 8
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Popup_Status/Frame/PC3/Sprite"]
+margin_left = -24.0
+margin_top = -24.0
+margin_right = 24.0
+margin_bottom = 24.0
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Skill_Card" parent="Popup_Status/Frame/PC3/Sprite" instance=ExtResource( 5 )]
+position = Vector2( 31, -24 )
+scale = Vector2( 1.6, 1.6 )
+
+[node name="PC4" type="Control" parent="Popup_Status/Frame"]
+margin_left = 521.0
+margin_right = 521.0
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="Popup_Status/Frame/PC4"]
+position = Vector2( 171, 652 )
+scale = Vector2( 2.8, 3.1 )
+texture = ExtResource( 4 )
+hframes = 4
+vframes = 4
+frame = 12
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Popup_Status/Frame/PC4/Sprite"]
+margin_left = -24.0
+margin_top = -24.0
+margin_right = 24.0
+margin_bottom = 24.0
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Skill_Card" parent="Popup_Status/Frame/PC4/Sprite" instance=ExtResource( 5 )]
+position = Vector2( 31, -24 )
+scale = Vector2( 1.6, 1.6 )
+
+[editable path="Popup_Status/Frame/Choices/Skill"]
+[editable path="Popup_Status/Frame/Choices/Skill2"]
+[editable path="Popup_Status/Frame/Choices/Skill3"]
+[editable path="Popup_Status/Frame/Choices/Skill4"]
+[editable path="Popup_Status/Frame/Choices/Skill5"]
