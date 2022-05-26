@@ -1,10 +1,13 @@
 extends Control
 
+onready var players = get_parent().players
+
 
 func _ready():
+	print(get_parent().players)
+
+func get_skills():
 	pass
-
-
 
 
 # straight from battlefield_template

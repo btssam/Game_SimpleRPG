@@ -95,12 +95,10 @@ func open_submenu():
 	isMenuOpen = false
 	menu_node.hide()
 	if current_selection == 2:
-		print('2')
 		var skills = load(skills_node).instance()
 		add_child(skills)
 		get_node("Skills_UI/Popup_Status").show()
 	if current_selection == 3:
-		print('3')
 		var status = load(status_node).instance()
 		add_child(status)
 		call_deferred("update_status")
