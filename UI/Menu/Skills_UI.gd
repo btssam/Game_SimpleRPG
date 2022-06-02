@@ -1,6 +1,5 @@
 extends Control
 
-onready var players = get_parent().players
 
 
 func _ready():

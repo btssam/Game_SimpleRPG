@@ -145,6 +145,8 @@ func _input(event):
 					disable_skill_card_selector_sprite()
 					active_skill_card.hide()
 					enable_card_selector_sprite()
+				if event.is_action_pressed("info"):
+					update_log(active_player.skills[current_skill_selection].description)
 		###testing
 		if event.is_action_pressed("test_key"):
 				close_scene()

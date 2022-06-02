@@ -193,7 +193,7 @@ speed = 10
 mp = 10
 maxmp = 10
 skill_1 = {
-"description": "Rain arrows upon all enemies, dealing damage.",
+"description": "Rain arrows upon all enemies.",
 "effect": "ATK_2.00",
 "effect_type": "damage",
 "mp": "5",

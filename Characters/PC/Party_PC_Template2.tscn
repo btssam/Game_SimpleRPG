@@ -191,7 +191,7 @@ speed = 3
 mp = 10
 maxmp = 10
 skill_1 = {
-"description": "Blast the enemy with flame, dealing damage.",
+"description": "Blast the enemy with flame.",
 "effect": "INT_3.00",
 "effect_type": "damage",
 "mp": "3",

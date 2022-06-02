@@ -192,7 +192,7 @@ intellect = 2
 mp = 10
 maxmp = 10
 skill_1 = {
-"description": "Cures an allies wounds, restoring HP.",
+"description": "Cures an allies wounds.",
 "effect": "INT_4.00",
 "effect_type": "heal",
 "mp": "4",
@@ -200,7 +200,7 @@ skill_1 = {
 "targets": "ally"
 }
 skill_2 = {
-"description": "Heal your entire party, restoring their HP.",
+"description": "Heal your entire party.",
 "effect": "INT_1.00",
 "effect_type": "heal",
 "mp": "4",
