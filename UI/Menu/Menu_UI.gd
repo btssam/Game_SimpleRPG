@@ -97,7 +97,7 @@ func open_submenu():
 	if current_selection == 2:
 		var skills = load(skills_node).instance()
 		add_child(skills)
-		get_node("Skills_UI/Popup_Status").show()
+		get_node("Skills_UI/Popup_Skills").show()
 	if current_selection == 3:
 		var status = load(status_node).instance()
 		add_child(status)
