@@ -28,8 +28,6 @@ var skill_card_selector_sprite
 var skill_card_animation_player
 
 func _ready():
-	print( str(skill_cards) + str(skill_info) + str(number_of_skills))
-	print(main)
 	for i in 4:
 		get_skills(i)
 	enable_skill_card_selector_sprite()
@@ -46,7 +44,6 @@ func get_skills(party_member):
 	for i in 5:
 		skills_text[i].bbcode_text = ''
 	var number_of_skill_selections = number_of_skills[party_member]
-	print('number of skills: ' + str(number_of_skill_selections))
 	for i in number_of_skill_selections: #update names of skills
 		skills_text[i].bbcode_text = skill_info[party_member][i].name
 		
@@ -75,7 +72,6 @@ func change_skill(direction):
 			current_skill_selection -= 1
 			enable_skill_card_selector_sprite()
 		elif active_party_member != 0:
-			print('else up. active_member = ' + str(active_party_member))
 			disable_skill_card_selector_sprite()
 			active_party_member -= 1
 			active_skill_card = skill_cards[active_party_member]
@@ -94,4 +90,3 @@ func change_skill(direction):
 			active_number_of_skill_selections = number_of_skills[active_party_member]
 			current_skill_selection = 0
 			enable_skill_card_selector_sprite()
-			print('else down. active_member = ' + str(active_party_member))
