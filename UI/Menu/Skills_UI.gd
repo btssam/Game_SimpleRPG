@@ -6,8 +6,6 @@ onready var skill_card_3 = $Popup_Skills/Frame/PC3/Sprite/Skill_Card
 onready var skill_card_4 = $Popup_Skills/Frame/PC4/Sprite/Skill_Card
 onready var skill_cards = [skill_card_1, skill_card_2, skill_card_3, skill_card_4]
 
-onready var main = get_node("../../../..").name
-
 onready var skill_info_1 = get_node("../../../../Party/PC_Template").skills
 onready var skill_info_2 = get_node("../../../../Party/Party_PC_Template1").skills
 onready var skill_info_3 = get_node("../../../../Party/Party_PC_Template2").skills
@@ -179,16 +177,28 @@ func change_choice(direction):
 func choose_skill():
 	disable_skill_choice_selector_sprite()
 	enable_skill_card_selector_sprite()
+	
 	print('name of skill :')
 	print(choices_array[current_choice_selection].name)
 	print(current_skill_info[active_party_member][current_skill_selection].name)
 	#change the current_skills of the node of the player node
+	
 	var new_current_skills = current_skill_info[active_party_member].duplicate()
-#	new_current_skills.pop_at(current_skill_selection)
-	var test = [1,2,3]
-	test.pop_at()
-#	new_current_skills.pop_at(0)
+	new_current_skills.pop_at(current_skill_selection)
 	new_current_skills.insert(current_skill_selection, choices_array[current_choice_selection]) #inserts at current_choice_selection
+	current_skill_info[active_party_member] = new_current_skills
+	if active_party_member == 0:
+		get_node("../../../../Party/PC_Template").current_skills = new_current_skills
+	else:
+		get_node("../../../../Party/Party_PC_Template" + str(active_party_member)).current_skills = new_current_skills
+		
+	
 	var new_skill_choices = choices_array.duplicate()
 	new_skill_choices.pop_at(current_choice_selection)
 	new_skill_choices.insert(current_choice_selection, current_skill_info[active_party_member][current_skill_selection])
+	choices_array = new_skill_choices
+	
+	
+	get_skills(active_party_member)
+	
+	set_choices()
