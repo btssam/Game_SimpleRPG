@@ -146,7 +146,7 @@ func _input(event):
 					active_skill_card.hide()
 					enable_card_selector_sprite()
 				if event.is_action_pressed("info"):
-					update_log(active_player.skills[current_skill_selection].description)
+					update_log(active_player.current_skills[current_skill_selection].description)
 		###testing
 		if event.is_action_pressed("test_key"):
 				close_scene()
@@ -533,9 +533,9 @@ func get_skills(party_member):
 	number_of_skill_selections = players[party_member - 1].number_of_skills
 	for i in number_of_skill_selections: #update names of skills
 		if has_enough_mp(i):
-			skills_text[i].bbcode_text = players[party_member - 1].skills[i].name
+			skills_text[i].bbcode_text = players[party_member - 1].current_skills[i].name
 		else:
-			skills_text[i].bbcode_text = '[color=#A9A9A9]' + players[party_member - 1].skills[i].name + '[/color]'
+			skills_text[i].bbcode_text = '[color=#A9A9A9]' + players[party_member - 1].current_skills[i].name + '[/color]'
 
 func get_skill_card_nodes():
 	var skills_list = active_skill_card.get_node("TextureRect").get_children()
@@ -565,11 +565,11 @@ func change_skill(direction):
 			enable_skill_card_selector_sprite()
 
 func get_skill_effect():
-	target_type = active_player.skills[current_skill_selection].targets
-	current_skill_effect_type = active_player.skills[current_skill_selection].effect_type
-	current_skill_effect = active_player.skills[current_skill_selection].effect
-	current_skill_mp = active_player.skills[current_skill_selection].mp.to_int()
-	current_skill_description = active_player.skills[current_skill_selection].description
+	target_type = active_player.current_skills[current_skill_selection].targets
+	current_skill_effect_type = active_player.current_skills[current_skill_selection].effect_type
+	current_skill_effect = active_player.current_skills[current_skill_selection].effect
+	current_skill_mp = active_player.current_skills[current_skill_selection].mp.to_int()
+	current_skill_description = active_player.current_skills[current_skill_selection].description
 	current_skill_stat = current_skill_effect.left(3)
 	current_skill_multi = current_skill_effect.right(4).to_float()
 	skill_stat_assigner = {'ATK': active_player.attack, 'DEF': active_player.defence, 'INT': active_player.intellect, 'SPD': active_player.speed}
@@ -644,7 +644,7 @@ func check_max_player_health():
 			players[i].hp = players[i].maxhp
 
 func has_enough_mp(skill):
-	if active_player.mp >= active_player.skills[skill].mp.to_int():
+	if active_player.mp >= active_player.current_skills[skill].mp.to_int():
 		return true  #set text to default. allow selection
 	else:
 		return false # set text to gray. instead of selecting a target, update log "insufficient MP" and return to skill select'

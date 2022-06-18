@@ -38,6 +38,8 @@ export var skill_3 = {"name": "null", "targets": "null", "effect_type": "null", 
 export var skill_4 = {"name": "null", "targets": "null", "effect_type": "null", "effect": "null", "mp": "null", "description": "null"}
 export var skill_5 = {"name": "null", "targets": "null", "effect_type": "null", "effect": "null", "mp": "null", "description": "null"}
 onready var skills = [skill_1, skill_2, skill_3, skill_4, skill_5]
+#onready var current_skills = skills.duplicate()
+onready var current_skills = []
 export var number_of_skills = 0
 
 func _ready():
@@ -46,6 +48,8 @@ func _ready():
 	$AnimatedSprite.frame = 1
 	#stats
 	set_player_name()
+	#skills
+	set_current_skills()
 
 func _process(delta):
 	move_follower()
@@ -154,3 +158,9 @@ func set_player_name():
 		player_name = 'Set'
 	if name == 'Party_PC_Template3':
 		player_name = 'Alastor'
+
+
+###skills
+func set_current_skills():
+	for i in number_of_skills:
+		current_skills.append(skills[i])

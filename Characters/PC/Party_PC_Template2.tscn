@@ -206,7 +206,7 @@ skill_2 = {
 "name": "Meteor",
 "targets": "enemy"
 }
-number_of_skills = 2
+number_of_skills = 1
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 23 )

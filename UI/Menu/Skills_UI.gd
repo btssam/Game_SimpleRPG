@@ -23,20 +23,36 @@ onready var number_of_skills = [number_of_skills_1, number_of_skills_2, number_o
 onready var current_skill_selection = 0
 var active_party_member = 0
 onready var active_skill_card = skill_cards[active_party_member]
-onready var active_number_of_skill_selections = number_of_skills[active_party_member]
+onready var active_number_of_skill_selections = number_of_skills[active_party_member] #could just be current_skills.length()
+onready var total_number_of_skill_selections = 5
 var skill_card_selector_sprite
 var skill_card_animation_player
+
+onready var choices_node = get_node("Popup_Skills/Frame/Choices")
+
+var isSelectingSkill = true
+var isSelectingNewSkill = false
+
+onready var current_skill_info_1 = get_node("../../../../Party/PC_Template").current_skills
+onready var current_skill_info_2 = get_node("../../../../Party/Party_PC_Template1").current_skills
+onready var current_skill_info_3 = get_node("../../../../Party/Party_PC_Template2").current_skills
+onready var current_skill_info_4 = get_node("../../../../Party/Party_PC_Template3").current_skills
+onready var current_skill_info = [current_skill_info_1, current_skill_info_2, current_skill_info_3, current_skill_info_4]
 
 func _ready():
 	for i in 4:
 		get_skills(i)
 	enable_skill_card_selector_sprite()
+	set_choices()
 
 func _input(event):
 	if event.is_action_pressed("up"):
 		change_skill("up")
 	if event.is_action_pressed("down"):
-		change_skill("down")	
+		change_skill("down")
+	if event.is_action_pressed("interact"):
+		isSelectingSkill = false
+		isSelectingNewSkill = true
 
 
 func get_skills(party_member):
@@ -45,7 +61,7 @@ func get_skills(party_member):
 		skills_text[i].bbcode_text = ''
 	var number_of_skill_selections = number_of_skills[party_member]
 	for i in number_of_skill_selections: #update names of skills
-		skills_text[i].bbcode_text = skill_info[party_member][i].name
+		skills_text[i].bbcode_text = current_skill_info[party_member][i].name
 		
 
 
@@ -74,6 +90,8 @@ func change_skill(direction):
 		elif active_party_member != 0:
 			disable_skill_card_selector_sprite()
 			active_party_member -= 1
+			call_deferred("set_choices")
+#			set_choices()
 			active_skill_card = skill_cards[active_party_member]
 			active_number_of_skill_selections = number_of_skills[active_party_member]
 			current_skill_selection = 0
@@ -86,7 +104,38 @@ func change_skill(direction):
 		elif active_party_member != 3:
 			disable_skill_card_selector_sprite()
 			active_party_member += 1
+			call_deferred("set_choices")
+#			set_choices()
 			active_skill_card = skill_cards[active_party_member]
 			active_number_of_skill_selections = number_of_skills[active_party_member]
 			current_skill_selection = 0
 			enable_skill_card_selector_sprite()
+
+func set_choices():
+	var text_array = choices_node.get_children()
+	text_array.pop_front()
+	for i in 5:
+		text_array[i].bbcode_text = ''
+#		print(skill_info[active_party_member][i].name)
+#	for i in total_number_of_skill_selections:
+#		for c in active_number_of_skill_selections:
+#			if skill_info[active_party_member][i].name != 'null':
+##				print(current_skill_info[active_party_member][c].name)
+##				print(skill_info[active_party_member][i].name)
+##				if current_skill_info[active_party_member][c] != skill_info[active_party_member][i]:
+##					print(current_skill_info[active_party_member][c].name)
+#				if skill_info[active_party_member].has(current_skill_info[active_party_member][c]):
+#					print(current_skill_info[active_party_member][c].name)
+##				if current_skill_info[active_party_member][c].has(skill_info[active_party_member]):
+##					text_array[i].bbcode_text = current_skill_info[active_party_member][c].name
+##	for i in total_number_of_skill_selections:
+##		for c in active_number_of_skill_selections:
+##			if not current_skill_info[active_party_member][c].has(skill_info[active_party_member]):
+##				print(current_skill_info[active_party_member][c].name)
+	var choices_array = []
+	for i in total_number_of_skill_selections:
+		if not current_skill_info[active_party_member].has(skill_info[active_party_member][i]):
+			if skill_info[active_party_member][i].name != 'null':
+				choices_array.append(skill_info[active_party_member][i].name)
+	for i in choices_array.size():
+		text_array[i].bbcode_text = choices_array[i]

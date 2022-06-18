@@ -40,6 +40,8 @@ export var skill_3 = {"name": "null", "targets": "null", "effect_type": "null", 
 export var skill_4 = {"name": "null", "targets": "null", "effect_type": "null", "effect": "null", "mp": "null", "description": "null"}
 export var skill_5 = {"name": "null", "targets": "null", "effect_type": "null", "effect": "null", "mp": "null", "description": "null"}
 onready var skills = [skill_1, skill_2, skill_3, skill_4, skill_5]
+#onready var current_skills = skills.duplicate()
+onready var current_skills = []
 export var number_of_skills = 0
 
 
@@ -50,6 +52,8 @@ func _ready():
 	$AnimatedSprite.frame = 1
 	#battle check
 	get_next_battle_counter()
+	#skills
+	set_current_skills()
 
 func _physics_process(delta):
 	pass
@@ -155,3 +159,9 @@ func check_for_death():
 		yield($AnimatedSprite, "animation_finished")
 		if get_parent().isPartyDead:
 			main_node.switch_scene('battle', 'gameover')
+
+
+###skills
+func set_current_skills():
+	for i in number_of_skills:
+		current_skills.append(skills[i])
