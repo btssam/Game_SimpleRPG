@@ -235,7 +235,7 @@ skill_5 = {
 "name": "Rest",
 "targets": "none"
 }
-number_of_skills = 4
+number_of_skills = 3
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 23 )

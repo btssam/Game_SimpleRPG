@@ -24,7 +24,7 @@ onready var current_skill_selection = 0
 var active_party_member = 0
 onready var active_skill_card = skill_cards[active_party_member]
 onready var active_number_of_skill_selections = number_of_skills[active_party_member] #could just be current_skills.length()
-onready var total_number_of_skill_selections = 5
+onready var total_number_of_skill_selections = 5 #will need to be updated based on total skill options
 var skill_card_selector_sprite
 var skill_card_animation_player
 
@@ -39,6 +39,11 @@ onready var current_skill_info_3 = get_node("../../../../Party/Party_PC_Template
 onready var current_skill_info_4 = get_node("../../../../Party/Party_PC_Template3").current_skills
 onready var current_skill_info = [current_skill_info_1, current_skill_info_2, current_skill_info_3, current_skill_info_4]
 
+var skill_choice_selector_sprite
+var skill_choice_animation_player
+var current_choice_selection = 0
+var active_number_of_choice_selections
+
 func _ready():
 	for i in 4:
 		get_skills(i)
@@ -46,13 +51,19 @@ func _ready():
 	set_choices()
 
 func _input(event):
-	if event.is_action_pressed("up"):
+	if event.is_action_pressed("up") and isSelectingSkill:
 		change_skill("up")
-	if event.is_action_pressed("down"):
+	if event.is_action_pressed("down") and isSelectingSkill:
 		change_skill("down")
-	if event.is_action_pressed("interact"):
+	if event.is_action_pressed("interact") and isSelectingSkill:
 		isSelectingSkill = false
 		isSelectingNewSkill = true
+		stop_skill_card_selector_sprite()
+		enable_skill_choice_selector_sprite()
+	if event.is_action_pressed("down") and isSelectingNewSkill:
+		change_choice("down")
+	if event.is_action_pressed("up") and isSelectingNewSkill:
+		change_choice("up")
 
 
 func get_skills(party_member):
@@ -65,7 +76,6 @@ func get_skills(party_member):
 		
 
 
-# straight from battlefield_template
 func get_skill_card_nodes():
 	var skills_list = active_skill_card.get_node("TextureRect").get_children()
 	skill_card_selector_sprite = skills_list[current_skill_selection].get_node("Selector")
@@ -79,6 +89,12 @@ func enable_skill_card_selector_sprite():
 func disable_skill_card_selector_sprite():
 	get_skill_card_nodes()
 	skill_card_selector_sprite.visible = false
+	skill_card_animation_player.stop()
+
+func stop_skill_card_selector_sprite():
+	get_skill_card_nodes()
+	skill_card_selector_sprite.visible = true
+	skill_card_animation_player.play('blink')
 	skill_card_animation_player.stop()
 #
 func change_skill(direction):
@@ -116,26 +132,40 @@ func set_choices():
 	text_array.pop_front()
 	for i in 5:
 		text_array[i].bbcode_text = ''
-#		print(skill_info[active_party_member][i].name)
-#	for i in total_number_of_skill_selections:
-#		for c in active_number_of_skill_selections:
-#			if skill_info[active_party_member][i].name != 'null':
-##				print(current_skill_info[active_party_member][c].name)
-##				print(skill_info[active_party_member][i].name)
-##				if current_skill_info[active_party_member][c] != skill_info[active_party_member][i]:
-##					print(current_skill_info[active_party_member][c].name)
-#				if skill_info[active_party_member].has(current_skill_info[active_party_member][c]):
-#					print(current_skill_info[active_party_member][c].name)
-##				if current_skill_info[active_party_member][c].has(skill_info[active_party_member]):
-##					text_array[i].bbcode_text = current_skill_info[active_party_member][c].name
-##	for i in total_number_of_skill_selections:
-##		for c in active_number_of_skill_selections:
-##			if not current_skill_info[active_party_member][c].has(skill_info[active_party_member]):
-##				print(current_skill_info[active_party_member][c].name)
 	var choices_array = []
 	for i in total_number_of_skill_selections:
 		if not current_skill_info[active_party_member].has(skill_info[active_party_member][i]):
 			if skill_info[active_party_member][i].name != 'null':
 				choices_array.append(skill_info[active_party_member][i].name)
+	active_number_of_choice_selections = choices_array.size()
 	for i in choices_array.size():
 		text_array[i].bbcode_text = choices_array[i]
+
+
+func get_skill_choice_nodes():
+#	var skill_choice_node = choices_node.get_child(current_choice_selection+1).get_children()
+	var skill_choice_node = choices_node.get_child(current_choice_selection+1)
+	skill_choice_selector_sprite = skill_choice_node.get_node("Selector")
+	skill_choice_animation_player = skill_choice_node.get_node("AnimationPlayer")
+##
+func enable_skill_choice_selector_sprite():
+	get_skill_choice_nodes()
+	skill_choice_selector_sprite.visible = true
+	skill_choice_animation_player.play('blink')
+##
+func disable_skill_choice_selector_sprite():
+	get_skill_choice_nodes()
+	skill_choice_selector_sprite.visible = false
+	skill_choice_animation_player.stop()
+##
+func change_choice(direction):
+	if direction == 'up':
+		if current_choice_selection > 0 :
+			disable_skill_choice_selector_sprite()
+			current_choice_selection -= 1
+			enable_skill_choice_selector_sprite()
+	elif direction == 'down':
+		if current_choice_selection < active_number_of_choice_selections - 1:
+			disable_skill_choice_selector_sprite()
+			current_choice_selection += 1
+			enable_skill_choice_selector_sprite()

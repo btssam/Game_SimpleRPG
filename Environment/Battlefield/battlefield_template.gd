@@ -195,7 +195,7 @@ func process_command(): #which action occurs when space is pressed: (process_inp
 				isSelectingCommand = true
 				enable_card_selector_sprite()
 			else: #make selection. hide card
-				disable_card_selector_sprite()
+				stop_card_selector_sprite()
 				if current_selection != 1: #hide main card if not selecting a skill
 					active_command_card.hide()
 					cardIsVisible = false
@@ -210,7 +210,7 @@ func process_command(): #which action occurs when space is pressed: (process_inp
 					
 					enable_skill_card_selector_sprite()
 				elif current_selection == 1 and isSelectingSkill == true: #select the skill
-					disable_skill_card_selector_sprite()
+					stop_skill_card_selector_sprite()
 					get_skill_effect()
 				elif current_selection == 2: #item
 					update_log('You have no items.')
@@ -247,10 +247,18 @@ func disable_card_selector_sprite():
 	card_selector_sprite.visible = false
 	card_animation_player.stop()
 
+func stop_card_selector_sprite():
+	get_card_nodes()
+	card_selector_sprite.visible = true
+	card_animation_player.play('blink')
+	card_animation_player.stop()
+
 
 ###targeting
 #targeting an enemy
 func select_target():
+#	disable_card_selector_sprite()
+#	disable_skill_card_selector_sprite()
 	isSelectingCommand = false
 	isSelectingSkill = false
 	isSelectingTarget = true #I at one point needed to use set_deferred
@@ -309,6 +317,8 @@ func disable_selector_sprite():
 func return_target():
 	isSelectingTarget = false
 	disable_selector_sprite()
+	disable_card_selector_sprite()
+	disable_skill_card_selector_sprite()
 	get_command()
 
 #respond_to_command
@@ -550,6 +560,13 @@ func enable_skill_card_selector_sprite():
 func disable_skill_card_selector_sprite():
 	get_skill_card_nodes()
 	skill_card_selector_sprite.visible = false
+	skill_card_animation_player.stop()
+
+
+func stop_skill_card_selector_sprite():
+	get_skill_card_nodes()
+	skill_card_selector_sprite.visible = true
+	skill_card_animation_player.play('blink')
 	skill_card_animation_player.stop()
 
 func change_skill(direction):
