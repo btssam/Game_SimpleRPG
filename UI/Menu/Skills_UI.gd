@@ -69,6 +69,8 @@ func _input(event):
 		isSelectingNewSkill = false
 		isSelectingSkill = true
 	###need to add tab button to show skill details
+	if event.is_action_pressed("info"):
+		pass
 
 
 func get_skills(party_member):
@@ -181,17 +183,16 @@ func choose_skill():
 	print('name of skill :')
 	print(choices_array[current_choice_selection].name)
 	print(current_skill_info[active_party_member][current_skill_selection].name)
-	#change the current_skills of the node of the player node
 	
 	var new_current_skills = current_skill_info[active_party_member].duplicate()
 	new_current_skills.pop_at(current_skill_selection)
 	new_current_skills.insert(current_skill_selection, choices_array[current_choice_selection]) #inserts at current_choice_selection
 	current_skill_info[active_party_member] = new_current_skills
-	if active_party_member == 0:
+	
+	if active_party_member == 0: #change the current_skills of the node of the player node
 		get_node("../../../../Party/PC_Template").current_skills = new_current_skills
 	else:
 		get_node("../../../../Party/Party_PC_Template" + str(active_party_member)).current_skills = new_current_skills
-		
 	
 	var new_skill_choices = choices_array.duplicate()
 	new_skill_choices.pop_at(current_choice_selection)

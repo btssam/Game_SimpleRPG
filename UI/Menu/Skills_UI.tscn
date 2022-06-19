@@ -324,6 +324,118 @@ __meta__ = {
 position = Vector2( 31, -24 )
 scale = Vector2( 1.6, 1.6 )
 
+[node name="Popup_Info" type="Popup" parent="Popup_Skills"]
+visible = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="ColorRect" type="ColorRect" parent="Popup_Skills/Popup_Info"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.921569 )
+
+[node name="Frame" type="NinePatchRect" parent="Popup_Skills/Popup_Info/ColorRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -409.5
+margin_top = -307.0
+margin_right = 409.5
+margin_bottom = 307.0
+texture = ExtResource( 3 )
+
+[node name="Name" type="RichTextLabel" parent="Popup_Skills/Popup_Info/ColorRect/Frame"]
+margin_left = 80.0
+margin_top = 40.0
+margin_right = 390.0
+margin_bottom = 102.0
+theme = ExtResource( 2 )
+bbcode_enabled = true
+bbcode_text = "NAME
+"
+text = "NAME
+"
+scroll_active = false
+
+[node name="Desc" type="RichTextLabel" parent="Popup_Skills/Popup_Info/ColorRect/Frame"]
+margin_left = 80.0
+margin_top = 140.0
+margin_right = 1409.0
+margin_bottom = 202.0
+rect_scale = Vector2( 0.5, 1 )
+theme = ExtResource( 2 )
+bbcode_enabled = true
+bbcode_text = "NAME
+"
+text = "NAME
+"
+scroll_active = false
+
+[node name="MP" type="RichTextLabel" parent="Popup_Skills/Popup_Info/ColorRect/Frame"]
+margin_left = 80.0
+margin_top = 240.0
+margin_right = 390.0
+margin_bottom = 302.0
+theme = ExtResource( 2 )
+bbcode_enabled = true
+bbcode_text = "NAME
+"
+text = "MP: X"
+scroll_active = false
+
+[node name="Effect_Type" type="RichTextLabel" parent="Popup_Skills/Popup_Info/ColorRect/Frame"]
+margin_left = 80.0
+margin_top = 340.0
+margin_right = 390.0
+margin_bottom = 402.0
+theme = ExtResource( 2 )
+bbcode_enabled = true
+bbcode_text = "NAME
+"
+text = "Effecttype
+"
+scroll_active = false
+
+[node name="Effect" type="RichTextLabel" parent="Popup_Skills/Popup_Info/ColorRect/Frame"]
+margin_left = 420.0
+margin_top = 340.0
+margin_right = 730.0
+margin_bottom = 402.0
+theme = ExtResource( 2 )
+bbcode_enabled = true
+bbcode_text = "NAME
+"
+text = "NAME
+"
+scroll_active = false
+
+[node name="Name6" type="RichTextLabel" parent="Popup_Skills/Popup_Info/ColorRect/Frame"]
+margin_left = 80.0
+margin_top = 440.0
+margin_right = 390.0
+margin_bottom = 502.0
+theme = ExtResource( 2 )
+bbcode_enabled = true
+bbcode_text = "NAME
+"
+text = "Req. Lvl?"
+scroll_active = false
+
+[node name="Name7" type="RichTextLabel" parent="Popup_Skills/Popup_Info/ColorRect/Frame"]
+margin_left = 420.0
+margin_top = 440.0
+margin_right = 730.0
+margin_bottom = 502.0
+theme = ExtResource( 2 )
+bbcode_enabled = true
+bbcode_text = "NAME
+"
+text = "Equipped?
+
+"
+scroll_active = false
+
 [editable path="Popup_Skills/Frame/Choices/Skill"]
 [editable path="Popup_Skills/Frame/Choices/Skill2"]
 [editable path="Popup_Skills/Frame/Choices/Skill3"]
