@@ -388,8 +388,9 @@ scroll_active = false
 [node name="Effect_Type" type="RichTextLabel" parent="Popup_Skills/Popup_Info/ColorRect/Frame"]
 margin_left = 80.0
 margin_top = 340.0
-margin_right = 390.0
+margin_right = 700.0
 margin_bottom = 402.0
+rect_scale = Vector2( 0.5, 1 )
 theme = ExtResource( 2 )
 bbcode_enabled = true
 bbcode_text = "NAME
@@ -401,8 +402,9 @@ scroll_active = false
 [node name="Effect" type="RichTextLabel" parent="Popup_Skills/Popup_Info/ColorRect/Frame"]
 margin_left = 420.0
 margin_top = 340.0
-margin_right = 730.0
+margin_right = 1040.0
 margin_bottom = 402.0
+rect_scale = Vector2( 0.5, 1 )
 theme = ExtResource( 2 )
 bbcode_enabled = true
 bbcode_text = "NAME
@@ -411,11 +413,12 @@ text = "NAME
 "
 scroll_active = false
 
-[node name="Name6" type="RichTextLabel" parent="Popup_Skills/Popup_Info/ColorRect/Frame"]
+[node name="Targets" type="RichTextLabel" parent="Popup_Skills/Popup_Info/ColorRect/Frame"]
 margin_left = 80.0
 margin_top = 440.0
-margin_right = 390.0
+margin_right = 700.0
 margin_bottom = 502.0
+rect_scale = Vector2( 0.5, 1 )
 theme = ExtResource( 2 )
 bbcode_enabled = true
 bbcode_text = "NAME
@@ -424,11 +427,12 @@ text = "NAME
 "
 scroll_active = false
 
-[node name="Name7" type="RichTextLabel" parent="Popup_Skills/Popup_Info/ColorRect/Frame"]
+[node name="IsEquipped" type="RichTextLabel" parent="Popup_Skills/Popup_Info/ColorRect/Frame"]
 margin_left = 420.0
 margin_top = 440.0
-margin_right = 730.0
+margin_right = 1040.0
 margin_bottom = 502.0
+rect_scale = Vector2( 0.5, 1 )
 theme = ExtResource( 2 )
 bbcode_enabled = true
 bbcode_text = "NAME

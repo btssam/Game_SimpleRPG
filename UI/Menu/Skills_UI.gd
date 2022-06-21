@@ -75,11 +75,9 @@ func _input(event):
 		isInfoOpen = true
 		get_info()
 		get_node("Popup_Skills/Popup_Info").show()
-		print('open')
 	elif event.is_action_pressed("info") and isInfoOpen:
 		isInfoOpen = false
 		get_node("Popup_Skills/Popup_Info").hide()
-		print('close')
 
 
 func get_skills(party_member):
@@ -189,16 +187,12 @@ func choose_skill():
 	disable_skill_choice_selector_sprite()
 	enable_skill_card_selector_sprite()
 	
-	print('name of skill :')
-	print(choices_array[current_choice_selection].name)
-	print(current_skill_info[active_party_member][current_skill_selection].name)
-	
 	var new_current_skills = current_skill_info[active_party_member].duplicate()
 	new_current_skills.pop_at(current_skill_selection)
-	new_current_skills.insert(current_skill_selection, choices_array[current_choice_selection]) #inserts at current_choice_selection
+	new_current_skills.insert(current_skill_selection, choices_array[current_choice_selection])
 	current_skill_info[active_party_member] = new_current_skills
 	
-	if active_party_member == 0: #change the current_skills of the node of the player node
+	if active_party_member == 0: #change the current_skills of the player node
 		get_node("../../../../Party/PC_Template").current_skills = new_current_skills
 	else:
 		get_node("../../../../Party/Party_PC_Template" + str(active_party_member)).current_skills = new_current_skills
@@ -208,12 +202,38 @@ func choose_skill():
 	new_skill_choices.insert(current_choice_selection, current_skill_info[active_party_member][current_skill_selection])
 	choices_array = new_skill_choices
 	
-	
-	get_skills(active_party_member)
+	get_skills(active_party_member) #update info in current menu
 	set_choices()
 
 func get_info():
+	var base_node = get_node("Popup_Skills/Popup_Info/ColorRect/Frame")
+	var info_name_node = base_node.get_node("Name")
+	var info_desc_node = base_node.get_node("Desc")
+	var info_mp_node = base_node.get_node("MP")
+	var info_effect_type_node = base_node.get_node("Effect_Type")
+	var info_effect_node = base_node.get_node("Effect")
+	var info_targets_node = base_node.get_node("Targets")
+	var info_is_equipped_node = base_node.get_node("IsEquipped")
 	if isSelectingSkill:
-		print(current_skill_info[active_party_member][current_skill_selection].name)
+		info_name_node.bbcode_text = current_skill_info[active_party_member][current_skill_selection].name
+		info_desc_node.bbcode_text = current_skill_info[active_party_member][current_skill_selection].description
+		info_mp_node.bbcode_text = "[color=#1E90FF]MP[/color]: " + current_skill_info[active_party_member][current_skill_selection].mp
+		info_effect_type_node.bbcode_text = "[color=#b99c4b]Effect[/color]: " + current_skill_info[active_party_member][current_skill_selection].effect_type
+		var info_scale = current_skill_info[active_party_member][current_skill_selection].effect
+		info_scale.erase(3,1) #replace _ with x
+		info_scale = info_scale.insert(3, " x ")
+		info_effect_node.bbcode_text = "[color=#b99c4b]Scale[/color]: " + info_scale
+		info_targets_node.bbcode_text = "[color=#b99c4b]Targets[/color]: " + current_skill_info[active_party_member][current_skill_selection].targets
+		info_is_equipped_node.bbcode_text = "[color=#b99c4b]Equipped[/color]: yes"
 	elif isSelectingNewSkill:
+		info_name_node.bbcode_text = choices_array[current_choice_selection].name
+		info_desc_node.bbcode_text = choices_array[current_choice_selection].description
+		info_mp_node.bbcode_text = "[color=#1E90FF]MP[/color]: " + choices_array[current_choice_selection].mp
+		info_effect_type_node.bbcode_text = "[color=#b99c4b]Effect[/color]: " + choices_array[current_choice_selection].effect_type
+		var info_scale = choices_array[current_choice_selection].effect
+		info_scale.erase(3,1) #replace _ with x
+		info_scale = info_scale.insert(3, " x ")
+		info_effect_node.bbcode_text = "[color=#b99c4b]Scale[/color]: " + info_scale
+		info_targets_node.bbcode_text = "[color=#b99c4b]Targets[/color]: " + choices_array[current_choice_selection].targets
+		info_is_equipped_node.bbcode_text = "[color=#b99c4b]Equipped[/color]: no"
 		print(choices_array[current_choice_selection].name)
