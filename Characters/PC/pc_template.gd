@@ -44,6 +44,8 @@ onready var skills = [skill_1, skill_2, skill_3, skill_4, skill_5]
 onready var current_skills = []
 export var number_of_skills = 0
 
+var items = []
+
 
 
 func _ready():

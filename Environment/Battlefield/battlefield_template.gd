@@ -420,7 +420,7 @@ func update_log(message):
 
 
 ###turn ordering
-func initialize_turn_order(): # would like to base on speed stat. likely would need enemy speed stats. and different enemy types
+func initialize_turn_order(): # uses speed stat, like dnd
 	randomize()
 	var randomized_list = []
 	var node_list = []
