@@ -381,7 +381,8 @@ theme = ExtResource( 2 )
 bbcode_enabled = true
 bbcode_text = "NAME
 "
-text = "MP: X"
+text = "NAME
+"
 scroll_active = false
 
 [node name="Effect_Type" type="RichTextLabel" parent="Popup_Skills/Popup_Info/ColorRect/Frame"]
@@ -393,7 +394,7 @@ theme = ExtResource( 2 )
 bbcode_enabled = true
 bbcode_text = "NAME
 "
-text = "Effecttype
+text = "NAME
 "
 scroll_active = false
 
@@ -419,7 +420,8 @@ theme = ExtResource( 2 )
 bbcode_enabled = true
 bbcode_text = "NAME
 "
-text = "Req. Lvl?"
+text = "NAME
+"
 scroll_active = false
 
 [node name="Name7" type="RichTextLabel" parent="Popup_Skills/Popup_Info/ColorRect/Frame"]
@@ -431,8 +433,7 @@ theme = ExtResource( 2 )
 bbcode_enabled = true
 bbcode_text = "NAME
 "
-text = "Equipped?
-
+text = "NAME
 "
 scroll_active = false
 

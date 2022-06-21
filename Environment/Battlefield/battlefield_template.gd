@@ -330,7 +330,7 @@ func get_command():
 		yield(active_player.get_node("AnimatedSprite"), "animation_finished")
 		active_player.update_animation("battling")
 		targetable_enemy_list[current_target].hp -= active_player.attack
-		update_log(str(targetable_enemy_list[current_target].name.capitalize()) + ' takes [color=#CD5C5C]' + str(active_player.attack) + '[/color] damage!')
+		update_log(str(targetable_enemy_list[current_target].enemy_name.capitalize()) + ' takes [color=#CD5C5C]' + str(active_player.attack) + '[/color] damage!')
 		party_node.isAttacking = false
 	if current_command == 1: #skills. this needs to be updated when a new type of skill is add
 		active_command_card.hide()
@@ -343,7 +343,7 @@ func get_command():
 		if target_type == 'enemy':
 			if current_skill_effect_type == 'damage':
 				targetable_enemy_list[current_target].hp -= current_skill_total_effect
-				update_log(str(targetable_enemy_list[current_target].name.capitalize()) + ' takes [color=#CD5C5C]' + str(current_skill_total_effect) + '[/color] damage!')
+				update_log(str(targetable_enemy_list[current_target].enemy_name.capitalize()) + ' takes [color=#CD5C5C]' + str(current_skill_total_effect) + '[/color] damage!')
 		if target_type == 'enemies':
 			if current_skill_effect_type ==  'damage':
 				update_log('Enemies take [color=#CD5C5C]' + str(current_skill_total_effect) + '[/color] damage!')

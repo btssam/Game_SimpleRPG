@@ -43,6 +43,8 @@ var current_choice_selection = 0
 var active_number_of_choice_selections
 var choices_array = []
 
+var isInfoOpen = false
+
 func _ready():
 	for i in 4:
 		get_skills(i)
@@ -69,8 +71,15 @@ func _input(event):
 		isSelectingNewSkill = false
 		isSelectingSkill = true
 	###need to add tab button to show skill details
-	if event.is_action_pressed("info"):
-		pass
+	if event.is_action_pressed("info") and !isInfoOpen:
+		isInfoOpen = true
+		get_info()
+		get_node("Popup_Skills/Popup_Info").show()
+		print('open')
+	elif event.is_action_pressed("info") and isInfoOpen:
+		isInfoOpen = false
+		get_node("Popup_Skills/Popup_Info").hide()
+		print('close')
 
 
 func get_skills(party_member):
@@ -201,5 +210,10 @@ func choose_skill():
 	
 	
 	get_skills(active_party_member)
-	
 	set_choices()
+
+func get_info():
+	if isSelectingSkill:
+		print(current_skill_info[active_party_member][current_skill_selection].name)
+	elif isSelectingNewSkill:
+		print(choices_array[current_choice_selection].name)

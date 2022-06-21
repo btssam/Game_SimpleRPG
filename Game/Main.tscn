@@ -19,9 +19,6 @@ z_index = 1
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="GUI" type="Control" parent="CanvasLayer"]
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Dialogue_UI" parent="CanvasLayer/GUI" instance=ExtResource( 5 )]
 
