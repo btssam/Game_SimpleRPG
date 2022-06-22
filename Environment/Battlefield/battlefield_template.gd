@@ -85,7 +85,7 @@ onready var item_cards = [item_card_1, item_card_2, item_card_3, item_card_4]
 var active_item_card
 var isSelectingItem = false
 var current_item_selection = 0
-var number_of_item_selections = 0
+var number_of_item_selections = 3
 var item_card_selector_sprite
 var item_card_animation_player
 
@@ -161,10 +161,14 @@ func _input(event):
 					update_log(active_player.current_skills[current_skill_selection].description)
 		###itemcard
 			if isSelectingItem:
+				if event.is_action_pressed("up"):
+					change_item("up")
+				if event.is_action_pressed("down"):
+					change_item("down")
 				if event.is_action_pressed("esc"):
 					isSelectingItem = false
 					isSelectingCommand = true
-#					disable_skill_card_selector_sprite()
+					disable_item_selector_sprite()
 					active_item_card.hide()
 					enable_card_selector_sprite()
 		###testing
@@ -230,15 +234,19 @@ func process_command(): #which action occurs when space is pressed: (process_inp
 				elif current_selection == 1 and isSelectingSkill == true: #select the skill
 					stop_skill_card_selector_sprite()
 					get_skill_effect()
-				elif current_selection == 2 and isSelectingItem == false: #item
+				elif current_selection == 2 and isSelectingItem == false: #open item menu
 					update_log('You have no items.')
 					isSelectingCommand = false
 					isSelectingItem = true
+					get_items(active_party_member)
 					active_item_card.show()
+					enable_item_selector_sprite()
 					#reset afterwards
 #					disable_card_selector_sprite() #already at the end of selection, after picking target
 #					current_selection = 0 #will need to move this to after I process item selection
 #					current_command  = 0 #''
+				elif current_selection == 2 and isSelectingItem == true: #select the item
+					get_item_effect()
 				elif current_selection == 3: #flee
 					isSelectingCommand = false
 					close_scene()
@@ -689,17 +697,49 @@ func has_enough_mp(skill):
 	else:
 		return false # set text to gray. instead of selecting a target, update log "insufficient MP" and return to skill select'
 
-
-#func get_skills(party_member):
-#	var skills_text = [skill_cards[party_member - 1].get_node("TextureRect/Skill1"), skill_cards[party_member - 1].get_node("TextureRect/Skill2"), skill_cards[party_member - 1].get_node("TextureRect/Skill3"), skill_cards[party_member - 1].get_node("TextureRect/Skill4"), skill_cards[party_member - 1].get_node("TextureRect/Skill5")]
-#	for i in 5:
-#		skills_text[i].bbcode_text = ''
-#	number_of_skill_selections = players[party_member - 1].number_of_skills
-#	for i in number_of_skill_selections: #update names of skills
-#		skills_text[i].bbcode_text = players[party_member - 1].skills[i].name
-
 func check_mp():
 	if active_player.mp < 0:
 		active_player.mp = 0
 	if active_player.mp > active_player.maxmp:
 		active_player.mp = active_player.maxmp
+		
+
+### items
+func get_item_card_nodes():
+	var items_list = active_item_card.get_node("TextureRect").get_children()
+	item_card_selector_sprite = items_list[current_item_selection].get_node("Selector")
+	item_card_animation_player = items_list[current_item_selection].get_node("AnimationPlayer")
+
+func enable_item_selector_sprite():
+	get_item_card_nodes()
+	item_card_selector_sprite.visible = true
+	item_card_animation_player.play('blink')
+
+func disable_item_selector_sprite():
+	get_item_card_nodes()
+	item_card_selector_sprite.visible = false
+	item_card_animation_player.stop()
+
+func stop_item_selector_sprite():
+	get_item_card_nodes()
+	item_card_selector_sprite.visible = true
+	item_card_animation_player.play('blink')
+	item_card_animation_player.stop()
+
+func change_item(direction):
+	if direction == 'up':
+		if current_item_selection > 0 :
+			disable_item_selector_sprite()
+			current_item_selection -= 1
+			enable_item_selector_sprite()
+	elif direction == 'down':
+		if current_item_selection < number_of_item_selections - 1:
+			disable_item_selector_sprite()
+			current_item_selection += 1
+			enable_item_selector_sprite()
+
+func get_items(active_party_member):
+	pass
+
+func get_item_effect():
+	pass
