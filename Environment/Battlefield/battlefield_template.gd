@@ -567,16 +567,16 @@ func check_enemy_death():
 
 
 #skills
-func get_skills(party_member):
-	var skills_text = [skill_cards[party_member - 1].get_node("TextureRect/Skill1"), skill_cards[party_member - 1].get_node("TextureRect/Skill2"), skill_cards[party_member - 1].get_node("TextureRect/Skill3"), skill_cards[party_member - 1].get_node("TextureRect/Skill4"), skill_cards[party_member - 1].get_node("TextureRect/Skill5")]
+func get_skills(active_party_member): #shouldn't these be active_skill_card
+	var skills_text = [active_skill_card.get_node("TextureRect/Skill1"), active_skill_card.get_node("TextureRect/Skill2"), active_skill_card.get_node("TextureRect/Skill3"), active_skill_card.get_node("TextureRect/Skill4"), active_skill_card.get_node("TextureRect/Skill5")]
 	for i in 5:
 		skills_text[i].bbcode_text = ''
-	number_of_skill_selections = players[party_member - 1].number_of_skills
+	number_of_skill_selections = active_player.number_of_skills
 	for i in number_of_skill_selections: #update names of skills
 		if has_enough_mp(i):
-			skills_text[i].bbcode_text = players[party_member - 1].current_skills[i].name
+			skills_text[i].bbcode_text = active_player.current_skills[i].name
 		else:
-			skills_text[i].bbcode_text = '[color=#A9A9A9]' + players[party_member - 1].current_skills[i].name + '[/color]'
+			skills_text[i].bbcode_text = '[color=#A9A9A9]' + active_player.current_skills[i].name + '[/color]'
 
 func get_skill_card_nodes():
 	var skills_list = active_skill_card.get_node("TextureRect").get_children()
@@ -739,7 +739,32 @@ func change_item(direction):
 			enable_item_selector_sprite()
 
 func get_items(active_party_member):
-	pass
+	var items_text = [active_item_card.get_node("TextureRect/Item1"), active_item_card.get_node("TextureRect/Item2"), active_item_card.get_node("TextureRect/Item3")]
+	
+	for i in 3:
+		items_text[i].bbcode_text = ''
+	number_of_item_selections = active_player.number_of_items
+	for i in number_of_item_selections:
+		if has_item(i):
+			items_text[i].bbcode_text = active_player.equipped_items[i].name
+		else:
+			items_text[i].bbcode_text = '[color=#A9A9A9]' + active_player.equipped_items[i].name + '[/color]'
 
+#func get_skills(active_party_member): #shouldn't these be active_skill_card
+#	var skills_text = [active_skill_card.get_node("TextureRect/Skill1"), active_skill_card.get_node("TextureRect/Skill2"), active_skill_card.get_node("TextureRect/Skill3"), active_skill_card.get_node("TextureRect/Skill4"), active_skill_card.get_node("TextureRect/Skill5")]
+#	for i in 5:
+#		skills_text[i].bbcode_text = ''
+#	number_of_skill_selections = active_player.number_of_skills
+#	for i in number_of_skill_selections: #update names of skills
+#		if has_enough_mp(i):
+#			skills_text[i].bbcode_text = active_player.current_skills[i].name
+#		else:
+#			skills_text[i].bbcode_text = '[color=#A9A9A9]' + active_player.current_skills[i].name + '[/color]'
+
+func has_item(item):
+	if active_player.equipped_items[item].quantity > 0:
+		return true  #set text to default. allow selection
+	else:
+		return false # set text to gray. instead of selecting a target, update log "insufficient quantity" and return to skill select'
 func get_item_effect():
 	pass

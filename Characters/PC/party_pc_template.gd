@@ -41,6 +41,9 @@ onready var skills = [skill_1, skill_2, skill_3, skill_4, skill_5]
 #onready var current_skills = skills.duplicate()
 onready var current_skills = []
 export var number_of_skills = 0
+#items
+var equipped_items = []
+var number_of_items = 3
 
 func _ready():
 	#movement
@@ -50,6 +53,8 @@ func _ready():
 	set_player_name()
 	#skills
 	set_current_skills()
+	#items
+	set_current_items()
 
 func _process(delta):
 	move_follower()
@@ -164,3 +169,9 @@ func set_player_name():
 func set_current_skills():
 	for i in number_of_skills:
 		current_skills.append(skills[i])
+###items
+func set_current_items():
+	#should use the menu to pick and choose which items to add to equipped_items
+	for i in number_of_items:
+		var current_inventory = get_node("../PC_Template/Inventory").current_inventory
+		equipped_items.append(current_inventory[i])
