@@ -89,6 +89,11 @@ var number_of_item_selections = 3
 var item_card_selector_sprite
 var item_card_animation_player
 
+var current_item_effect_type = ''
+var current_item_effect = ''
+var current_item_description = ''
+var current_item_quantity = 0
+
 func _ready():
 	####initialize
 	get_random_number_of_units()
@@ -246,6 +251,7 @@ func process_command(): #which action occurs when space is pressed: (process_inp
 #					current_selection = 0 #will need to move this to after I process item selection
 #					current_command  = 0 #''
 				elif current_selection == 2 and isSelectingItem == true: #select the item
+					stop_item_selector_sprite()
 					get_item_effect()
 				elif current_selection == 3: #flee
 					isSelectingCommand = false
@@ -291,6 +297,7 @@ func select_target():
 #	disable_skill_card_selector_sprite()
 	isSelectingCommand = false
 	isSelectingSkill = false
+	isSelectingItem = false
 	isSelectingTarget = true #I at one point needed to use set_deferred
 	enable_selector_sprite()
 
@@ -349,6 +356,7 @@ func return_target():
 	disable_selector_sprite()
 	disable_card_selector_sprite()
 	disable_skill_card_selector_sprite()
+	disable_item_selector_sprite()
 	get_command()
 
 #respond_to_command
@@ -402,6 +410,31 @@ func get_command():
 		update_PC_UI()
 		current_skill_selection = 0
 		number_of_skill_selections = 0
+		party_node.isAttacking = false
+	if current_command == 2:
+		active_command_card.hide()
+		active_item_card.hide()
+		cardIsVisible = false
+		party_node.isAttacking = true
+		active_player.get_node("AnimationPlayer").play("attack")
+		yield(active_player.get_node("AnimatedSprite"), "animation_finished")
+		active_player.update_animation("battling")
+		if target_type == 'ally':
+			if current_item_effect_type == 'heal_hp':
+				targetable_ally_list[current_target].hp += current_item_effect.to_int()
+				update_log(str(targetable_ally_list[current_target].player_name) + ' is healed by [color=#CD5C5C]' + str(current_item_effect) + '[/color] HP!')
+				check_max_player_health()
+				current_item_quantity -= 1
+				active_player.equipped_items[current_item_selection].quantity -=1
+			elif current_item_effect_type == 'heal_mp':
+				targetable_ally_list[current_target].mp += current_item_effect.to_int()
+				update_log(str(targetable_ally_list[current_target].player_name) + ' is restored by [color=#1E90FF]' + str(current_skill_total_effect) + '[/color] MP!')
+				check_max_players_mp()
+				current_item_quantity -= 1
+				active_player.equipped_items[current_item_selection].quantity -=1
+		update_PC_UI()
+		current_item_selection = 0
+		number_of_item_selections = 0
 		party_node.isAttacking = false
 	check_enemy_death()
 	update_enemy_UI()
@@ -613,20 +646,17 @@ func change_skill(direction):
 			enable_skill_card_selector_sprite()
 
 func get_skill_effect():
-	target_type = active_player.current_skills[current_skill_selection].targets
-	current_skill_effect_type = active_player.current_skills[current_skill_selection].effect_type
-	current_skill_effect = active_player.current_skills[current_skill_selection].effect
-	current_skill_mp = active_player.current_skills[current_skill_selection].mp.to_int()
-	current_skill_description = active_player.current_skills[current_skill_selection].description
+	var current_skill = active_player.current_skills[current_skill_selection]
+	target_type = current_skill.targets
+	current_skill_effect_type = current_skill.effect_type
+	current_skill_effect = current_skill.effect
+	current_skill_mp = current_skill.mp.to_int()
+	current_skill_description = current_skill.description
 	current_skill_stat = current_skill_effect.left(3)
 	current_skill_multi = current_skill_effect.right(4).to_float()
 	skill_stat_assigner = {'ATK': active_player.attack, 'DEF': active_player.defence, 'INT': active_player.intellect, 'SPD': active_player.speed}
 	current_skill_stat = skill_stat_assigner[current_skill_stat]
 	current_skill_total_effect = current_skill_stat * current_skill_multi
-	print('Current_skill_effect_type: ' + str(current_skill_effect_type) +
-	'\nCurrent_skill_total_effect' + str(current_skill_total_effect) +
-	'\nCurrent_skill_mp: ' + str(current_skill_mp) +
-	'\nCurrent_skill_description: ' + str(current_skill_description))
 	if has_enough_mp(current_skill_selection):
 		select_target()
 	else:
@@ -691,6 +721,11 @@ func check_max_player_health():
 		if players[i].hp > players[i].maxhp:
 			players[i].hp = players[i].maxhp
 
+func check_max_players_mp():
+	for i in 4:
+		if players[i].mp > players[i].maxmp:
+			players[i].mp = players[i].maxmp
+
 func has_enough_mp(skill):
 	if active_player.mp >= active_player.current_skills[skill].mp.to_int():
 		return true  #set text to default. allow selection
@@ -702,6 +737,7 @@ func check_mp():
 		active_player.mp = 0
 	if active_player.mp > active_player.maxmp:
 		active_player.mp = active_player.maxmp
+		
 		
 
 ### items
@@ -766,5 +802,48 @@ func has_item(item):
 		return true  #set text to default. allow selection
 	else:
 		return false # set text to gray. instead of selecting a target, update log "insufficient quantity" and return to skill select'
+
+
 func get_item_effect():
-	pass
+	var current_item = active_player.equipped_items[current_item_selection]
+	target_type = current_item.targets
+	current_item_effect_type = current_item.effect_type
+	current_item_effect = current_item.effect
+	current_item_quantity = current_item.quantity
+	current_item_description = current_item.description
+	print('Current_item_effect_type: ' + str(current_item_effect_type) +
+	'\nCurrent_item_effect: ' + str(current_item_effect) +
+	'\nCurrent_item_quantity: ' + str(current_item_quantity) +
+	'\nCurrent_item_description: ' + str(current_item_description))
+	if has_item(current_item_selection):
+		select_target()
+	else:
+		update_log("Insufficient Quantity!")
+		current_skill_selection = 0
+		enable_item_selector_sprite()
+		target_type = 'enemy'
+
+#func get_skill_effect():
+#	target_type = active_player.current_skills[current_skill_selection].targets
+#	current_skill_effect_type = active_player.current_skills[current_skill_selection].effect_type
+#	current_skill_effect = active_player.current_skills[current_skill_selection].effect
+#	current_skill_mp = active_player.current_skills[current_skill_selection].mp.to_int()
+#	current_skill_description = active_player.current_skills[current_skill_selection].description
+#	current_skill_stat = current_skill_effect.left(3)
+#	current_skill_multi = current_skill_effect.right(4).to_float()
+#	skill_stat_assigner = {'ATK': active_player.attack, 'DEF': active_player.defence, 'INT': active_player.intellect, 'SPD': active_player.speed}
+#	current_skill_stat = skill_stat_assigner[current_skill_stat]
+#	current_skill_total_effect = current_skill_stat * current_skill_multi
+#	print('Current_skill_effect_type: ' + str(current_skill_effect_type) +
+#	'\nCurrent_skill_total_effect' + str(current_skill_total_effect) +
+#	'\nCurrent_skill_mp: ' + str(current_skill_mp) +
+#	'\nCurrent_skill_description: ' + str(current_skill_description))
+#	if has_enough_mp(current_skill_selection):
+#		select_target()
+#	else:
+#		update_log("Insufficient MP!")
+##		disable_skill_card_selector_sprite()
+##		isSelectingSkill = true
+#		current_skill_selection = 0
+#		enable_skill_card_selector_sprite()
+#		target_type = 'enemy'

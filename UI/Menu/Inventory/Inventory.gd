@@ -18,7 +18,7 @@ func _ready():
 			current_inventory.append(all_items[i])
 
 func update_inventory():
-	#should be called whenever quantity changes, checking if empty. Though perhaps I still want to see it grayed out. Maybe only after combat to allow for grayed out text
+	#should be called whenever quantity changes, checking if empty. Though perhaps I still want to see it grayed out. Maybe only after combat to allow for grayed out text. Not sure if this will even be necessary, I seem to be updating the quantity in combat fine. Would I want an empty item to be automatically replaced with a random item after a battle? Definitely not. As current_inventory is used to figure out which are equipped, that would cause such a reallocation and I don't believe I want that, so I don't think this updating will be necessary
 		current_inventory = []
 		for i in all_items.size():
 			if all_items[i].quantity != 0:
