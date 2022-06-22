@@ -47,7 +47,6 @@ export var number_of_skills = 0
 var items = []
 
 
-
 func _ready():
 	#movement
 	$AnimatedSprite.animation = "walk_down"

@@ -135,9 +135,6 @@ tracks/0/keys = {
 
 [node name="Menu_UI" type="Control"]
 script = ExtResource( 4 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Popup_Menu" type="Popup" parent="."]
 visible = true

@@ -76,6 +76,18 @@ var current_skill_multi = 0.0
 var current_skill_stat = 0
 var skill_stat_assigner = 0
 var current_skill_total_effect = 0
+###items
+onready var item_card_1 = $BattleUI/Command_Card/Item_Card
+onready var item_card_2 = $BattleUI/Command_Card2/Item_Card
+onready var item_card_3 = $BattleUI/Command_Card3/Item_Card
+onready var item_card_4 = $BattleUI/Command_Card4/Item_Card
+onready var item_cards = [item_card_1, item_card_2, item_card_3, item_card_4]
+var active_item_card
+var isSelectingItem = false
+var current_item_selection = 0
+var number_of_item_selections = 0
+var item_card_selector_sprite
+var item_card_animation_player
 
 func _ready():
 	####initialize
@@ -126,7 +138,7 @@ func _input(event):
 		###commandcard
 			elif not isSelectingTarget:
 				if event.is_action_pressed("interact"):
-					process_command() #popup command_card
+					process_command() #popup command_card/skill_card/item_card/ process selection
 		
 			if isSelectingCommand:
 				if event.is_action_pressed("up"):
@@ -147,6 +159,14 @@ func _input(event):
 					enable_card_selector_sprite()
 				if event.is_action_pressed("info"):
 					update_log(active_player.current_skills[current_skill_selection].description)
+		###itemcard
+			if isSelectingItem:
+				if event.is_action_pressed("esc"):
+					isSelectingItem = false
+					isSelectingCommand = true
+#					disable_skill_card_selector_sprite()
+					active_item_card.hide()
+					enable_card_selector_sprite()
 		###testing
 		if event.is_action_pressed("test_key"):
 				close_scene()
@@ -196,27 +216,29 @@ func process_command(): #which action occurs when space is pressed: (process_inp
 				enable_card_selector_sprite()
 			else: #make selection. hide card
 				stop_card_selector_sprite()
-				if current_selection != 1: #hide main card if not selecting a skill
-					active_command_card.hide()
-					cardIsVisible = false
 				current_command = current_selection  #do this here so dif. skills may target differently
 				if current_selection == 0: #attack
+					active_command_card.hide()
+					cardIsVisible = false
 					select_target()
 				elif current_selection == 1 and isSelectingSkill == false: #open skill menu
 					isSelectingCommand = false
 					isSelectingSkill = true
 					get_skills(active_party_member)
 					active_skill_card.show()
-					
 					enable_skill_card_selector_sprite()
 				elif current_selection == 1 and isSelectingSkill == true: #select the skill
 					stop_skill_card_selector_sprite()
 					get_skill_effect()
-				elif current_selection == 2: #item
+				elif current_selection == 2 and isSelectingItem == false: #item
 					update_log('You have no items.')
 					isSelectingCommand = false
-					current_selection = 0 #will need to move this to after I process item selection
-					current_command  = 0 #''
+					isSelectingItem = true
+					active_item_card.show()
+					#reset afterwards
+#					disable_card_selector_sprite() #already at the end of selection, after picking target
+#					current_selection = 0 #will need to move this to after I process item selection
+#					current_command  = 0 #''
 				elif current_selection == 3: #flee
 					isSelectingCommand = false
 					close_scene()
@@ -484,6 +506,7 @@ func act_in_order():
 		active_player = players[active_party_member - 1]
 		active_command_card = command_cards[active_party_member - 1]
 		active_skill_card = skill_cards[active_party_member - 1]
+		active_item_card = item_cards[active_party_member - 1]
 
 func shift_turn_order():
 	var first_unit = turn_order[0] #shift the turn order forward once someone goes
