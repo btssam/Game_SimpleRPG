@@ -8,7 +8,8 @@ var isSubMenuOpen = false
 
 var status_node = "res://UI/Menu/Status_UI.tscn"
 var skills_node = "res://UI/Menu/Skills_UI.tscn"
-var current_submenu_node
+var items_node = "res://UI/Menu/Inventory/Items_UI.tscn"
+#could have an array of each submenu node, so I don't have to do chaining if statements, but could use array[current_selection]
 
 #status
 onready var player1_node = get_node("../../../Party/PC_Template")
@@ -63,7 +64,7 @@ func disable_selector():
 
 func process_selection():
 	if current_selection == 1:
-		print('Items')
+		open_submenu()
 	elif current_selection == 2:
 		open_submenu()
 	elif current_selection == 3:
@@ -94,6 +95,10 @@ func open_submenu():
 	isSubMenuOpen = true
 	isMenuOpen = false
 	menu_node.hide()
+	if current_selection == 1:
+		var items = load(items_node).instance()
+		add_child(items)
+		get_node("Items_UI/Popup_Items").show()
 	if current_selection == 2:
 		var skills = load(skills_node).instance()
 		add_child(skills)
@@ -108,6 +113,9 @@ func open_submenu():
 func close_submenu():
 	isSubMenuOpen = false
 	#should I set isMenuOpen to true?
+	isMenuOpen = true
+	if current_selection == 1:
+		remove_child(get_node("Items_UI"))
 	if current_selection == 2:
 		remove_child(get_node("Skills_UI"))
 	if current_selection == 3:

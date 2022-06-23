@@ -35,6 +35,14 @@ region = Rect2( 144, 128, 24, 32 )
 atlas = ExtResource( 3 )
 region = Rect2( 30, 0, 30, 32 )
 
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 3 )
+region = Rect2( 60, 0, 30, 32 )
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 3 )
+region = Rect2( 90, 0, 30, 32 )
+
 [sub_resource type="AtlasTexture" id=10]
 atlas = ExtResource( 1 )
 region = Rect2( 0, 64, 24, 32 )
@@ -87,20 +95,17 @@ region = Rect2( 24, 96, 24, 32 )
 atlas = ExtResource( 1 )
 region = Rect2( 48, 96, 24, 32 )
 
-[sub_resource type="AtlasTexture" id=8]
-atlas = ExtResource( 3 )
-region = Rect2( 60, 0, 30, 32 )
-
-[sub_resource type="AtlasTexture" id=9]
-atlas = ExtResource( 3 )
-region = Rect2( 90, 0, 30, 32 )
-
 [sub_resource type="SpriteFrames" id=23]
 animations = [ {
 "frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 7 ), SubResource( 7 ), SubResource( 7 ) ],
 "loop": false,
 "name": "attack",
 "speed": 10.0
+}, {
+"frames": [ SubResource( 8 ), SubResource( 9 ) ],
+"loop": false,
+"name": "dying",
+"speed": 2.0
 }, {
 "frames": [ SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 11 ) ],
 "loop": true,
@@ -126,11 +131,6 @@ animations = [ {
 "loop": true,
 "name": "walk_left",
 "speed": 5.0
-}, {
-"frames": [ SubResource( 8 ), SubResource( 9 ) ],
-"loop": false,
-"name": "dying",
-"speed": 2.0
 } ]
 
 [sub_resource type="RectangleShape2D" id=24]
