@@ -26,9 +26,6 @@ scale = Vector2( 2, 2 )
 margin_right = 30.0
 margin_bottom = 30.0
 color = Color( 0.105882, 0.105882, 0.105882, 0.713726 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="TextureRect" type="TextureRect" parent="."]
 anchor_right = 1.0

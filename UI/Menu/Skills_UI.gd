@@ -204,6 +204,7 @@ func choose_skill():
 	
 	get_skills(active_party_member) #update info in current menu
 	set_choices()
+	current_choice_selection = 0
 
 func get_info():
 	var base_node = get_node("Popup_Skills/Popup_Info/ColorRect/Frame")

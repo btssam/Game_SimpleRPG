@@ -428,7 +428,7 @@ func get_command():
 				active_player.equipped_items[current_item_selection].quantity -=1
 			elif current_item_effect_type == 'heal_mp':
 				targetable_ally_list[current_target].mp += current_item_effect.to_int()
-				update_log(str(targetable_ally_list[current_target].player_name) + ' is restored by [color=#1E90FF]' + str(current_skill_total_effect) + '[/color] MP!')
+				update_log(str(targetable_ally_list[current_target].player_name) + ' is restored by [color=#1E90FF]' + str(current_item_effect) + '[/color] MP!')
 				check_max_players_mp()
 				current_item_quantity -= 1
 				active_player.equipped_items[current_item_selection].quantity -=1

@@ -8,7 +8,7 @@ var weak_m = {"name": "Weak M", "description": "Restores 5 MP to a target.", "ef
 var med_m = {"name": "Med M", "description": "Restores 10 MP to a target.", "effect_type": "heal_mp", "effect": "10", "targets": "ally", "quantity": 2}
 var high_m = {"name": "High M", "description": "Restores 15 MP to a target.", "effect_type": "heal_mp", "effect": "15", "targets": "ally", "quantity": 0}
 
-var all_items = [weak_h, med_h, high_h, weak_m, med_m, high_m]
+var all_items = [high_m, weak_m, med_m, weak_h, high_h, med_h] #order is used to determine frame #
 
 var current_inventory = []
 
