@@ -124,7 +124,7 @@ func change_skill(direction):
 #			set_choices()
 			active_skill_card = skill_cards[active_party_member]
 			active_number_of_skill_selections = number_of_skills[active_party_member]
-			current_skill_selection = 0
+			current_skill_selection = active_number_of_skill_selections - 1
 			enable_skill_card_selector_sprite()
 	elif direction == 'down':
 		if current_skill_selection < active_number_of_skill_selections - 1:
