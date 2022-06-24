@@ -34,7 +34,9 @@ var item_choice_animation_player
 var current_choice_selection = 0
 onready var number_of_choice_selections = current_inventory.size()
 
-#var isInfoOpen = false
+var isInfoOpen = false
+
+var isOnEquipPage = false
 
 onready var item_selector_node = "res://UI/Menu/Inventory/Item_Selector.tscn"
 
@@ -65,8 +67,30 @@ func _input(event):
 		choose_item()
 #		disable_item_selector_sprite()
 #		enable_item_choice_selector_sprite()
-	
+	if event.is_action_pressed("right") and not isOnEquipPage:
+		get_node("Popup_Items").hide()
+		isOnEquipPage = true
+		isSelectingNewItem = true
+		enable_item_choice_selector_sprite()
+		current_item_selection = 0
+		active_party_member = 0
+		active_item_card = item_cards[active_party_member]
+		current_choice_selection = 0
+		get_node("Popup_Equip").show()
+	if event.is_action_pressed("left") and isOnEquipPage:
+		get_node("Popup_Equip").hide()
+		isOnEquipPage = false
+		get_node("Popup_Items").show()
+	if event.is_action_pressed("info") and !isInfoOpen:
+		isInfoOpen = true
+		get_info()
+		get_node("Popup_Items/Popup_Info").show()
+	elif event.is_action_pressed("info") and isInfoOpen:
+		isInfoOpen = false
+		get_node("Popup_Items/Popup_Info").hide()
 		
+
+#all my functions can use if isOnEquipPage to determine the intial nodes
 
 func get_items(party_member):
 	var items_text_nodes = [item_cards[party_member].get_node("TextureRect/Item1"), item_cards[party_member].get_node("TextureRect/Item2"), item_cards[party_member].get_node("TextureRect/Item3")]
@@ -136,6 +160,9 @@ func set_choices():
 			if all_inventory[c] == current_inventory[i]:
 				current_item.get_node("Sprite").frame = c
 				current_item.get_node("Selector").frame = c
+		
+		current_item.get_node("Sprite").frame = current_inventory[i].icon_number
+		current_item.get_node("Selector").frame = current_inventory[i].icon_number
 
 func get_item_choice_nodes():
 	var item_choice_node = grid_container_node.get_child(current_choice_selection)
@@ -185,14 +212,51 @@ func choose_item():
 		get_node("../../../../Party/PC_Template").equipped_items = new_current_items
 	else:
 		get_node("../../../../Party/Party_PC_Template" + str(active_party_member)).equipped_items = new_current_items
-#
-#	var new_skill_choices = choices_array.duplicate() # I dont have to even change the inventory here
-#	new_skill_choices.pop_at(current_choice_selection)
-#	new_skill_choices.insert(current_choice_selection, current_skill_info[active_party_member][current_skill_selection])
-#	choices_array = new_skill_choices
-#
+		
+		
 	get_items(active_party_member) #update info in current menu
 	
 	current_choice_selection = 0
 	enable_item_choice_selector_sprite()
-#	set_choices() #dont need to change inventory
+
+func get_info():
+	var base_node
+	if not isOnEquipPage:
+		base_node = get_node("Popup_Items/Popup_Info/ColorRect/Frame")
+	elif isOnEquipPage:
+		base_node = get_node("Popup_Equip/Popup_Info/ColorRect/Frame")
+	var info_name_node = base_node.get_node("Name")
+	var info_desc_node = base_node.get_node("Desc")
+	var info_quantity_node = base_node.get_node("Quantity")
+	var info_effect_type_node = base_node.get_node("Effect_Type")
+	var info_effect_node = base_node.get_node("Effect")
+	var info_targets_node = base_node.get_node("Targets")
+	var info_icon_node = base_node.get_node("Icon") #would be ottally different nodes for equips
+	var current_selected_item_info
+	if isSelectingItem:
+		current_selected_item_info = equipped_items[active_party_member][current_item_selection]
+	elif isSelectingNewItem:
+		current_selected_item_info = current_inventory[current_choice_selection]
+	info_name_node.bbcode_text = current_selected_item_info.name
+	info_desc_node.bbcode_text = current_selected_item_info.description
+	info_quantity_node.bbcode_text = "[color=#1E90FF]Quantity[/color]: " + str(current_selected_item_info.quantity)
+	info_effect_type_node.bbcode_text = "[color=#b99c4b]Effect[/color]: " + current_selected_item_info.effect_type
+#		var info_scale = current_selected_item_info.effect
+#		info_scale.erase(3,1) #replace _ with x
+#		info_scale = info_scale.insert(3, " x ")
+	info_effect_node.bbcode_text = "[color=#b99c4b]Scale[/color]: " + str(current_selected_item_info.effect)
+	info_targets_node.bbcode_text = "[color=#b99c4b]Targets[/color]: " + current_selected_item_info.targets
+	info_icon_node.bbcode_text = "[color=#b99c4b]Icon[/color]: " + str(current_selected_item_info.icon_number)
+#	elif isSelectingNewSkill:
+#		info_name_node.bbcode_text = choices_array[current_choice_selection].name
+#		info_desc_node.bbcode_text = choices_array[current_choice_selection].description
+#		info_mp_node.bbcode_text = "[color=#1E90FF]MP[/color]: " + choices_array[current_choice_selection].mp
+#		info_effect_type_node.bbcode_text = "[color=#b99c4b]Effect[/color]: " + choices_array[current_choice_selection].effect_type
+#		var info_scale = choices_array[current_choice_selection].effect
+#		info_scale.erase(3,1) #replace _ with x
+#		info_scale = info_scale.insert(3, " x ")
+#		info_effect_node.bbcode_text = "[color=#b99c4b]Scale[/color]: " + info_scale
+#		info_targets_node.bbcode_text = "[color=#b99c4b]Targets[/color]: " + choices_array[current_choice_selection].targets
+#		info_is_equipped_node.bbcode_text = "[color=#b99c4b]Equipped[/color]: no"
+#		print(choices_array[current_choice_selection].name)
+

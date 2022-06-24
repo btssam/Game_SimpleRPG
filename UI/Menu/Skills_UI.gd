@@ -70,7 +70,6 @@ func _input(event):
 		choose_skill()
 		isSelectingNewSkill = false
 		isSelectingSkill = true
-	###need to add tab button to show skill details
 	if event.is_action_pressed("info") and !isInfoOpen:
 		isInfoOpen = true
 		get_info()
@@ -215,26 +214,18 @@ func get_info():
 	var info_effect_node = base_node.get_node("Effect")
 	var info_targets_node = base_node.get_node("Targets")
 	var info_is_equipped_node = base_node.get_node("IsEquipped")
+	var current_selected_skill_info
 	if isSelectingSkill:
-		info_name_node.bbcode_text = current_skill_info[active_party_member][current_skill_selection].name
-		info_desc_node.bbcode_text = current_skill_info[active_party_member][current_skill_selection].description
-		info_mp_node.bbcode_text = "[color=#1E90FF]MP[/color]: " + current_skill_info[active_party_member][current_skill_selection].mp
-		info_effect_type_node.bbcode_text = "[color=#b99c4b]Effect[/color]: " + current_skill_info[active_party_member][current_skill_selection].effect_type
-		var info_scale = current_skill_info[active_party_member][current_skill_selection].effect
-		info_scale.erase(3,1) #replace _ with x
-		info_scale = info_scale.insert(3, " x ")
-		info_effect_node.bbcode_text = "[color=#b99c4b]Scale[/color]: " + info_scale
-		info_targets_node.bbcode_text = "[color=#b99c4b]Targets[/color]: " + current_skill_info[active_party_member][current_skill_selection].targets
-		info_is_equipped_node.bbcode_text = "[color=#b99c4b]Equipped[/color]: yes"
+		current_selected_skill_info = current_skill_info[active_party_member][current_skill_selection]
 	elif isSelectingNewSkill:
-		info_name_node.bbcode_text = choices_array[current_choice_selection].name
-		info_desc_node.bbcode_text = choices_array[current_choice_selection].description
-		info_mp_node.bbcode_text = "[color=#1E90FF]MP[/color]: " + choices_array[current_choice_selection].mp
-		info_effect_type_node.bbcode_text = "[color=#b99c4b]Effect[/color]: " + choices_array[current_choice_selection].effect_type
-		var info_scale = choices_array[current_choice_selection].effect
-		info_scale.erase(3,1) #replace _ with x
-		info_scale = info_scale.insert(3, " x ")
-		info_effect_node.bbcode_text = "[color=#b99c4b]Scale[/color]: " + info_scale
-		info_targets_node.bbcode_text = "[color=#b99c4b]Targets[/color]: " + choices_array[current_choice_selection].targets
-		info_is_equipped_node.bbcode_text = "[color=#b99c4b]Equipped[/color]: no"
-		print(choices_array[current_choice_selection].name)
+		current_selected_skill_info  = choices_array[current_choice_selection]
+	info_name_node.bbcode_text = current_selected_skill_info.name
+	info_desc_node.bbcode_text = current_selected_skill_info.description
+	info_mp_node.bbcode_text = "[color=#1E90FF]MP[/color]: " + current_selected_skill_info.mp
+	info_effect_type_node.bbcode_text = "[color=#b99c4b]Effect[/color]: " + current_selected_skill_info.effect_type
+	var info_scale = current_selected_skill_info.effect
+	info_scale.erase(3,1) #replace _ with x
+	info_scale = info_scale.insert(3, " x ")
+	info_effect_node.bbcode_text = "[color=#b99c4b]Scale[/color]: " + info_scale
+	info_targets_node.bbcode_text = "[color=#b99c4b]Targets[/color]: " + current_selected_skill_info.targets
+	info_is_equipped_node.bbcode_text = "[color=#b99c4b]Equipped[/color]: yes"

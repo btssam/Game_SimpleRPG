@@ -1,14 +1,15 @@
 extends Node
 
 #lists all possible items, should default to 0 value.
-var weak_h = {"name": "Weak H", "description": "Restores 5 HP to a target.", "effect_type": "heal_hp", "effect": "5", "targets": "ally", "quantity": 6}
-var med_h = {"name": "Med H", "description": "Restores 10 HP to a target.", "effect_type": "heal_hp", "effect": "10", "targets": "ally", "quantity": 3}
-var high_h = {"name": "High H", "description": "Restores 15 HP to a target.", "effect_type": "heal_hp", "effect": "15", "targets": "ally", "quantity": 1}
-var weak_m = {"name": "Weak M", "description": "Restores 5 MP to a target.", "effect_type": "heal_mp", "effect": "5", "targets": "ally", "quantity": 4}
-var med_m = {"name": "Med M", "description": "Restores 10 MP to a target.", "effect_type": "heal_mp", "effect": "10", "targets": "ally", "quantity": 2}
-var high_m = {"name": "High M", "description": "Restores 15 MP to a target.", "effect_type": "heal_mp", "effect": "15", "targets": "ally", "quantity": 0}
+var weak_h = {"name": "Weak H", "description": "Restores 5 HP to a target.", "effect_type": "heal_hp", "effect": "5", "targets": "ally", "quantity": 6, "icon_number": 3}
+var med_h = {"name": "Med H", "description": "Restores 10 HP to a target.", "effect_type": "heal_hp", "effect": "10", "targets": "ally", "quantity": 3, "icon_number": 5}
+var high_h = {"name": "High H", "description": "Restores 15 HP to a target.", "effect_type": "heal_hp", "effect": "15", "targets": "ally", "quantity": 1, "icon_number": 4}
+var weak_m = {"name": "Weak M", "description": "Restores 5 MP to a target.", "effect_type": "heal_mp", "effect": "5", "targets": "ally", "quantity": 4, "icon_number": 1}
+var med_m = {"name": "Med M", "description": "Restores 10 MP to a target.", "effect_type": "heal_mp", "effect": "10", "targets": "ally", "quantity": 2, "icon_number": 2}
+var high_m = {"name": "High M", "description": "Restores 15 MP to a target.", "effect_type": "heal_mp", "effect": "15", "targets": "ally", "quantity": 0, "icon_number": 0}
 
-var all_items = [high_m, weak_m, med_m, weak_h, high_h, med_h] #order is used to determine frame #
+
+var all_items = [weak_h, med_h, high_h, weak_m, med_m, high_m]
 
 var current_inventory = []
 
