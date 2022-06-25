@@ -87,14 +87,21 @@ func _input(event):
 		isOnEquipPage = true
 		isSelectingNewItem = true
 		enable_item_choice_selector_sprite()
+		disable_item_choice_selector_sprite()
+		disable_item_selector_sprite()
 		current_item_selection = 0
+		current_choice_selection = 0 #reset all previous notions, so that when I return to items, im not stuck in previous setting
 		active_party_member = 0
 		active_item_card = item_cards[active_party_member]
-		current_choice_selection = 0
+		isSelectingItem = false
+		isSelectingNewItem = true
+		for i in 4:
+			get_equipment(i)
 		get_node("Popup_Equip").show()
 	if event.is_action_pressed("left") and isOnEquipPage:
 		get_node("Popup_Equip").hide()
 		isOnEquipPage = false
+		enable_item_choice_selector_sprite()
 		get_node("Popup_Items").show()
 	if event.is_action_pressed("info") and !isInfoOpen:
 		isInfoOpen = true
@@ -257,10 +264,12 @@ func get_info():
 
 
 
-#func get_equipment(player):
-#	for x in 2: #for armor and weapon
-#		var current_equipment = equip_cards[player].get_node("TextureRect").get_child(x)
-#		for i in current_equips.size():
-#			if current_equips[i].name == equipment[player][x].name:
-#				current_equipment.get_node("Sprite").frame = current_equipment[i].icon_number
-#				current_equipment.get_node("Selector").frame = current_equipment[i].icon_number
+func get_equipment(player):
+	for x in 2: #for armor and weapon
+		var this_equipment = equip_cards[player].get_node("TextureRect").get_child(x)
+		for i in current_equips.size():
+			print(equipment[player][x])
+			print(current_equips[i].variable_name)
+			if current_equips[i].variable_name == equipment[player][x]:
+				this_equipment.get_node("Sprite").frame = current_equips[i].icon_number
+				this_equipment.get_node("Selector").frame = current_equips[i].icon_number
