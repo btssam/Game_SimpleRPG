@@ -131,3 +131,12 @@ func update_status(): #could move this to Status_UI.tscn
 	var status_array = [status_1, status_2, status_3, status_4]
 	for i in number_of_party_members:
 		status_array[i].text = players[i].player_name + '\n' + 'HP:' + str(players[i].hp) + '/' + str(players[i].maxhp) + ' ATK:' + str(players[i].attack) + ' DEF:' + str(players[i].defence) + '\n' + 'MP:' + str(players[i].mp) + '/' + str(players[i].maxmp) + ' INT:' + str(players[i].intellect) + ' SPD:' + str(players[i].speed)
+
+
+
+
+#func get_equipment():
+#	for x in 2: #for armor and weapon
+#		for i in current_equipment.size():
+#			if current_equipment[i].name == player.equipment[x].name:
+#				icon = current_equipment[i].icon

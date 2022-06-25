@@ -47,7 +47,7 @@ export var number_of_skills = 0
 var equipped_items = []
 var number_of_items = 3
 
-var equipment = []
+export var equipment = ["",""]
 
 func _ready():
 	#movement

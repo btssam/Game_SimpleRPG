@@ -20,7 +20,7 @@ var staff_2 = {"name": "Burning Staff", "description": "This staff is hot to the
 var shield_1 = {"name": "Round Shield", "description": "A wooden shield.", "stats": ["DEF+2"], "type": "armor", "player": "any", "quantity": 1, "icon_number": 15}
 var shield_2 = {"name": "Gemmed Shield", "description": "A shield encrusted in gems.", "stats": ["DEF+1", "INT+1"], "type": "armor", "player": "any", "quantity": 1, "icon_number": 16}
 var armor_1 = {"name": "Heavy Armor", "description": "Sturdy, bulky armor", "stats": ["SPD-5", "DEF+3"], "type": "armor", "player": "any", "quantity": 1, "icon_number": 17}
-var armor_2 = {"name": "Sleek Armor", "description": "Slim, leather armor.", "stats": ["SPD+5"], "type": "armor", "player": "any", "quantity": 1, "icon_number": 18}
+var armor_2 = {"name": "Sleek Armor", "description": "Slim, leather armor.", "stats": ["SPD+5"], "type": "armor", "player": "any", "quantity": 4, "icon_number": 18}
 
 var all_items = [weak_h, med_h, high_h, weak_m, med_m, high_m, bow_1, bow_2, staff_1, staff_2, shield_1, shield_2, armor_1, armor_2]
 var current_inventory

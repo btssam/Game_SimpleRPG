@@ -237,6 +237,7 @@ skill_5 = {
 "targets": "none"
 }
 number_of_skills = 3
+equipment = [ "spear_1", "armor_2" ]
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 23 )

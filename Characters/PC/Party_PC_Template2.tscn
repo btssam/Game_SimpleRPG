@@ -61,6 +61,14 @@ region = Rect2( 192, 0, 24, 32 )
 atlas = ExtResource( 2 )
 region = Rect2( 264, 192, 24, 32 )
 
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 3 )
+region = Rect2( 60, 64, 30, 32 )
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 3 )
+region = Rect2( 90, 64, 30, 32 )
+
 [sub_resource type="AtlasTexture" id=17]
 atlas = ExtResource( 2 )
 region = Rect2( 144, 32, 24, 32 )
@@ -85,14 +93,6 @@ region = Rect2( 168, 96, 24, 32 )
 atlas = ExtResource( 2 )
 region = Rect2( 192, 96, 24, 32 )
 
-[sub_resource type="AtlasTexture" id=8]
-atlas = ExtResource( 3 )
-region = Rect2( 60, 64, 30, 32 )
-
-[sub_resource type="AtlasTexture" id=9]
-atlas = ExtResource( 3 )
-region = Rect2( 90, 64, 30, 32 )
-
 [sub_resource type="SpriteFrames" id=23]
 animations = [ {
 "frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 7 ), SubResource( 7 ), SubResource( 7 ) ],
@@ -115,6 +115,11 @@ animations = [ {
 "name": "idle_battle",
 "speed": 5.0
 }, {
+"frames": [ SubResource( 8 ), SubResource( 9 ) ],
+"loop": false,
+"name": "dying",
+"speed": 2.0
+}, {
 "frames": [ SubResource( 17 ), SubResource( 18 ), SubResource( 19 ), SubResource( 18 ) ],
 "loop": true,
 "name": "walk_right",
@@ -124,11 +129,6 @@ animations = [ {
 "loop": true,
 "name": "walk_left",
 "speed": 5.0
-}, {
-"frames": [ SubResource( 8 ), SubResource( 9 ) ],
-"loop": false,
-"name": "dying",
-"speed": 2.0
 } ]
 
 [sub_resource type="RectangleShape2D" id=24]
@@ -207,6 +207,7 @@ skill_2 = {
 "targets": "enemy"
 }
 number_of_skills = 1
+equipment = [ "staff_1", "armor_2" ]
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 23 )

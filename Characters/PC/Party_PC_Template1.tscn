@@ -209,6 +209,7 @@ skill_2 = {
 "targets": "enemy"
 }
 number_of_skills = 1
+equipment = [ "bow_1", "armor_2" ]
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 23 )
