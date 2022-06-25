@@ -17,7 +17,6 @@ __meta__ = {
 }
 
 [node name="Popup_Items" type="Popup" parent="."]
-visible = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {
@@ -325,6 +324,7 @@ text = "NAME
 scroll_active = false
 
 [node name="Popup_Equip" type="Popup" parent="."]
+visible = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {

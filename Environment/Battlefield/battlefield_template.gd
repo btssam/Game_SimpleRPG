@@ -13,8 +13,8 @@ var current_target = 0
 var isSelectingCommand = false
 var current_command = 0
 var current_selection = 0
-var target_selector_sprite
-var target_animation_player
+#var target_selector_sprite
+#var target_animation_player
 ###command card
 onready var command_card_1 = $BattleUI/Command_Card
 onready var command_card_2 = $BattleUI/Command_Card2
@@ -94,6 +94,10 @@ var current_item_effect = ''
 var current_item_description = ''
 var current_item_quantity = 0
 
+var current_selector_sprite
+var current_selector_animation_player
+#var get_nodes
+
 func _ready():
 	####initialize
 	get_random_number_of_units()
@@ -137,7 +141,7 @@ func _input(event):
 					return_target()
 				if event.is_action_pressed("esc"):
 					isSelectingTarget = false
-					disable_selector_sprite()
+					disable_target_selector()
 					target_type = 'enemy' #prevent issues with attacking after skill
 					process_command() #enable cursor right away
 		###commandcard
@@ -159,9 +163,13 @@ func _input(event):
 				if event.is_action_pressed("esc"):
 					isSelectingSkill = false
 					isSelectingCommand = true
-					disable_skill_card_selector_sprite()
+#					disable_skill_card_selector_sprite()
+					get_skill_card_nodes()
+					disable_selector()
 					active_skill_card.hide()
-					enable_card_selector_sprite()
+					get_card_nodes()
+					enable_selector()
+#					enable_card_selector_sprite()
 				if event.is_action_pressed("info"):
 					update_log(active_player.current_skills[current_skill_selection].description)
 		###itemcard
@@ -173,9 +181,15 @@ func _input(event):
 				if event.is_action_pressed("esc"):
 					isSelectingItem = false
 					isSelectingCommand = true
-					disable_item_selector_sprite()
+#					disable_item_selector_sprite()
+					get_item_card_nodes()
+					disable_selector()
+					get_card_nodes()
+					disable_selector() #why disable
 					active_item_card.hide()
-					enable_card_selector_sprite()
+#					enable_card_selector_sprite()
+					get_card_nodes()
+					enable_selector()
 		###testing
 		if event.is_action_pressed("test_key"):
 				close_scene()
@@ -222,9 +236,12 @@ func process_command(): #which action occurs when space is pressed: (process_inp
 				active_command_card.show()
 				cardIsVisible = true
 				isSelectingCommand = true
-				enable_card_selector_sprite()
+#				enable_card_selector_sprite()
+				get_card_nodes()
+				enable_selector()
 			else: #make selection. hide card
-				stop_card_selector_sprite()
+				get_card_nodes()
+				stop_selector()
 				current_command = current_selection  #do this here so dif. skills may target differently
 				if current_selection == 0: #attack
 					active_command_card.hide()
@@ -235,59 +252,71 @@ func process_command(): #which action occurs when space is pressed: (process_inp
 					isSelectingSkill = true
 					get_skills(active_party_member)
 					active_skill_card.show()
-					enable_skill_card_selector_sprite()
+#					enable_skill_card_selector_sprite()
+					get_skill_card_nodes()
+					enable_selector()
 				elif current_selection == 1 and isSelectingSkill == true: #select the skill
-					stop_skill_card_selector_sprite()
+#					stop_skill_card_selector_sprite()
+					get_skill_card_nodes()
+					stop_selector()
 					get_skill_effect()
 				elif current_selection == 2 and isSelectingItem == false: #open item menu
-					update_log('You have no items.')
 					isSelectingCommand = false
 					isSelectingItem = true
 					get_items(active_party_member)
 					active_item_card.show()
-					enable_item_selector_sprite()
+#					enable_item_selector_sprite()
+					get_item_card_nodes()
+					enable_selector()
 					#reset afterwards
 #					disable_card_selector_sprite() #already at the end of selection, after picking target
 #					current_selection = 0 #will need to move this to after I process item selection
 #					current_command  = 0 #''
 				elif current_selection == 2 and isSelectingItem == true: #select the item
-					stop_item_selector_sprite()
+#					stop_item_selector_sprite()
+					get_item_card_nodes()
+					stop_selector()
 					get_item_effect()
 				elif current_selection == 3: #flee
 					isSelectingCommand = false
 					close_scene()
 
 func change_command(direction):
-	disable_card_selector_sprite()
+#	disable_card_selector_sprite()
+	get_card_nodes()
+	disable_selector()
 	if direction == 'up':
 		if current_selection > 0 :
 			current_selection -= 1
 	elif direction == 'down':
 		if current_selection < number_of_selections - 1:
 			current_selection += 1
-	enable_card_selector_sprite()
+#	enable_card_selector_sprite()
+	get_card_nodes()
+	enable_selector()
 
-func get_card_nodes():
+func get_card_nodes(): #maybe can make a generic get_nodes
 	var commands_list
 	commands_list = active_command_card.get_node("TextureRect").get_children()
-	card_selector_sprite = commands_list[current_selection].get_node("Selector")
-	card_animation_player = commands_list[current_selection].get_node("AnimationPlayer")
+#	card_selector_sprite = commands_list[current_selection].get_node("Selector")
+#	card_animation_player = commands_list[current_selection].get_node("AnimationPlayer")
+	current_selector_sprite = commands_list[current_selection].get_node("Selector")
+	current_selector_animation_player = commands_list[current_selection].get_node("AnimationPlayer")
 
-func enable_card_selector_sprite():
-	get_card_nodes()
-	card_selector_sprite.visible = true
-	card_animation_player.play('blink')
+
+
+func enable_selector():
+	current_selector_sprite.visible = true
+	current_selector_animation_player.play('blink')
 	
-func disable_card_selector_sprite():
-	get_card_nodes()
-	card_selector_sprite.visible = false
-	card_animation_player.stop()
+func disable_selector():
+	current_selector_sprite.visible = false
+	current_selector_animation_player.stop()
 
-func stop_card_selector_sprite():
-	get_card_nodes()
-	card_selector_sprite.visible = true
-	card_animation_player.play('blink')
-	card_animation_player.stop()
+func stop_selector():
+	current_selector_sprite.visible = true
+	current_selector_animation_player.play('blink')
+	current_selector_animation_player.stop()
 
 
 ###targeting
@@ -299,10 +328,10 @@ func select_target():
 	isSelectingSkill = false
 	isSelectingItem = false
 	isSelectingTarget = true #I at one point needed to use set_deferred
-	enable_selector_sprite()
+	enable_target_selector()
 
 func change_target(direction):
-	disable_selector_sprite()
+	disable_target_selector()
 	if target_type == "enemy":
 		if direction == 'up' and current_target > 0:
 			current_target -= 1
@@ -313,21 +342,21 @@ func change_target(direction):
 			current_target += 1
 		elif direction == 'down' and current_target > 0:
 			current_target -= 1
-	enable_selector_sprite()
+	enable_target_selector()
 	
-func get_target_nodes():
-	target_selector_sprite = targetable_enemy_list[current_target].get_node("Selector")
-	target_animation_player = targetable_enemy_list[current_target].get_node("AnimationPlayer")
+func get_target_enemy_nodes():
+#	target_selector_sprite = targetable_enemy_list[current_target].get_node("Selector")
+#	target_animation_player = targetable_enemy_list[current_target].get_node("AnimationPlayer")
+	current_selector_sprite = targetable_enemy_list[current_target].get_node("Selector")
+	current_selector_animation_player = targetable_enemy_list[current_target].get_node("AnimationPlayer")
 	
-func enable_selector_sprite():
+func enable_target_selector():
 	if target_type == "enemy":
-		get_target_nodes()
-		target_selector_sprite.visible = true
-		target_animation_player.play('blink')
+		get_target_enemy_nodes()
+		enable_selector()
 	elif target_type == "ally":
 		get_target_ally_nodes()
-		target_selector_sprite.visible = true
-		target_animation_player.play('blink')
+		enable_selector()
 	elif target_type == "enemies":
 		enable_enemies_selector()
 	elif target_type == "allies":
@@ -335,15 +364,13 @@ func enable_selector_sprite():
 	elif target_type == "none":
 		enable_self_selector()
 
-func disable_selector_sprite():
+func disable_target_selector():
 	if target_type == "enemy":
-		get_target_nodes()
-		target_selector_sprite.visible = false
-		target_animation_player.stop()
+		get_target_enemy_nodes()
+		disable_selector()
 	elif target_type == "ally":
 		get_target_ally_nodes()
-		target_selector_sprite.visible = false
-		target_animation_player.stop()
+		disable_selector()
 	elif target_type == "enemies":
 		disable_enemies_selector()
 	elif target_type == "allies":
@@ -353,10 +380,16 @@ func disable_selector_sprite():
 
 func return_target():
 	isSelectingTarget = false
-	disable_selector_sprite()
-	disable_card_selector_sprite()
-	disable_skill_card_selector_sprite()
-	disable_item_selector_sprite()
+	disable_target_selector()
+#	disable_card_selector_sprite()
+	get_card_nodes()
+	enable_selector()
+#	disable_skill_card_selector_sprite()
+	get_skill_card_nodes()
+	disable_selector()
+#	disable_item_selector_sprite()
+	get_item_card_nodes()
+	disable_selector()
 	get_command()
 
 #respond_to_command
@@ -613,37 +646,45 @@ func get_skills(active_party_member): #shouldn't these be active_skill_card
 
 func get_skill_card_nodes():
 	var skills_list = active_skill_card.get_node("TextureRect").get_children()
-	skill_card_selector_sprite = skills_list[current_skill_selection].get_node("Selector")
-	skill_card_animation_player = skills_list[current_skill_selection].get_node("AnimationPlayer")
+	current_selector_sprite = skills_list[current_skill_selection].get_node("Selector")
+	current_selector_animation_player = skills_list[current_skill_selection].get_node("AnimationPlayer")
 
-func enable_skill_card_selector_sprite():
-	get_skill_card_nodes()
-	skill_card_selector_sprite.visible = true
-	skill_card_animation_player.play('blink')
+#func enable_skill_card_selector_sprite():
+#	get_skill_card_nodes()
+#	skill_card_selector_sprite.visible = true
+#	skill_card_animation_player.play('blink')
 
-func disable_skill_card_selector_sprite():
-	get_skill_card_nodes()
-	skill_card_selector_sprite.visible = false
-	skill_card_animation_player.stop()
+#func disable_skill_card_selector_sprite():
+#	get_skill_card_nodes()
+#	skill_card_selector_sprite.visible = false
+#	skill_card_animation_player.stop()
 
 
-func stop_skill_card_selector_sprite():
-	get_skill_card_nodes()
-	skill_card_selector_sprite.visible = true
-	skill_card_animation_player.play('blink')
-	skill_card_animation_player.stop()
+#func stop_skill_card_selector_sprite():
+#	get_skill_card_nodes()
+#	skill_card_selector_sprite.visible = true
+#	skill_card_animation_player.play('blink')
+#	skill_card_animation_player.stop()
 
 func change_skill(direction):
 	if direction == 'up':
 		if current_skill_selection > 0 :
-			disable_skill_card_selector_sprite()
+#			disable_skill_card_selector_sprite()
+			get_skill_card_nodes()
+			disable_selector()
 			current_skill_selection -= 1
-			enable_skill_card_selector_sprite()
+#			enable_skill_card_selector_sprite()
+			get_skill_card_nodes()
+			enable_selector()
 	elif direction == 'down':
 		if current_skill_selection < number_of_skill_selections - 1:
-			disable_skill_card_selector_sprite()
+#			disable_skill_card_selector_sprite()
+			get_skill_card_nodes()
+			disable_selector()
 			current_skill_selection += 1
-			enable_skill_card_selector_sprite()
+#			enable_skill_card_selector_sprite()
+			get_skill_card_nodes()
+			enable_selector()
 
 func get_skill_effect():
 	var current_skill = active_player.current_skills[current_skill_selection]
@@ -664,7 +705,9 @@ func get_skill_effect():
 #		disable_skill_card_selector_sprite()
 #		isSelectingSkill = true
 		current_skill_selection = 0
-		enable_skill_card_selector_sprite()
+#		enable_skill_card_selector_sprite()
+		get_skill_card_nodes()
+		enable_selector()
 		target_type = 'enemy'
 		
 
@@ -673,48 +716,56 @@ func initalize_targetable_ally_list():
 	targetable_number_of_allies = players.size()
 
 func get_target_ally_nodes():
-	target_selector_sprite = targetable_ally_list[current_target].get_node("Selector")
-	target_animation_player = targetable_ally_list[current_target].get_node("AnimationPlayer")
+#	target_selector_sprite = targetable_ally_list[current_target].get_node("Selector")
+#	target_animation_player = targetable_ally_list[current_target].get_node("AnimationPlayer")
+	current_selector_sprite = targetable_ally_list[current_target].get_node("Selector")
+	current_selector_animation_player = targetable_ally_list[current_target].get_node("AnimationPlayer")
 
 func enable_enemies_selector():
 	for i in targetable_number_of_units:
-		target_selector_sprite = targetable_enemy_list[i].get_node("Selector")
-		target_animation_player = targetable_enemy_list[i].get_node("AnimationPlayer")
-		target_selector_sprite.visible = true
-		target_animation_player.play('blink')
+		current_selector_sprite = targetable_enemy_list[i].get_node("Selector")
+		current_selector_animation_player = targetable_enemy_list[i].get_node("AnimationPlayer") #set_nodes
+		enable_selector()
+#		target_selector_sprite.visible = true
+#		target_animation_player.play('blink') #enable_selector
 		
 func disable_enemies_selector():
 	for i in targetable_number_of_units:
-		target_selector_sprite = targetable_enemy_list[i].get_node("Selector")
-		target_animation_player = targetable_enemy_list[i].get_node("AnimationPlayer")
-		target_selector_sprite.visible = false
-		target_animation_player.stop()
+		current_selector_sprite = targetable_enemy_list[i].get_node("Selector")
+		current_selector_animation_player = targetable_enemy_list[i].get_node("AnimationPlayer")
+		disable_selector()
+#		target_selector_sprite.visible = false
+#		target_animation_player.stop()
 
 func enable_allies_selector():
 	for i in targetable_number_of_allies:
-		target_selector_sprite = targetable_ally_list[i].get_node("Selector")
-		target_animation_player = targetable_ally_list[i].get_node("AnimationPlayer")
-		target_selector_sprite.visible = true
-		target_animation_player.play('blink')
+		current_selector_sprite = targetable_ally_list[i].get_node("Selector")
+		current_selector_animation_player = targetable_ally_list[i].get_node("AnimationPlayer")
+		enable_selector()
+#		target_selector_sprite.visible = true
+#		target_animation_player.play('blink')
 		
 func disable_allies_selector():
 	for i in targetable_number_of_allies:
-		target_selector_sprite = targetable_ally_list[i].get_node("Selector")
-		target_animation_player = targetable_ally_list[i].get_node("AnimationPlayer")
-		target_selector_sprite.visible = false
-		target_animation_player.stop()
+		current_selector_sprite = targetable_ally_list[i].get_node("Selector")
+		current_selector_animation_player = targetable_ally_list[i].get_node("AnimationPlayer")
+		disable_selector()
+#		target_selector_sprite.visible = false
+#		target_animation_player.stop()
 
-func enable_self_selector():
-	target_selector_sprite = active_player.get_node("Selector")
-	target_animation_player = active_player.get_node("AnimationPlayer")
-	target_selector_sprite.visible = true
-	target_animation_player.play('blink')
+func enable_self_selector():   #I could just use the same selector_sprite function and just set a different node. change to current_selector_sprite and current_animation_player and coudld just use the different get_node functions
+	current_selector_sprite = active_player.get_node("Selector")
+	current_selector_animation_player = active_player.get_node("AnimationPlayer")
+	enable_selector()
+#	target_selector_sprite.visible = true
+#	target_animation_player.play('blink')
 	
 func disable_self_selector():
-	target_selector_sprite = active_player.get_node("Selector")
-	target_animation_player = active_player.get_node("AnimationPlayer")
-	target_selector_sprite.visible = false
-	target_animation_player.stop()
+	current_selector_sprite = active_player.get_node("Selector")
+	current_selector_animation_player = active_player.get_node("AnimationPlayer")
+	disable_selector()
+#	target_selector_sprite.visible = false
+#	target_animation_player.stop()
 
 func check_max_player_health():
 	for i in 4:
@@ -743,8 +794,8 @@ func check_mp():
 ### items
 func get_item_card_nodes():
 	var items_list = active_item_card.get_node("TextureRect").get_children()
-	item_card_selector_sprite = items_list[current_item_selection].get_node("Selector")
-	item_card_animation_player = items_list[current_item_selection].get_node("AnimationPlayer")
+	current_selector_sprite = items_list[current_item_selection].get_node("Selector")
+	current_selector_animation_player = items_list[current_item_selection].get_node("AnimationPlayer")
 
 func enable_item_selector_sprite():
 	get_item_card_nodes()
@@ -765,14 +816,22 @@ func stop_item_selector_sprite():
 func change_item(direction):
 	if direction == 'up':
 		if current_item_selection > 0 :
-			disable_item_selector_sprite()
+#			disable_item_selector_sprite()
+			get_item_card_nodes()
+			disable_selector()
 			current_item_selection -= 1
-			enable_item_selector_sprite()
+#			enable_item_selector_sprite()
+			get_item_card_nodes()
+			enable_selector()
 	elif direction == 'down':
 		if current_item_selection < number_of_item_selections - 1:
-			disable_item_selector_sprite()
+#			disable_item_selector_sprite()
+			get_item_card_nodes()
+			disable_selector()
 			current_item_selection += 1
-			enable_item_selector_sprite()
+#			enable_item_selector_sprite()
+			get_item_card_nodes()
+			enable_selector()
 
 func get_items(active_party_member):
 	var items_text = [active_item_card.get_node("TextureRect/Item1"), active_item_card.get_node("TextureRect/Item2"), active_item_card.get_node("TextureRect/Item3")]
@@ -820,7 +879,9 @@ func get_item_effect():
 	else:
 		update_log("Insufficient Quantity!")
 		current_skill_selection = 0
-		enable_item_selector_sprite()
+#		enable_item_selector_sprite()
+		get_item_card_nodes()
+		enable_selector()
 		target_type = 'enemy'
 
 #func get_skill_effect():

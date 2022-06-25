@@ -55,14 +55,20 @@ onready var equipment_3 = get_node("../../../../Party/Party_PC_Template2").equip
 onready var equipment_4 = get_node("../../../../Party/Party_PC_Template3").equipment
 onready var equipment = [equipment_1, equipment_2, equipment_3, equipment_4]
 
+onready var choices_node_equipment =  get_node("Popup_Equip/Frame/Choices")
+onready var grid_container_node_equipment = choices_node_equipment.get_node("NinePatchRect/GridContainer")
+onready var equip_selector_node = "res://UI/Menu/Inventory/Equip_Selector.tscn"
+
 func _ready():
 	for i in 4:
 		get_items(i)
 #	enable_item_selector_sprite()
 	set_choices()
+	set_choices_equipment()
 	enable_item_choice_selector_sprite()
 
 func _input(event):
+	#add if's for if is on equip page
 	if event.is_action_pressed("up") and isSelectingNewItem:
 		change_choice("up")
 	if event.is_action_pressed("down") and isSelectingNewItem:
@@ -127,7 +133,7 @@ func get_item_card_nodes():
 	item_card_selector_sprite = items_list[current_item_selection].get_node("Selector")
 	item_card_animation_player = items_list[current_item_selection].get_node("AnimationPlayer")
 
-func enable_item_selector_sprite():
+func enable_item_selector_sprite(): #I could just use the same selector_sprite function and just set a different node. change to current_selector_sprite and current_animation_player and coudld just use the different get_node functions
 	get_item_card_nodes()
 	item_card_selector_sprite.visible = true
 	item_card_animation_player.play('blink')
@@ -214,7 +220,6 @@ func change_choice(direction):
 			current_choice_selection += 1
 			enable_item_choice_selector_sprite()
 
-
 func choose_item():
 	disable_item_selector_sprite()
 	disable_item_choice_selector_sprite()
@@ -268,8 +273,14 @@ func get_equipment(player):
 	for x in 2: #for armor and weapon
 		var this_equipment = equip_cards[player].get_node("TextureRect").get_child(x)
 		for i in current_equips.size():
-			print(equipment[player][x])
-			print(current_equips[i].variable_name)
 			if current_equips[i].variable_name == equipment[player][x]:
 				this_equipment.get_node("Sprite").frame = current_equips[i].icon_number
 				this_equipment.get_node("Selector").frame = current_equips[i].icon_number
+
+func set_choices_equipment():
+	for i in current_equips.size(): #determine by equips.size(), should max at 16
+		var item_to_be_loaded = load(equip_selector_node).instance()
+		grid_container_node_equipment.add_child(item_to_be_loaded)
+		var current_item = grid_container_node_equipment.get_child(i)
+		current_item.get_node("Sprite").frame = current_equips[i].icon_number
+		current_item.get_node("Selector").frame = current_equips[i].icon_number
