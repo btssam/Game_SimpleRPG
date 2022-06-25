@@ -8,6 +8,7 @@ var weak_m = {"name": "Weak M", "description": "Restores 5 MP to a target.", "ef
 var med_m = {"name": "Med M", "description": "Restores 10 MP to a target.", "effect_type": "heal_mp", "effect": "10", "targets": "ally", "quantity": 2, "icon_number": 2}
 var high_m = {"name": "High M", "description": "Restores 15 MP to a target.", "effect_type": "heal_mp", "effect": "15", "targets": "ally", "quantity": 0, "icon_number": 0}
 
+
 var sword_1 = {"name": "Shortsword", "description": "A simple, yet effective, blade.", "stats": ["ATK+2", "DEF+2"], "type": "weapon", "player": "Alastor", "quantity": 1, "icon_number": 0}
 var sword_2 = {"name": "Golden Sword", "description": "A blade made of precious metals.", "stats": ["INT+3", "DEF+1", "SPD+1"], "type": "weapon", "player": "Alastor", "quantity": 1, "icon_number": 8}
 var spear_1 =  {"name": "Light Spear", "description": "A swift spear.", "stats": ["ATK+2", "SPD+1", "DEF+1"], "type": "weapon", "player": "Frey", "quantity": 1, "icon_number": 13}
@@ -22,10 +23,10 @@ var shield_2 = {"name": "Gemmed Shield", "description": "A shield encrusted in g
 var armor_1 = {"name": "Heavy Armor", "description": "Sturdy, bulky armor", "stats": ["SPD-5", "DEF+3"], "type": "armor", "player": "any", "quantity": 1, "icon_number": 17}
 var armor_2 = {"name": "Sleek Armor", "description": "Slim, leather armor.", "stats": ["SPD+5"], "type": "armor", "player": "any", "quantity": 4, "icon_number": 18}
 
-var all_items = [weak_h, med_h, high_h, weak_m, med_m, high_m, bow_1, bow_2, staff_1, staff_2, shield_1, shield_2, armor_1, armor_2]
+var all_items = [weak_h, med_h, high_h, weak_m, med_m, high_m]
 var current_inventory
 
-var all_equips = [sword_1, sword_2, spear_1, spear_2,]
+var all_equips = [sword_1, sword_2, spear_1, spear_2, bow_1, bow_2, staff_1, staff_2, shield_1, shield_2, armor_1, armor_2]
 var current_equips
 
 func _ready():
@@ -43,4 +44,4 @@ func update_equips():
 	current_equips = []
 	for i in all_equips.size():
 		if all_equips[i].quantity != 0:
-			current_equips.append(all_items[i])
+			current_equips.append(all_equips[i])

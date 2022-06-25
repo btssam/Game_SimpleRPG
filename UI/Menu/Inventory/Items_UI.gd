@@ -36,9 +36,24 @@ onready var number_of_choice_selections = current_inventory.size()
 
 var isInfoOpen = false
 
+onready var item_selector_node = "res://UI/Menu/Inventory/Item_Selector.tscn"
+
 var isOnEquipPage = false
 
-onready var item_selector_node = "res://UI/Menu/Inventory/Item_Selector.tscn"
+onready var current_equips = get_node("../../../../Party/PC_Template/Inventory").current_equips
+onready var all_equips = get_node("../../../../Party/PC_Template/Inventory").all_equips
+
+onready var equip_card_1 = $Popup_Equip/Frame/PC1/Sprite/Equip_Card
+onready var equip_card_2 = $Popup_Equip/Frame/PC2/Sprite/Equip_Card
+onready var equip_card_3 = $Popup_Equip/Frame/PC3/Sprite/Equip_Card
+onready var equip_card_4 = $Popup_Equip/Frame/PC4/Sprite/Equip_Card
+onready var equip_cards = [equip_card_1, equip_card_2, equip_card_3, equip_card_4]
+
+onready var equipment_1 = get_node("../../../../Party/PC_Template").equipment
+onready var equipment_2 = get_node("../../../../Party/Party_PC_Template1").equipment
+onready var equipment_3 = get_node("../../../../Party/Party_PC_Template2").equipment
+onready var equipment_4 = get_node("../../../../Party/Party_PC_Template3").equipment
+onready var equipment = [equipment_1, equipment_2, equipment_3, equipment_4]
 
 func _ready():
 	for i in 4:
@@ -156,11 +171,6 @@ func set_choices():
 		var item_to_be_loaded = load(item_selector_node).instance()
 		grid_container_node.add_child(item_to_be_loaded)
 		var current_item = grid_container_node.get_child(i)
-		for c in all_inventory.size(): #use the index of all_inventory to determine which item it is, and therefore the frame, rather than having to check explecitly. Just need to make sure they line up right
-			if all_inventory[c] == current_inventory[i]:
-				current_item.get_node("Sprite").frame = c
-				current_item.get_node("Selector").frame = c
-		
 		current_item.get_node("Sprite").frame = current_inventory[i].icon_number
 		current_item.get_node("Selector").frame = current_inventory[i].icon_number
 
@@ -197,8 +207,7 @@ func change_choice(direction):
 			current_choice_selection += 1
 			enable_item_choice_selector_sprite()
 
-#func choose_item():
-#	pass
+
 func choose_item():
 	disable_item_selector_sprite()
 	disable_item_choice_selector_sprite()
@@ -241,9 +250,17 @@ func get_info():
 	info_desc_node.bbcode_text = current_selected_item_info.description
 	info_quantity_node.bbcode_text = "[color=#1E90FF]Quantity[/color]: " + str(current_selected_item_info.quantity)
 	info_effect_type_node.bbcode_text = "[color=#b99c4b]Effect[/color]: " + current_selected_item_info.effect_type
-#		var info_scale = current_selected_item_info.effect
-#		info_scale.erase(3,1) #replace _ with x
-#		info_scale = info_scale.insert(3, " x ")
 	info_effect_node.bbcode_text = "[color=#b99c4b]Scale[/color]: " + str(current_selected_item_info.effect)
 	info_targets_node.bbcode_text = "[color=#b99c4b]Targets[/color]: " + current_selected_item_info.targets
 	info_icon_node.bbcode_text = "[color=#b99c4b]Icon[/color]: " + str(current_selected_item_info.icon_number)
+
+
+
+
+#func get_equipment(player):
+#	for x in 2: #for armor and weapon
+#		var current_equipment = equip_cards[player].get_node("TextureRect").get_child(x)
+#		for i in current_equips.size():
+#			if current_equips[i].name == equipment[player][x].name:
+#				current_equipment.get_node("Sprite").frame = current_equipment[i].icon_number
+#				current_equipment.get_node("Selector").frame = current_equipment[i].icon_number
