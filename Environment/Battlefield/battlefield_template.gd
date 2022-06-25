@@ -1,7 +1,6 @@
 extends Node2D
 
 ###initialize
-#var enemy_node = "res://Characters/NPC/Enemy/Enemy_Template.tscn"
 onready var enemy_nodes = ["res://Characters/NPC/Enemy/Earth_Nymph.tscn", "res://Characters/NPC/Enemy/Sea_Nymph.tscn", "res://Characters/NPC/Enemy/Brown_Wolf.tscn", "res://Characters/NPC/Enemy/Green_Wolf.tscn", "res://Characters/NPC/Enemy/Blood_Goblin.tscn", "res://Characters/NPC/Enemy/Bog_Goblin.tscn"]
 var number_of_units = 0
 var enemy_list = []
@@ -11,10 +10,7 @@ var isSelectingTarget = false
 var target_type = "enemy"
 var current_target = 0
 var isSelectingCommand = false
-var current_command = 0
 var current_selection = 0
-#var target_selector_sprite
-#var target_animation_player
 ###command card
 onready var command_card_1 = $BattleUI/Command_Card
 onready var command_card_2 = $BattleUI/Command_Card2
@@ -96,7 +92,6 @@ var current_item_quantity = 0
 
 var current_selector_sprite
 var current_selector_animation_player
-#var get_nodes
 
 func _ready():
 	####initialize
@@ -109,9 +104,7 @@ func _ready():
 	command_card_3.hide()
 	command_card_4.hide()
 	###UI_update
-#	initialize_enemy_UI()
 	update_enemy_UI()
-#	initialize_PC_UI()
 	update_PC_UI()
 	initialize_log()
 	###turn_ordering
@@ -129,7 +122,7 @@ func _input(event):
 	if isVictorious:
 		if event.is_action_pressed("interact"):
 			close_scene()
-	if not party_node.isPartyDead and not party_node.isAttacking: #cant interact while mid animation
+	if not party_node.isPartyDead and not party_node.isAttacking: #disable interacting while mid animation
 		###targeting
 		if isPlayersTurn:
 			if isSelectingTarget:
@@ -142,7 +135,7 @@ func _input(event):
 				if event.is_action_pressed("esc"):
 					isSelectingTarget = false
 					disable_target_selector()
-					target_type = 'enemy' #prevent issues with attacking after skill
+					target_type = 'enemy' #prevent issues with wrong attack targets after skill
 					process_command() #enable cursor right away
 		###commandcard
 			elif not isSelectingTarget:
@@ -163,13 +156,11 @@ func _input(event):
 				if event.is_action_pressed("esc"):
 					isSelectingSkill = false
 					isSelectingCommand = true
-#					disable_skill_card_selector_sprite()
 					get_skill_card_nodes()
 					disable_selector()
 					active_skill_card.hide()
 					get_card_nodes()
 					enable_selector()
-#					enable_card_selector_sprite()
 				if event.is_action_pressed("info"):
 					update_log(active_player.current_skills[current_skill_selection].description)
 		###itemcard
@@ -181,13 +172,9 @@ func _input(event):
 				if event.is_action_pressed("esc"):
 					isSelectingItem = false
 					isSelectingCommand = true
-#					disable_item_selector_sprite()
 					get_item_card_nodes()
 					disable_selector()
-					get_card_nodes()
-					disable_selector() #why disable
 					active_item_card.hide()
-#					enable_card_selector_sprite()
 					get_card_nodes()
 					enable_selector()
 		###testing
@@ -198,7 +185,7 @@ func _input(event):
 
 ###initialize
 #spawn enemies
-func get_random_number_of_units(): # 1-3
+func get_random_number_of_units(): # 1-3, only 3 slots for enemies
 	randomize()
 	number_of_units = randi()%3 + 1
 	targetable_number_of_units = number_of_units
@@ -206,17 +193,17 @@ func get_random_number_of_units(): # 1-3
 
 func get_random_unit():
 	randomize()
-	return randi()%6 #0-5
+	return randi()%6 #0-5 , only 6 types of unity
 
 func add_enemies():
 	for i in range(0, number_of_units):
-		var enemy = load(enemy_nodes[get_random_unit()]).instance() #could just randi()%6
+		var enemy = load(enemy_nodes[get_random_unit()]).instance()
 		call_deferred("add_child", enemy)
 		enemy_list.push_back(enemy)
 		call_deferred('change_enemy_position')
 	targetable_enemy_list = enemy_list.duplicate()
 
-func change_enemy_position(): # only account for up to 3 enemies
+func change_enemy_position(): # only accounts for up to 3 enemies
 	for i in range(0, number_of_units):
 		if number_of_units == 3:
 			enemy_list[i].position = Vector2(224, 256 + 128 * i)
@@ -236,13 +223,11 @@ func process_command(): #which action occurs when space is pressed: (process_inp
 				active_command_card.show()
 				cardIsVisible = true
 				isSelectingCommand = true
-#				enable_card_selector_sprite()
 				get_card_nodes()
 				enable_selector()
 			else: #make selection. hide card
 				get_card_nodes()
 				stop_selector()
-				current_command = current_selection  #do this here so dif. skills may target differently
 				if current_selection == 0: #attack
 					active_command_card.hide()
 					cardIsVisible = false
@@ -252,11 +237,9 @@ func process_command(): #which action occurs when space is pressed: (process_inp
 					isSelectingSkill = true
 					get_skills(active_party_member)
 					active_skill_card.show()
-#					enable_skill_card_selector_sprite()
 					get_skill_card_nodes()
 					enable_selector()
 				elif current_selection == 1 and isSelectingSkill == true: #select the skill
-#					stop_skill_card_selector_sprite()
 					get_skill_card_nodes()
 					stop_selector()
 					get_skill_effect()
@@ -265,15 +248,9 @@ func process_command(): #which action occurs when space is pressed: (process_inp
 					isSelectingItem = true
 					get_items(active_party_member)
 					active_item_card.show()
-#					enable_item_selector_sprite()
 					get_item_card_nodes()
 					enable_selector()
-					#reset afterwards
-#					disable_card_selector_sprite() #already at the end of selection, after picking target
-#					current_selection = 0 #will need to move this to after I process item selection
-#					current_command  = 0 #''
 				elif current_selection == 2 and isSelectingItem == true: #select the item
-#					stop_item_selector_sprite()
 					get_item_card_nodes()
 					stop_selector()
 					get_item_effect()
@@ -282,7 +259,6 @@ func process_command(): #which action occurs when space is pressed: (process_inp
 					close_scene()
 
 func change_command(direction):
-#	disable_card_selector_sprite()
 	get_card_nodes()
 	disable_selector()
 	if direction == 'up':
@@ -291,15 +267,12 @@ func change_command(direction):
 	elif direction == 'down':
 		if current_selection < number_of_selections - 1:
 			current_selection += 1
-#	enable_card_selector_sprite()
 	get_card_nodes()
 	enable_selector()
 
-func get_card_nodes(): #maybe can make a generic get_nodes
+func get_card_nodes():
 	var commands_list
 	commands_list = active_command_card.get_node("TextureRect").get_children()
-#	card_selector_sprite = commands_list[current_selection].get_node("Selector")
-#	card_animation_player = commands_list[current_selection].get_node("AnimationPlayer")
 	current_selector_sprite = commands_list[current_selection].get_node("Selector")
 	current_selector_animation_player = commands_list[current_selection].get_node("AnimationPlayer")
 
@@ -322,8 +295,6 @@ func stop_selector():
 ###targeting
 #targeting an enemy
 func select_target():
-#	disable_card_selector_sprite()
-#	disable_skill_card_selector_sprite()
 	isSelectingCommand = false
 	isSelectingSkill = false
 	isSelectingItem = false
@@ -345,8 +316,6 @@ func change_target(direction):
 	enable_target_selector()
 	
 func get_target_enemy_nodes():
-#	target_selector_sprite = targetable_enemy_list[current_target].get_node("Selector")
-#	target_animation_player = targetable_enemy_list[current_target].get_node("AnimationPlayer")
 	current_selector_sprite = targetable_enemy_list[current_target].get_node("Selector")
 	current_selector_animation_player = targetable_enemy_list[current_target].get_node("AnimationPlayer")
 	
@@ -381,21 +350,18 @@ func disable_target_selector():
 func return_target():
 	isSelectingTarget = false
 	disable_target_selector()
-#	disable_card_selector_sprite()
 	get_card_nodes()
 	enable_selector()
-#	disable_skill_card_selector_sprite()
 	get_skill_card_nodes()
 	disable_selector()
-#	disable_item_selector_sprite()
 	get_item_card_nodes()
 	disable_selector()
 	get_command()
 
 #respond_to_command
 func get_command():
-	if current_command == 0: #attack
-		target_type = 'enemy' #issue when selecting attack after canceling skill
+	if current_selection == 0: #attack
+		target_type = 'enemy'
 		party_node.isAttacking = true
 		active_player.get_node("AnimationPlayer").play("attack")
 		yield(active_player.get_node("AnimatedSprite"), "animation_finished")
@@ -403,7 +369,7 @@ func get_command():
 		targetable_enemy_list[current_target].hp -= active_player.attack
 		update_log(str(targetable_enemy_list[current_target].enemy_name.capitalize()) + ' takes [color=#CD5C5C]' + str(active_player.attack) + '[/color] damage!')
 		party_node.isAttacking = false
-	if current_command == 1: #skills. this needs to be updated when a new type of skill is add
+	if current_selection == 1: #skills. this needs to be updated when a new type of skill is add. e.g. a buff
 		active_command_card.hide()
 		active_skill_card.hide()
 		cardIsVisible = false
@@ -444,7 +410,7 @@ func get_command():
 		current_skill_selection = 0
 		number_of_skill_selections = 0
 		party_node.isAttacking = false
-	if current_command == 2:
+	if current_selection == 2:
 		active_command_card.hide()
 		active_item_card.hide()
 		cardIsVisible = false
@@ -474,7 +440,6 @@ func get_command():
 	shift_turn_order()
 	act_in_order()
 	current_selection = 0
-	current_command = 0
 	current_target = 0
 	target_type = 'enemy'
 
@@ -508,7 +473,7 @@ func initialize_log():
 func update_log(message):
 	log_array.push_front(message + '\n')
 	var currentText = ''
-	if log_array.size () > 6: #check if log is too long
+	if log_array.size () > 6: #check if log is too long for size of box/font
 		log_array.pop_back()
 	for i in range(0, log_array.size()):
 		currentText += log_array[i]
@@ -547,9 +512,7 @@ func initialize_turn_order(): # uses speed stat, like dnd
 					randomized_list.insert(c+1, current_unit)
 					initiative_list.insert(c+1, current_initiative)
 					break
-	
 	#consider trying the sort_custom method
-
 	turn_order = randomized_list
 
 func act_in_order():
@@ -590,27 +553,18 @@ func shift_turn_order():
 		else:
 			turn_order[i] = first_unit
 
-#enemy_AI
 func enemy_attack(): #could use targetable ally list
 	enemy_animationPlayer_node = turn_order[0].get_node("AnimationPlayer")
 	enemy_animationPlayer_node.play('attack')
-	var hasSelected =  false
 	yield(enemy_animationPlayer_node, "animation_finished")
 	randomize()
-	var random_player_target = randi()%4 + 1 #check if player is alive, then pick a different target
-	while !hasSelected: #random target loop. maybe based on an aggro stat or player hp
-		if !players[random_player_target - 1].isDead:
-			var damage = turn_order[0].attack - players[random_player_target - 1].defence
-			if damage < 1:
-				damage = 1
-			update_log('P' + str(random_player_target) + " takes [color=#CD5C5C]" + str(damage) + '[/color] damage!')
-			players[random_player_target - 1].hp -= damage
-			players[random_player_target - 1].check_for_death()
-			hasSelected = true
-		if random_player_target < 4: #why is this here. so that when they randomize a dead target, it goes onto the next
-			random_player_target += 1
-		else:
-			random_player_target = 1
+	var random_player_target = randi()%targetable_ally_list.size()
+	var damage = turn_order[0].attack - targetable_ally_list[random_player_target].defence
+	if damage < 1:
+		damage = 1
+	update_log("P" + str(targetable_ally_list[random_player_target].player_number) + " takes [color=#CD5C5C]" + str(damage) + '[/color] damage!')
+	targetable_ally_list[random_player_target].hp -= damage
+	targetable_ally_list[random_player_target].check_for_death()
 	call_deferred("update_PC_UI") #if i dont defer, player goes to -1 as it is updated too quickly
 	shift_turn_order()
 	act_in_order()
@@ -633,12 +587,12 @@ func check_enemy_death():
 
 
 #skills
-func get_skills(active_party_member): #shouldn't these be active_skill_card
+func get_skills(active_party_member):
 	var skills_text = [active_skill_card.get_node("TextureRect/Skill1"), active_skill_card.get_node("TextureRect/Skill2"), active_skill_card.get_node("TextureRect/Skill3"), active_skill_card.get_node("TextureRect/Skill4"), active_skill_card.get_node("TextureRect/Skill5")]
 	for i in 5:
 		skills_text[i].bbcode_text = ''
 	number_of_skill_selections = active_player.number_of_skills
-	for i in number_of_skill_selections: #update names of skills
+	for i in number_of_skill_selections:
 		if has_enough_mp(i):
 			skills_text[i].bbcode_text = active_player.current_skills[i].name
 		else:
@@ -649,40 +603,19 @@ func get_skill_card_nodes():
 	current_selector_sprite = skills_list[current_skill_selection].get_node("Selector")
 	current_selector_animation_player = skills_list[current_skill_selection].get_node("AnimationPlayer")
 
-#func enable_skill_card_selector_sprite():
-#	get_skill_card_nodes()
-#	skill_card_selector_sprite.visible = true
-#	skill_card_animation_player.play('blink')
-
-#func disable_skill_card_selector_sprite():
-#	get_skill_card_nodes()
-#	skill_card_selector_sprite.visible = false
-#	skill_card_animation_player.stop()
-
-
-#func stop_skill_card_selector_sprite():
-#	get_skill_card_nodes()
-#	skill_card_selector_sprite.visible = true
-#	skill_card_animation_player.play('blink')
-#	skill_card_animation_player.stop()
-
 func change_skill(direction):
 	if direction == 'up':
 		if current_skill_selection > 0 :
-#			disable_skill_card_selector_sprite()
 			get_skill_card_nodes()
 			disable_selector()
 			current_skill_selection -= 1
-#			enable_skill_card_selector_sprite()
 			get_skill_card_nodes()
 			enable_selector()
 	elif direction == 'down':
 		if current_skill_selection < number_of_skill_selections - 1:
-#			disable_skill_card_selector_sprite()
 			get_skill_card_nodes()
 			disable_selector()
 			current_skill_selection += 1
-#			enable_skill_card_selector_sprite()
 			get_skill_card_nodes()
 			enable_selector()
 
@@ -702,10 +635,7 @@ func get_skill_effect():
 		select_target()
 	else:
 		update_log("Insufficient MP!")
-#		disable_skill_card_selector_sprite()
-#		isSelectingSkill = true
 		current_skill_selection = 0
-#		enable_skill_card_selector_sprite()
 		get_skill_card_nodes()
 		enable_selector()
 		target_type = 'enemy'
@@ -716,8 +646,6 @@ func initalize_targetable_ally_list():
 	targetable_number_of_allies = players.size()
 
 func get_target_ally_nodes():
-#	target_selector_sprite = targetable_ally_list[current_target].get_node("Selector")
-#	target_animation_player = targetable_ally_list[current_target].get_node("AnimationPlayer")
 	current_selector_sprite = targetable_ally_list[current_target].get_node("Selector")
 	current_selector_animation_player = targetable_ally_list[current_target].get_node("AnimationPlayer")
 
@@ -726,46 +654,34 @@ func enable_enemies_selector():
 		current_selector_sprite = targetable_enemy_list[i].get_node("Selector")
 		current_selector_animation_player = targetable_enemy_list[i].get_node("AnimationPlayer") #set_nodes
 		enable_selector()
-#		target_selector_sprite.visible = true
-#		target_animation_player.play('blink') #enable_selector
 		
 func disable_enemies_selector():
 	for i in targetable_number_of_units:
 		current_selector_sprite = targetable_enemy_list[i].get_node("Selector")
 		current_selector_animation_player = targetable_enemy_list[i].get_node("AnimationPlayer")
 		disable_selector()
-#		target_selector_sprite.visible = false
-#		target_animation_player.stop()
 
 func enable_allies_selector():
 	for i in targetable_number_of_allies:
 		current_selector_sprite = targetable_ally_list[i].get_node("Selector")
 		current_selector_animation_player = targetable_ally_list[i].get_node("AnimationPlayer")
 		enable_selector()
-#		target_selector_sprite.visible = true
-#		target_animation_player.play('blink')
 		
 func disable_allies_selector():
 	for i in targetable_number_of_allies:
 		current_selector_sprite = targetable_ally_list[i].get_node("Selector")
 		current_selector_animation_player = targetable_ally_list[i].get_node("AnimationPlayer")
 		disable_selector()
-#		target_selector_sprite.visible = false
-#		target_animation_player.stop()
 
-func enable_self_selector():   #I could just use the same selector_sprite function and just set a different node. change to current_selector_sprite and current_animation_player and coudld just use the different get_node functions
+func enable_self_selector():
 	current_selector_sprite = active_player.get_node("Selector")
 	current_selector_animation_player = active_player.get_node("AnimationPlayer")
 	enable_selector()
-#	target_selector_sprite.visible = true
-#	target_animation_player.play('blink')
 	
 func disable_self_selector():
 	current_selector_sprite = active_player.get_node("Selector")
 	current_selector_animation_player = active_player.get_node("AnimationPlayer")
 	disable_selector()
-#	target_selector_sprite.visible = false
-#	target_animation_player.stop()
 
 func check_max_player_health():
 	for i in 4:
@@ -788,8 +704,6 @@ func check_mp():
 		active_player.mp = 0
 	if active_player.mp > active_player.maxmp:
 		active_player.mp = active_player.maxmp
-		
-		
 
 ### items
 func get_item_card_nodes():
@@ -816,20 +730,16 @@ func stop_item_selector_sprite():
 func change_item(direction):
 	if direction == 'up':
 		if current_item_selection > 0 :
-#			disable_item_selector_sprite()
 			get_item_card_nodes()
 			disable_selector()
 			current_item_selection -= 1
-#			enable_item_selector_sprite()
 			get_item_card_nodes()
 			enable_selector()
 	elif direction == 'down':
 		if current_item_selection < number_of_item_selections - 1:
-#			disable_item_selector_sprite()
 			get_item_card_nodes()
 			disable_selector()
 			current_item_selection += 1
-#			enable_item_selector_sprite()
 			get_item_card_nodes()
 			enable_selector()
 
@@ -845,23 +755,11 @@ func get_items(active_party_member):
 		else:
 			items_text[i].bbcode_text = '[color=#A9A9A9]' + active_player.equipped_items[i].name + '[/color]'
 
-#func get_skills(active_party_member): #shouldn't these be active_skill_card
-#	var skills_text = [active_skill_card.get_node("TextureRect/Skill1"), active_skill_card.get_node("TextureRect/Skill2"), active_skill_card.get_node("TextureRect/Skill3"), active_skill_card.get_node("TextureRect/Skill4"), active_skill_card.get_node("TextureRect/Skill5")]
-#	for i in 5:
-#		skills_text[i].bbcode_text = ''
-#	number_of_skill_selections = active_player.number_of_skills
-#	for i in number_of_skill_selections: #update names of skills
-#		if has_enough_mp(i):
-#			skills_text[i].bbcode_text = active_player.current_skills[i].name
-#		else:
-#			skills_text[i].bbcode_text = '[color=#A9A9A9]' + active_player.current_skills[i].name + '[/color]'
-
 func has_item(item):
 	if active_player.equipped_items[item].quantity > 0:
 		return true  #set text to default. allow selection
 	else:
 		return false # set text to gray. instead of selecting a target, update log "insufficient quantity" and return to skill select'
-
 
 func get_item_effect():
 	var current_item = active_player.equipped_items[current_item_selection]
@@ -879,32 +777,6 @@ func get_item_effect():
 	else:
 		update_log("Insufficient Quantity!")
 		current_skill_selection = 0
-#		enable_item_selector_sprite()
 		get_item_card_nodes()
 		enable_selector()
 		target_type = 'enemy'
-
-#func get_skill_effect():
-#	target_type = active_player.current_skills[current_skill_selection].targets
-#	current_skill_effect_type = active_player.current_skills[current_skill_selection].effect_type
-#	current_skill_effect = active_player.current_skills[current_skill_selection].effect
-#	current_skill_mp = active_player.current_skills[current_skill_selection].mp.to_int()
-#	current_skill_description = active_player.current_skills[current_skill_selection].description
-#	current_skill_stat = current_skill_effect.left(3)
-#	current_skill_multi = current_skill_effect.right(4).to_float()
-#	skill_stat_assigner = {'ATK': active_player.attack, 'DEF': active_player.defence, 'INT': active_player.intellect, 'SPD': active_player.speed}
-#	current_skill_stat = skill_stat_assigner[current_skill_stat]
-#	current_skill_total_effect = current_skill_stat * current_skill_multi
-#	print('Current_skill_effect_type: ' + str(current_skill_effect_type) +
-#	'\nCurrent_skill_total_effect' + str(current_skill_total_effect) +
-#	'\nCurrent_skill_mp: ' + str(current_skill_mp) +
-#	'\nCurrent_skill_description: ' + str(current_skill_description))
-#	if has_enough_mp(current_skill_selection):
-#		select_target()
-#	else:
-#		update_log("Insufficient MP!")
-##		disable_skill_card_selector_sprite()
-##		isSelectingSkill = true
-#		current_skill_selection = 0
-#		enable_skill_card_selector_sprite()
-#		target_type = 'enemy'

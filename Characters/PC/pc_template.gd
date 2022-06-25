@@ -26,6 +26,7 @@ onready var animation_dict = {'up': 'walk_up', 'down': 'walk_down', 'left': 'wal
 var isAttacking = false
 ###stats
 export var player_name = "Frey"
+export var player_number = 0
 export var attack = 1
 export var defence = 1
 export var intellect = 1

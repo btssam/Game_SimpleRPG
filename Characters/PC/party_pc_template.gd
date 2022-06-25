@@ -24,6 +24,7 @@ var animation_name
 onready var animation_dict = {'up': 'walk_up', 'down': 'walk_down', 'left': 'walk_left', 'right': 'walk_right'}
 ###stats
 var player_name = ''
+export var player_number = 0
 export var attack = 1
 export var defence = 1
 export var intellect = 1
