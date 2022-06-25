@@ -247,16 +247,3 @@ func get_info():
 	info_effect_node.bbcode_text = "[color=#b99c4b]Scale[/color]: " + str(current_selected_item_info.effect)
 	info_targets_node.bbcode_text = "[color=#b99c4b]Targets[/color]: " + current_selected_item_info.targets
 	info_icon_node.bbcode_text = "[color=#b99c4b]Icon[/color]: " + str(current_selected_item_info.icon_number)
-#	elif isSelectingNewSkill:
-#		info_name_node.bbcode_text = choices_array[current_choice_selection].name
-#		info_desc_node.bbcode_text = choices_array[current_choice_selection].description
-#		info_mp_node.bbcode_text = "[color=#1E90FF]MP[/color]: " + choices_array[current_choice_selection].mp
-#		info_effect_type_node.bbcode_text = "[color=#b99c4b]Effect[/color]: " + choices_array[current_choice_selection].effect_type
-#		var info_scale = choices_array[current_choice_selection].effect
-#		info_scale.erase(3,1) #replace _ with x
-#		info_scale = info_scale.insert(3, " x ")
-#		info_effect_node.bbcode_text = "[color=#b99c4b]Scale[/color]: " + info_scale
-#		info_targets_node.bbcode_text = "[color=#b99c4b]Targets[/color]: " + choices_array[current_choice_selection].targets
-#		info_is_equipped_node.bbcode_text = "[color=#b99c4b]Equipped[/color]: no"
-#		print(choices_array[current_choice_selection].name)
-

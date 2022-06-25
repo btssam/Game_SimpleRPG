@@ -198,7 +198,7 @@ mp = 10
 maxmp = 10
 skill_1 = {
 "description": "Deals small damage to an enemy.",
-"effect": "ATK_1.00",
+"effect": "ATK_2.00",
 "effect_type": "damage",
 "mp": "1",
 "name": "Light",
@@ -206,7 +206,7 @@ skill_1 = {
 }
 skill_2 = {
 "description": "Deals medium damage to an enemy.",
-"effect": "ATK_2.00",
+"effect": "ATK_3.00",
 "effect_type": "damage",
 "mp": "2",
 "name": "Med",
@@ -214,7 +214,7 @@ skill_2 = {
 }
 skill_3 = {
 "description": "Deals heavy damage to an enemy.",
-"effect": "ATK_3.00",
+"effect": "ATK_4.00",
 "effect_type": "damage",
 "mp": "3",
 "name": "Heavy",
