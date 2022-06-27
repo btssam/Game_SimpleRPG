@@ -20,8 +20,10 @@ var active_party_member = 0
 onready var active_item_card = item_cards[active_party_member]
 onready var number_of_item_selections = 3 #could have different quantities for each PC
 onready var total_of_current_inventory = current_inventory.size()
-var item_card_selector_sprite
-var item_card_animation_player
+#var item_card_selector_sprite
+#var item_card_animation_player
+var current_selector_sprite
+var current_selector_animation_player
 
 onready var choices_node = get_node("Popup_Items/Frame/Choices")
 
@@ -65,7 +67,9 @@ func _ready():
 #	enable_item_selector_sprite()
 	set_choices()
 	set_choices_equipment()
-	enable_item_choice_selector_sprite()
+#	enable_item_choice_selector_sprite()
+	get_item_choice_nodes()
+	enable_selector()
 
 func _input(event):
 	#add if's for if is on equip page
@@ -76,8 +80,12 @@ func _input(event):
 	if event.is_action_pressed("interact") and isSelectingNewItem:
 		isSelectingNewItem = false
 		set_deferred("isSelectingItem", true)
-		stop_item_choice_selector_sprite()
-		enable_item_selector_sprite()
+#		stop_item_choice_selector_sprite()
+		get_item_choice_nodes()
+		stop_selector()
+#		enable_item_selector_sprite()
+		get_item_card_nodes()
+		enable_selector()
 	if event.is_action_pressed("up") and isSelectingItem:
 		change_item("up")
 	if event.is_action_pressed("down") and isSelectingItem:
@@ -92,9 +100,13 @@ func _input(event):
 		get_node("Popup_Items").hide()
 		isOnEquipPage = true
 		isSelectingNewItem = true
-		enable_item_choice_selector_sprite()
-		disable_item_choice_selector_sprite()
-		disable_item_selector_sprite()
+#		enable_item_choice_selector_sprite() #why enable, then disable
+#		disable_item_choice_selector_sprite()
+		get_item_choice_nodes()
+		disable_selector()
+#		disable_item_selector_sprite()
+		get_item_card_nodes()
+		disable_selector()
 		current_item_selection = 0
 		current_choice_selection = 0 #reset all previous notions, so that when I return to items, im not stuck in previous setting
 		active_party_member = 0
@@ -107,7 +119,9 @@ func _input(event):
 	if event.is_action_pressed("left") and isOnEquipPage:
 		get_node("Popup_Equip").hide()
 		isOnEquipPage = false
-		enable_item_choice_selector_sprite()
+#		enable_item_choice_selector_sprite()
+		get_item_choice_nodes()
+		enable_selector()
 		get_node("Popup_Items").show()
 	if event.is_action_pressed("info") and !isInfoOpen:
 		isInfoOpen = true
@@ -130,54 +144,73 @@ func get_items(party_member):
 
 func get_item_card_nodes():
 	var items_list = active_item_card.get_node("TextureRect").get_children()
-	item_card_selector_sprite = items_list[current_item_selection].get_node("Selector")
-	item_card_animation_player = items_list[current_item_selection].get_node("AnimationPlayer")
+	current_selector_sprite = items_list[current_item_selection].get_node("Selector")
+	current_selector_animation_player = items_list[current_item_selection].get_node("AnimationPlayer")
 
-func enable_item_selector_sprite(): #I could just use the same selector_sprite function and just set a different node. change to current_selector_sprite and current_animation_player and coudld just use the different get_node functions
-	get_item_card_nodes()
-	item_card_selector_sprite.visible = true
-	item_card_animation_player.play('blink')
+#func enable_item_selector_sprite(): #I could just use the same selector_sprite function and just set a different node. change to current_selector_sprite and current_animation_player and coudld just use the different get_node functions
+#	get_item_card_nodes()
+#	item_card_selector_sprite.visible = true
+#	item_card_animation_player.play('blink')
 
-func disable_item_selector_sprite():
-	get_item_card_nodes()
-	item_card_selector_sprite.visible = false
-	item_card_animation_player.stop()
+func enable_selector():
+	current_selector_sprite.visible = true
+	current_selector_animation_player.play('blink')
+	
 
-func stop_item_selector_sprite():
-	get_item_card_nodes()
-	item_card_selector_sprite.visible = true
-	item_card_animation_player.play('blink')
-	item_card_animation_player.stop()
+func disable_selector():
+	current_selector_sprite.visible = false
+	current_selector_animation_player.stop()
+
+func stop_selector():
+	current_selector_sprite.visible = true
+	current_selector_animation_player.play('blink')
+	current_selector_animation_player.stop()
 
 func change_item(direction):
 	if direction == 'up':
 		if current_item_selection > 0 :
-			disable_item_selector_sprite()
+#			disable_item_selector_sprite()
+			get_item_card_nodes()
+			disable_selector()
 			current_item_selection -= 1
-			enable_item_selector_sprite()
+#			enable_item_selector_sprite()
+			get_item_card_nodes()
+			enable_selector()
 		elif active_party_member != 0:
-			disable_item_selector_sprite()
+#			disable_item_selector_sprite()
+			get_item_card_nodes()
+			disable_selector()
 			active_party_member -= 1
 #			call_deferred("set_choices")
 #			set_choices()
 			active_item_card = item_cards[active_party_member]
 #			active_number_of_skill_selections = number_of_skills[active_party_member]
 			current_item_selection = number_of_item_selections - 1
-			enable_item_selector_sprite()
+#			enable_item_selector_sprite()
+			get_item_card_nodes()
+			enable_selector()
 	elif direction == 'down':
 		if current_item_selection < number_of_item_selections - 1:
-			disable_item_selector_sprite()
+#			disable_item_selector_sprite()
+			get_item_card_nodes()
+			disable_selector()
 			current_item_selection += 1
-			enable_item_selector_sprite()
+#			enable_item_selector_sprite()
+			get_item_card_nodes()
+			enable_selector()
 		elif active_party_member != 3:
-			disable_item_selector_sprite()
+#			disable_item_selector_sprite()
+			get_item_card_nodes()
+			disable_selector()
 			active_party_member += 1
 #			call_deferred("set_choices")
 #			set_choices()
 			active_item_card = item_cards[active_party_member]
 #			active_number_of_skill_selections = number_of_skills[active_party_member]
 			current_item_selection = 0
-			enable_item_selector_sprite()
+#			enable_item_selector_sprite()
+			get_item_card_nodes()
+			enable_selector()
 
 func set_choices():
 	for i in current_inventory.size(): #determine by inventory.size(), should max at 16
@@ -189,40 +222,52 @@ func set_choices():
 
 func get_item_choice_nodes():
 	var item_choice_node = grid_container_node.get_child(current_choice_selection)
-	item_choice_selector_sprite = item_choice_node.get_node("Selector")
-	item_choice_animation_player = item_choice_node.get_node("AnimationPlayer")
+	current_selector_sprite = item_choice_node.get_node("Selector")
+	current_selector_animation_player = item_choice_node.get_node("AnimationPlayer")
 
-func enable_item_choice_selector_sprite():
-	get_item_choice_nodes()
-	item_choice_selector_sprite.visible = true
-	item_choice_animation_player.play('blink')
-
-func disable_item_choice_selector_sprite():
-	get_item_choice_nodes()
-	item_choice_selector_sprite.visible = false
-	item_choice_animation_player.stop()
-
-func stop_item_choice_selector_sprite():
-	get_item_card_nodes()
-	item_choice_selector_sprite.visible = true
-	item_choice_animation_player.play('blink')
-	item_choice_animation_player.stop()
+#func enable_item_choice_selector_sprite():
+#	get_item_choice_nodes()
+#	current_selector_sprite.visible = true
+#	current_selector_animation_player.play('blink')
+#
+#func disable_item_choice_selector_sprite():
+#	get_item_choice_nodes()
+#	current_selector_sprite.visible = false
+#	current_selector_animation_player.stop()
+#
+#func stop_item_choice_selector_sprite():
+#	get_item_card_nodes()
+#	current_selector_sprite.visible = true
+#	current_selector_animation_player.play('blink')
+#	current_selector_animation_player.stop()
 
 func change_choice(direction):
 	if direction == 'up':
 		if current_choice_selection > 0 :
-			disable_item_choice_selector_sprite()
+#			disable_item_choice_selector_sprite()
+			get_item_choice_nodes()
+			disable_selector()
 			current_choice_selection -= 1
-			enable_item_choice_selector_sprite()
+#			enable_item_choice_selector_sprite()
+			get_item_choice_nodes()
+			enable_selector()
 	elif direction == 'down':
 		if current_choice_selection < number_of_choice_selections - 1:
-			disable_item_choice_selector_sprite()
+#			disable_item_choice_selector_sprite()
+			get_item_choice_nodes()
+			disable_selector()
 			current_choice_selection += 1
-			enable_item_choice_selector_sprite()
+#			enable_item_choice_selector_sprite()
+			get_item_choice_nodes()
+			enable_selector()
 
 func choose_item():
-	disable_item_selector_sprite()
-	disable_item_choice_selector_sprite()
+#	disable_item_selector_sprite()
+	get_item_card_nodes()
+	disable_selector()
+#	disable_item_choice_selector_sprite()
+	get_item_choice_nodes()
+	disable_selector()
 
 	var new_current_items = equipped_items[active_party_member].duplicate()
 	new_current_items.pop_at(current_item_selection)
@@ -238,7 +283,8 @@ func choose_item():
 	get_items(active_party_member) #update info in current menu
 	
 	current_choice_selection = 0
-	enable_item_choice_selector_sprite()
+	get_item_choice_nodes()
+	enable_selector()
 
 func get_info():
 	var base_node
@@ -265,9 +311,8 @@ func get_info():
 	info_effect_node.bbcode_text = "[color=#b99c4b]Scale[/color]: " + str(current_selected_item_info.effect)
 	info_targets_node.bbcode_text = "[color=#b99c4b]Targets[/color]: " + current_selected_item_info.targets
 	info_icon_node.bbcode_text = "[color=#b99c4b]Icon[/color]: " + str(current_selected_item_info.icon_number)
-
-
-
+	
+	
 
 func get_equipment(player):
 	for x in 2: #for armor and weapon
