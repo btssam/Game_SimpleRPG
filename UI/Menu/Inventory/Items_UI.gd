@@ -356,8 +356,6 @@ func change_equip(direction): #need to check if equipment is equipable on that c
 			enable_selector()
 
 func choose_equip():
-	print('before')
-	print(equipment[active_party_member])
 #	get_item_card_nodes()
 	get_equip_card_nodes()
 	disable_selector()
@@ -378,8 +376,6 @@ func choose_equip():
 		
 #	get_items(active_party_member) #update info in current menu
 	get_equipment(active_party_member)
-	print('after')
-	print(equipment[active_party_member])
 
 	current_choice_selection = 0
 #	get_item_choice_nodes()

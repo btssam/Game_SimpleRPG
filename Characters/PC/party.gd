@@ -32,6 +32,7 @@ var isPartyDead = false
 func _ready():
 	position = get_node("../Town_Template/Spawn_Points/Initial").position
 	add_followers(3)
+	update_equipment_stats()
 
 func _process(delta):
 	if not isBattling and not menu_node.isMenuOpen and not menu_node.isSubMenuOpen:
@@ -180,3 +181,32 @@ func check_if_party_is_dead():
 		isPartyDead = true
 	else:
 		number_dead = 0
+
+
+#equipment
+func update_equipment_stats():
+	for i in get_child_count():
+		print('Player ' + str(i+1) + '\'s attack:')
+		print(get_child(i).attack)
+		var current_equips = get_node("PC_Template/Inventory").current_equips
+		var current_weapon_name = get_child(i).equipment[0]
+		var current_armor_name = get_child(i).equipment[1]
+		var current_weapon_stats
+		var current_armor_stats #this process maybe could be simplified if I stored the actual equipment dictionary, rather than just name
+		for c in current_equips.size():
+			if current_equips[c].variable_name == current_weapon_name:
+				current_weapon_stats = current_equips[c].stats
+			if current_equips[c].variable_name == current_armor_name:
+				current_armor_stats = current_equips[c].stats
+		print(current_weapon_stats)
+		print(current_armor_stats)
+		for x in current_armor_stats.size():
+			if current_armor_stats[x].begins_with("ATK"):
+				get_child(i).attack += int(current_armor_stats[x][4]) # the number is at the 5th positon of the string
+#				print(current_armor_stats[x][4])
+		for y in current_weapon_stats.size():
+			if current_weapon_stats[y].begins_with("ATK"):
+				get_child(i).attack += int(current_weapon_stats[y][4])
+#				print(current_weapon_stats[y][4])
+		print('Becomes:')
+		print(get_child(i).attack)

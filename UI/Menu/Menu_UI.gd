@@ -115,6 +115,7 @@ func close_submenu():
 	#should I set isMenuOpen to true?
 	isMenuOpen = true
 	if current_selection == 1:
+		get_node("../../../Party").update_equipment_stats()
 		remove_child(get_node("Items_UI"))
 	if current_selection == 2:
 		remove_child(get_node("Skills_UI"))
