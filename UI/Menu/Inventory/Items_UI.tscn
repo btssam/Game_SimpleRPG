@@ -516,6 +516,7 @@ position = Vector2( 31, -24 )
 scale = Vector2( 1.6, 1.6 )
 
 [node name="Popup_Info" type="Popup" parent="Popup_Equip"]
+visible = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 
@@ -538,7 +539,7 @@ texture = ExtResource( 1 )
 [node name="Name" type="RichTextLabel" parent="Popup_Equip/Popup_Info/ColorRect/Frame"]
 margin_left = 80.0
 margin_top = 40.0
-margin_right = 390.0
+margin_right = 700.0
 margin_bottom = 102.0
 theme = ExtResource( 6 )
 bbcode_enabled = true
@@ -562,10 +563,10 @@ text = "NAME
 "
 scroll_active = false
 
-[node name="MP" type="RichTextLabel" parent="Popup_Equip/Popup_Info/ColorRect/Frame"]
+[node name="Quantity" type="RichTextLabel" parent="Popup_Equip/Popup_Info/ColorRect/Frame"]
 margin_left = 80.0
 margin_top = 240.0
-margin_right = 390.0
+margin_right = 700.0
 margin_bottom = 302.0
 theme = ExtResource( 6 )
 bbcode_enabled = true
@@ -575,7 +576,7 @@ text = "NAME
 "
 scroll_active = false
 
-[node name="Effect_Type" type="RichTextLabel" parent="Popup_Equip/Popup_Info/ColorRect/Frame"]
+[node name="Type" type="RichTextLabel" parent="Popup_Equip/Popup_Info/ColorRect/Frame"]
 margin_left = 80.0
 margin_top = 340.0
 margin_right = 700.0
@@ -589,7 +590,7 @@ text = "NAME
 "
 scroll_active = false
 
-[node name="Effect" type="RichTextLabel" parent="Popup_Equip/Popup_Info/ColorRect/Frame"]
+[node name="Player" type="RichTextLabel" parent="Popup_Equip/Popup_Info/ColorRect/Frame"]
 margin_left = 420.0
 margin_top = 340.0
 margin_right = 1040.0
@@ -603,24 +604,10 @@ text = "NAME
 "
 scroll_active = false
 
-[node name="Targets" type="RichTextLabel" parent="Popup_Equip/Popup_Info/ColorRect/Frame"]
+[node name="Stats" type="RichTextLabel" parent="Popup_Equip/Popup_Info/ColorRect/Frame"]
 margin_left = 80.0
 margin_top = 440.0
-margin_right = 700.0
-margin_bottom = 502.0
-rect_scale = Vector2( 0.5, 1 )
-theme = ExtResource( 6 )
-bbcode_enabled = true
-bbcode_text = "NAME
-"
-text = "NAME
-"
-scroll_active = false
-
-[node name="IsEquipped" type="RichTextLabel" parent="Popup_Equip/Popup_Info/ColorRect/Frame"]
-margin_left = 420.0
-margin_top = 440.0
-margin_right = 1040.0
+margin_right = 1320.0
 margin_bottom = 502.0
 rect_scale = Vector2( 0.5, 1 )
 theme = ExtResource( 6 )

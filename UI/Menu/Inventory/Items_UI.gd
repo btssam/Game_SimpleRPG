@@ -148,10 +148,16 @@ func _input(event):
 	if event.is_action_pressed("info") and !isInfoOpen:
 		isInfoOpen = true
 		get_info()
-		get_node("Popup_Items/Popup_Info").show()
+		if not isOnEquipPage:
+			get_node("Popup_Items/Popup_Info").show()
+		elif isOnEquipPage:
+			get_node("Popup_Equip/Popup_Info").show()
 	elif event.is_action_pressed("info") and isInfoOpen:
 		isInfoOpen = false
-		get_node("Popup_Items/Popup_Info").hide()
+		if not isOnEquipPage:
+			get_node("Popup_Items/Popup_Info").hide()
+		elif isOnEquipPage:
+			get_node("Popup_Equip/Popup_Info").hide()
 		
 
 #all my functions can use if isOnEquipPage to determine the intial nodes. not really
@@ -279,29 +285,53 @@ func choose_item():
 
 func get_info():
 	var base_node
+	var current_selected_item_info
 	if not isOnEquipPage:
 		base_node = get_node("Popup_Items/Popup_Info/ColorRect/Frame")
+		if isSelectingItem:
+			current_selected_item_info = equipped_items[active_party_member][current_item_selection]
+		elif isSelectingNewItem:
+			current_selected_item_info = current_inventory[current_choice_selection]
+		var info_effect_type_node = base_node.get_node("Effect_Type")
+		var info_effect_node = base_node.get_node("Effect")
+		var info_targets_node = base_node.get_node("Targets")
+		var info_icon_node = base_node.get_node("Icon") 
+		info_effect_type_node.bbcode_text = "[color=#b99c4b]Effect[/color]: " + current_selected_item_info.effect_type
+		info_effect_node.bbcode_text = "[color=#b99c4b]Scale[/color]: " + str(current_selected_item_info.effect)
+		info_targets_node.bbcode_text = "[color=#b99c4b]Targets[/color]: " + current_selected_item_info.targets
+		info_icon_node.bbcode_text = "[color=#b99c4b]Icon[/color]: " + str(current_selected_item_info.icon_number)
 	elif isOnEquipPage:
 		base_node = get_node("Popup_Equip/Popup_Info/ColorRect/Frame")
+		if isSelectingItem:
+#			current_selected_item_info = equipped_items[active_party_member][current_item_selection]
+			current_selected_item_info = equipment[active_party_member][isSelectingArmor] #this is still just the variable_name
+			for i in current_equips.size():
+				if current_equips[i].variable_name == equipment[active_party_member][isSelectingArmor]:
+					current_selected_item_info = current_equips[i]
+					break
+		elif isSelectingNewItem:
+#			current_selected_item_info = current_inventory[current_choice_selection]
+			current_selected_item_info = current_equips[current_choice_selection]
+		var info_type_node = base_node.get_node("Type")
+		var info_player_node = base_node.get_node("Player")
+		var info_stats_node = base_node.get_node("Stats")
+		info_type_node.bbcode_text = "[color=#b99c4b]Type[/color]: " + current_selected_item_info.type
+		info_player_node.bbcode_text = "[color=#b99c4b]Player[/color]: " + current_selected_item_info.player
+		info_stats_node.bbcode_text = "[color=#b99c4b]Stats[/color]: " + str(current_selected_item_info.stats)
 	var info_name_node = base_node.get_node("Name")
 	var info_desc_node = base_node.get_node("Desc")
 	var info_quantity_node = base_node.get_node("Quantity")
-	var info_effect_type_node = base_node.get_node("Effect_Type")
-	var info_effect_node = base_node.get_node("Effect")
-	var info_targets_node = base_node.get_node("Targets")
-	var info_icon_node = base_node.get_node("Icon") #would be ottally different nodes for equips
-	var current_selected_item_info
-	if isSelectingItem:
-		current_selected_item_info = equipped_items[active_party_member][current_item_selection]
-	elif isSelectingNewItem:
-		current_selected_item_info = current_inventory[current_choice_selection]
+#	var info_effect_type_node = base_node.get_node("Effect_Type")
+#	var info_effect_node = base_node.get_node("Effect")
+#	var info_targets_node = base_node.get_node("Targets")
+#	var info_icon_node = base_node.get_node("Icon") #would be tottally different nodes for equips
 	info_name_node.bbcode_text = current_selected_item_info.name
 	info_desc_node.bbcode_text = current_selected_item_info.description
 	info_quantity_node.bbcode_text = "[color=#1E90FF]Quantity[/color]: " + str(current_selected_item_info.quantity)
-	info_effect_type_node.bbcode_text = "[color=#b99c4b]Effect[/color]: " + current_selected_item_info.effect_type
-	info_effect_node.bbcode_text = "[color=#b99c4b]Scale[/color]: " + str(current_selected_item_info.effect)
-	info_targets_node.bbcode_text = "[color=#b99c4b]Targets[/color]: " + current_selected_item_info.targets
-	info_icon_node.bbcode_text = "[color=#b99c4b]Icon[/color]: " + str(current_selected_item_info.icon_number)
+#	info_effect_type_node.bbcode_text = "[color=#b99c4b]Effect[/color]: " + current_selected_item_info.effect_type
+#	info_effect_node.bbcode_text = "[color=#b99c4b]Scale[/color]: " + str(current_selected_item_info.effect)
+#	info_targets_node.bbcode_text = "[color=#b99c4b]Targets[/color]: " + current_selected_item_info.targets
+#	info_icon_node.bbcode_text = "[color=#b99c4b]Icon[/color]: " + str(current_selected_item_info.icon_number)
 	
 	
 
