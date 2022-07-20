@@ -385,8 +385,9 @@ func get_command():
 			if current_skill_effect_type ==  'damage':
 				update_log('Enemies take [color=#CD5C5C]' + str(current_skill_total_effect) + '[/color] damage!')
 				for i in targetable_number_of_units:
+					check_enemy_death()
 					targetable_enemy_list[i-1].hp -= current_skill_total_effect
-				check_enemy_death()
+					check_enemy_death()
 		if target_type == 'ally':
 			if current_skill_effect_type == 'heal':
 				targetable_ally_list[current_target].hp += current_skill_total_effect

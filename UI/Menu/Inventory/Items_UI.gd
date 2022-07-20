@@ -64,6 +64,8 @@ onready var equip_selector_node = "res://UI/Menu/Inventory/Equip_Selector.tscn"
 
 onready var isSelectingArmor = 0
 
+var isEquippableByAny = true
+
 func _ready():
 	for i in 4:
 		get_items(i)
@@ -82,6 +84,7 @@ func _input(event):
 	if event.is_action_pressed("interact") and isSelectingNewItem and !isInfoOpen:
 		isSelectingNewItem = false
 		set_deferred("isSelectingItem", true)
+		check_equippable_players()
 		if isOnEquipPage:
 			get_equip_choices_nodes()
 		elif !isOnEquipPage:
@@ -93,12 +96,12 @@ func _input(event):
 			get_item_card_nodes()
 		enable_selector()
 	if event.is_action_pressed("up") and isSelectingItem and !isInfoOpen:
-		if isOnEquipPage:
+		if isOnEquipPage and isEquippableByAny:
 			change_equip("up")
 		elif !isOnEquipPage:
 			change_item("up")
 	if event.is_action_pressed("down") and isSelectingItem and !isInfoOpen:
-		if isOnEquipPage:
+		if isOnEquipPage and isEquippableByAny:
 			change_equip("down")
 		elif !isOnEquipPage:
 			change_item("down")
@@ -321,17 +324,9 @@ func get_info():
 	var info_name_node = base_node.get_node("Name")
 	var info_desc_node = base_node.get_node("Desc")
 	var info_quantity_node = base_node.get_node("Quantity")
-#	var info_effect_type_node = base_node.get_node("Effect_Type")
-#	var info_effect_node = base_node.get_node("Effect")
-#	var info_targets_node = base_node.get_node("Targets")
-#	var info_icon_node = base_node.get_node("Icon") #would be tottally different nodes for equips
 	info_name_node.bbcode_text = current_selected_item_info.name
 	info_desc_node.bbcode_text = current_selected_item_info.description
 	info_quantity_node.bbcode_text = "[color=#1E90FF]Quantity[/color]: " + str(current_selected_item_info.quantity)
-#	info_effect_type_node.bbcode_text = "[color=#b99c4b]Effect[/color]: " + current_selected_item_info.effect_type
-#	info_effect_node.bbcode_text = "[color=#b99c4b]Scale[/color]: " + str(current_selected_item_info.effect)
-#	info_targets_node.bbcode_text = "[color=#b99c4b]Targets[/color]: " + current_selected_item_info.targets
-#	info_icon_node.bbcode_text = "[color=#b99c4b]Icon[/color]: " + str(current_selected_item_info.icon_number)
 	
 	
 
@@ -368,6 +363,7 @@ func get_equip_choices_nodes():
 	current_selector_animation_player = equips_choices_node.get_node("AnimationPlayer")
 
 func change_equip(direction): #need to check if equipment is equipable on that character. need to check for slot of equipment
+	print('change_equip()')
 	if direction == 'up':
 		if active_party_member != 0:
 			get_equip_card_nodes()
@@ -411,3 +407,19 @@ func choose_equip():
 #	get_item_choice_nodes()
 	get_equip_choices_nodes()
 	enable_selector()
+
+func check_equippable_players():
+	if current_equips[current_choice_selection].player == 'any':
+		isEquippableByAny = true
+	else:
+		isEquippableByAny = false
+		print('restricting selection')
+		if current_equips[current_choice_selection].player == 'Frey':
+			active_party_member = 0
+		elif current_equips[current_choice_selection].player == 'Brigit':
+			active_party_member = 1
+		elif current_equips[current_choice_selection].player == 'Set':
+			active_party_member = 2
+		elif current_equips[current_choice_selection].player == 'Alastor':
+			active_party_member = 3
+		active_equip_card = equip_cards[active_party_member]
