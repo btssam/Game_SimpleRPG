@@ -202,11 +202,22 @@ func update_equipment_stats():
 		print(current_armor_stats)
 		for x in current_armor_stats.size():
 			if current_armor_stats[x].begins_with("ATK"):
-				get_child(i).attack += int(current_armor_stats[x][4]) # the number is at the 5th positon of the string
-#				print(current_armor_stats[x][4])
+				get_child(i).attack = get_child(i).base_attack + int(current_armor_stats[x][4]) # the number is at the 5th positon of the string e.g. INT+4
+			if current_armor_stats[x].begins_with("DEF"):
+				get_child(i).defence = get_child(i).base_defence + int(current_armor_stats[x][4])
+			if current_armor_stats[x].begins_with("INT"):
+				get_child(i).intellect = get_child(i).base_intellect +  int(current_armor_stats[x][4])
+			if current_armor_stats[x].begins_with("SPD"):
+				get_child(i).speed =  get_child(i).base_speed + int(current_armor_stats[x][4])
 		for y in current_weapon_stats.size():
 			if current_weapon_stats[y].begins_with("ATK"):
-				get_child(i).attack += int(current_weapon_stats[y][4])
+				get_child(i).attack = get_child(i).base_attack + int(current_weapon_stats[y][4])
+			if current_weapon_stats[y].begins_with("DEF"):
+				get_child(i).defence = get_child(i).base_defence + int(current_weapon_stats[y][4])
+			if current_weapon_stats[y].begins_with("INT"):
+				get_child(i).intellect = get_child(i).intellect + int(current_weapon_stats[y][4])
+			if current_weapon_stats[y].begins_with("SPD"):
+				get_child(i).speed = get_child(i).base_speed + int(current_weapon_stats[y][4])
 #				print(current_weapon_stats[y][4])
 		print('Becomes:')
 		print(get_child(i).attack)
