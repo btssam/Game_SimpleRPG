@@ -351,7 +351,7 @@ func return_target():
 	isSelectingTarget = false
 	disable_target_selector()
 	get_card_nodes()
-	enable_selector()
+	disable_selector()
 	get_skill_card_nodes()
 	disable_selector()
 	get_item_card_nodes()
