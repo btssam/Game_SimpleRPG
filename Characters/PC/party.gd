@@ -21,7 +21,10 @@ var gap_difference_dict = {'left' : Vector2(gap,0), 'right': Vector2(-gap,0), 'u
 
 var collision_direction_info
 
-onready var menu_node = get_node("../CanvasLayer/GUI/Menu_UI/")
+#onready var menu_node = get_node("../CanvasLayer/GUI/Menu_UI/")
+#onready var menu_node = get_node("%Menu_UI")
+onready var menu_node = get_owner().find_node("Menu_UI") #test this get_owner() on Menu_UI, see if get Main or GUI
+
 
 #battle
 var isBattling = false #changed by PC_Template upon entering/leaving battle
@@ -30,7 +33,12 @@ var isPartyDead = false
 
 
 func _ready():
+	print("menu_node.name:")
 	print(menu_node.name)
+	print("menu_node.get_path():")
+	print(menu_node.get_path())
+	print("get_owner():")
+	print(get_owner())
 	position = get_node("../Town_Template/Spawn_Points/Initial").position
 	add_followers(3)
 	update_equipment_stats()

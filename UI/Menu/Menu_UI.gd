@@ -20,7 +20,9 @@ onready var players = [player1_node, player2_node, player3_node, player4_node]
 onready var number_of_party_members = 4
 
 func _ready():
-	pass
+#	pass
+#	get_owner().find_node("Menu_UI")
+	print("Menu_UI's owner is " + str(get_owner()))
 
 func _process(delta):
 	if isMenuOpen:
