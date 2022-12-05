@@ -30,6 +30,7 @@ var isPartyDead = false
 
 
 func _ready():
+	print(menu_node.name)
 	position = get_node("../Town_Template/Spawn_Points/Initial").position
 	add_followers(3)
 	update_equipment_stats()
@@ -186,8 +187,8 @@ func check_if_party_is_dead():
 #equipment
 func update_equipment_stats():
 	for i in get_child_count():
-		print('Player ' + str(i+1) + '\'s attack:')
-		print(get_child(i).attack)
+#		print('Player ' + str(i+1) + '\'s attack:')
+#		print(get_child(i).attack)
 		var current_equips = get_node("PC_Template/Inventory").current_equips
 		var current_weapon_name = get_child(i).equipment[0]
 		var current_armor_name = get_child(i).equipment[1]
@@ -198,8 +199,8 @@ func update_equipment_stats():
 				current_weapon_stats = current_equips[c].stats
 			if current_equips[c].variable_name == current_armor_name:
 				current_armor_stats = current_equips[c].stats
-		print(current_weapon_stats)
-		print(current_armor_stats)
+#		print(current_weapon_stats)
+#		print(current_armor_stats)
 		for x in current_armor_stats.size():
 			if current_armor_stats[x].begins_with("ATK"):
 				get_child(i).attack = get_child(i).base_attack + int(current_armor_stats[x][4]) # the number is at the 5th positon of the string e.g. INT+4
@@ -219,5 +220,5 @@ func update_equipment_stats():
 			if current_weapon_stats[y].begins_with("SPD"):
 				get_child(i).speed = get_child(i).base_speed + int(current_weapon_stats[y][4])
 #				print(current_weapon_stats[y][4])
-		print('Becomes:')
-		print(get_child(i).attack)
+#		print('Becomes:')
+#		print(get_child(i).attack)
