@@ -4,6 +4,9 @@ var isCurrentlyInteracting = false
 var isDialogueFinished = false
 #maybe an array with dialogue
 
+func _ready():
+	print("hello, this is dialogue_UI and I can contact Menu_Ui with %Menu_UI")
+	print($"%Menu_UI".get_path())
 
 func print_dialogue(body):
 	if isCurrentlyInteracting == false and isDialogueFinished == false:

@@ -23,7 +23,8 @@ var collision_direction_info
 
 #onready var menu_node = get_node("../CanvasLayer/GUI/Menu_UI/")
 #onready var menu_node = get_node("%Menu_UI")
-onready var menu_node = get_owner().find_node("Menu_UI") #test this get_owner() on Menu_UI, see if get Main or GUI
+onready var menu_node = $"%Menu_UI" #test this get_owner() on Menu_UI, see if get Main or GUI
+
 
 
 #battle
