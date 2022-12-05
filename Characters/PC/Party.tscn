@@ -32,19 +32,3 @@ skill_3 = {
 "name": "Heavy",
 "targets": "enemy"
 }
-skill_4 = {
-"description": "Spins your weapon, damaging all enemies.",
-"effect": "ATK_1.00",
-"effect_type": "damage",
-"mp": "3",
-"name": "Spin",
-"targets": "enemies"
-}
-skill_5 = {
-"description": "Rest, restoring MP and HP.",
-"effect": "INT_1.00",
-"effect_type": "heal",
-"mp": "-1",
-"name": "Rest",
-"targets": "none"
-}

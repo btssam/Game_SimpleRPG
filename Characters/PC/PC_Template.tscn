@@ -35,10 +35,6 @@ region = Rect2( 144, 128, 24, 32 )
 atlas = ExtResource( 3 )
 region = Rect2( 30, 0, 30, 32 )
 
-[sub_resource type="AtlasTexture" id=16]
-atlas = ExtResource( 1 )
-region = Rect2( 264, 128, 24, 32 )
-
 [sub_resource type="AtlasTexture" id=8]
 atlas = ExtResource( 3 )
 region = Rect2( 60, 0, 30, 32 )
@@ -47,17 +43,21 @@ region = Rect2( 60, 0, 30, 32 )
 atlas = ExtResource( 3 )
 region = Rect2( 90, 0, 30, 32 )
 
-[sub_resource type="AtlasTexture" id=17]
+[sub_resource type="AtlasTexture" id=16]
 atlas = ExtResource( 1 )
-region = Rect2( 0, 32, 24, 32 )
+region = Rect2( 264, 128, 24, 32 )
 
-[sub_resource type="AtlasTexture" id=18]
+[sub_resource type="AtlasTexture" id=10]
 atlas = ExtResource( 1 )
-region = Rect2( 24, 32, 24, 32 )
+region = Rect2( 0, 64, 24, 32 )
 
-[sub_resource type="AtlasTexture" id=19]
+[sub_resource type="AtlasTexture" id=11]
 atlas = ExtResource( 1 )
-region = Rect2( 48, 32, 24, 32 )
+region = Rect2( 24, 64, 24, 32 )
+
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 1 )
+region = Rect2( 48, 64, 24, 32 )
 
 [sub_resource type="AtlasTexture" id=20]
 atlas = ExtResource( 1 )
@@ -71,17 +71,17 @@ region = Rect2( 24, 96, 24, 32 )
 atlas = ExtResource( 1 )
 region = Rect2( 48, 96, 24, 32 )
 
-[sub_resource type="AtlasTexture" id=10]
+[sub_resource type="AtlasTexture" id=17]
 atlas = ExtResource( 1 )
-region = Rect2( 0, 64, 24, 32 )
+region = Rect2( 0, 32, 24, 32 )
 
-[sub_resource type="AtlasTexture" id=11]
+[sub_resource type="AtlasTexture" id=18]
 atlas = ExtResource( 1 )
-region = Rect2( 24, 64, 24, 32 )
+region = Rect2( 24, 32, 24, 32 )
 
-[sub_resource type="AtlasTexture" id=12]
+[sub_resource type="AtlasTexture" id=19]
 atlas = ExtResource( 1 )
-region = Rect2( 48, 64, 24, 32 )
+region = Rect2( 48, 32, 24, 32 )
 
 [sub_resource type="AtlasTexture" id=13]
 atlas = ExtResource( 1 )
@@ -102,19 +102,19 @@ animations = [ {
 "name": "attack",
 "speed": 10.0
 }, {
-"frames": [ SubResource( 16 ) ],
-"loop": false,
-"name": "idle_battle",
-"speed": 5.0
-}, {
 "frames": [ SubResource( 8 ), SubResource( 9 ) ],
 "loop": false,
 "name": "dying",
 "speed": 2.0
 }, {
-"frames": [ SubResource( 17 ), SubResource( 18 ), SubResource( 19 ), SubResource( 18 ) ],
+"frames": [ SubResource( 16 ) ],
+"loop": false,
+"name": "idle_battle",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 11 ) ],
 "loop": true,
-"name": "walk_right",
+"name": "walk_down",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 20 ), SubResource( 21 ), SubResource( 22 ), SubResource( 21 ) ],
@@ -122,9 +122,9 @@ animations = [ {
 "name": "walk_left",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 11 ) ],
+"frames": [ SubResource( 17 ), SubResource( 18 ), SubResource( 19 ), SubResource( 18 ) ],
 "loop": true,
-"name": "walk_down",
+"name": "walk_right",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 13 ), SubResource( 14 ), SubResource( 15 ), SubResource( 14 ) ],
