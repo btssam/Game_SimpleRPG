@@ -100,11 +100,11 @@ func test_gap_direction(): #doesn't test against other collision types beside en
 			return_gap_direction = 'left'
 			gap_direction_confirmed = true
 		elif !gap_test_node.get_node("Up_Gap_Test").overlaps_body(collision_node):
-			return_gap_direction == 'up'
+			return_gap_direction = 'up'
 			gap_direction_confirmed = true
 		else:
 			print('error, no gap directions are satisfactory')
-			return_gap_direction == 'down'
+			return_gap_direction = 'down'
 			gap_direction_confirmed = true
 	to_battle_from_overworld()
 

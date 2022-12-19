@@ -465,12 +465,12 @@ func get_command():
 
 
 ###other
-func close_scene():
-	get_node("../Party").isBattling = false
-	main_node.switch_scene('battle', 'overworld')
-	player_node.reset_battle_check()
-	current_selection = 0
-	isVictorious = false
+#func close_scene():
+#	get_node("../Party").isBattling = false
+#	main_node.switch_scene('battle', 'overworld')
+#	player_node.reset_battle_check()
+#	current_selection = 0
+#	isVictorious = false
 
 
 ###updating UI

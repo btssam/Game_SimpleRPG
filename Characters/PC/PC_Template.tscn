@@ -195,8 +195,8 @@ player_number = 1
 base_attack = 3
 base_defence = 3
 base_speed = 8
-mp = 10
-maxmp = 10
+mp = 900
+maxmp = 900
 skill_1 = {
 "description": "Deals small damage to an enemy.",
 "effect": "ATK_2.00",

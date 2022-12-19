@@ -34,12 +34,6 @@ var isPartyDead = false
 
 
 func _ready():
-	print("menu_node.name:")
-	print(menu_node.name)
-	print("menu_node.get_path():")
-	print(menu_node.get_path())
-	print("get_owner():")
-	print(get_owner())
 	position = get_node("../Town_Template/Spawn_Points/Initial").position
 	add_followers(3)
 	update_equipment_stats()

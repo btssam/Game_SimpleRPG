@@ -1,23 +1,16 @@
 extends Node
 
 onready var battlefield_template = owner
-# var a = 2
-# var b = "text"
 
-
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	print('blah Im misc')
-	print(owner.player_4_node)
-	print(battlefield_template.player_4_node)
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
-
+	pass
 
 func _on_Battlefield_Template_battlefield_initialized():
-	print('catching initalized signal. blah Im' + str(name))
 	var battlefield_template = owner
-	print(battlefield_template.player_4_node)
+
+func close_scene():
+	battlefield_template.get_node("../Party").isBattling = false
+	battlefield_template.main_node.switch_scene('battle', 'overworld')
+	battlefield_template.player_node.reset_battle_check()
+	battlefield_template.current_selection = 0
+	battlefield_template.isVictorious = false
