@@ -1,14 +1,12 @@
-Environment/Battlefield/BG 2.0/
-Characters/PC/PC_Spritesheet.png
-Environment/Overworld/Mainworld/JRPG Music Pack #1 [Exploration] by Juhani Junkala/
-Environment/Overworld/Overworld_Spirtesheets/
-Environment/Overworld/Town/JRPG Music Pack #2 [Towns] by Juhani Junkala
-UI/Dialogue/Message_Frame_FG.png/Message_Frame.png/Faceset.png
-UI/Message_BG.png
-UI/Message_BG.png
-UI/System.png
-Characters/NPC/Enemy/Enemy_Spritesheet.png
+# Godot 3.x caches & temp files
 .import/
-*.translation
 export_presets.cfg
+*.translation
 .mono/
+
+# IDE and OS files
+.idea/
+.vscode/
+*.tmp
+.DS_Store
+Thumbs.db
