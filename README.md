@@ -62,4 +62,4 @@ A retro turn-based JRPG prototype built in **Godot 3.5 LTS**. Created to evaluat
 
 ## License
 
-The code and engine architecture of this project are licensed under the [MIT License](LICENSE). Third-party art and sound assets remain in the Public Domain under CC0.
+The code and engine architecture of this project are licensed under the [MIT License](LICENSE.md). Third-party art and sound assets remain in the Public Domain under CC0.
