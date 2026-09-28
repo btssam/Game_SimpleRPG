@@ -54,9 +54,9 @@ A retro turn-based JRPG prototype built in **Godot 3.5 LTS**. Created to evaluat
 ## Credits & Attribution
 
 - **Game Design & Programming:** Ben Samara
-- **Actors, Monsters, UI & Icons:** *Aeon Warriors* by [JosephSeraph](https://opengameart.org) (CC0)
-- **Audio & Music:** *JRPG Music Pack* by [Juhani Junkala (SubspaceAudio)](https://opengameart.org) (CC0)
-- **Battle Backgrounds:** [Nidhoggn](https://opengameart.org) (CC0)
+- **Actors, Monsters, UI & Icons:** *Aeon Warriors* by [JosephSeraph](https://opengameart.org/users/josephseraph) (CC0)
+- **Audio & Music:** *JRPG Music Pack* by [Juhani Junkala (SubspaceAudio)](https://opengameart.org/users/subspaceaudio) (CC0)
+- **Battle Backgrounds:** [Nidhoggn](https://opengameart.org/content/backgrounds-3) (CC0)
 
 ---
 
