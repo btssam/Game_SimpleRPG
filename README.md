@@ -1,4 +1,4 @@
-# Simple RPG (Final Fantasy 1 Prototype)
+# Simple RPG
 
 A retro turn-based JRPG prototype built in **Godot 3.5 LTS**. Created to evaluate and test core JRPG engine architecture, overworld party movement, dynamic menus, and speed-ordered turn-based combat.
 
