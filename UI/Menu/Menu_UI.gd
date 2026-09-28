@@ -19,7 +19,11 @@ onready var player4_node = get_node("../../../Party/Party_PC_Template3")
 onready var players = [player1_node, player2_node, player3_node, player4_node]
 onready var number_of_party_members = 4
 
+func _enter_tree():
+	unique_name_in_owner = true
+
 func _ready():
+#	unique_name_in_owner = true
 	pass
 
 func _process(delta):

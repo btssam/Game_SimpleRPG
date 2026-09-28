@@ -93,6 +93,12 @@ var current_item_quantity = 0
 var current_selector_sprite
 var current_selector_animation_player
 
+
+#signals_setup_scripts
+signal battlefield_initialized
+
+onready var battlefield_scripts_array = get_tree().get_nodes_in_group("battlefield_scripts")
+
 func _ready():
 	####initialize
 	get_random_number_of_units()
@@ -117,11 +123,24 @@ func _ready():
 	player_4_node.check_for_death()
 
 	act_in_order()
+	
+
+	#signalling with scripts
+	print('blah Im the owner')
+	print(player_4_node)
+	
+	print(battlefield_scripts_array)
+	for i in battlefield_scripts_array.size():
+		print(battlefield_scripts_array[i])
+		self.connect("battlefield_initialized", battlefield_scripts_array[i], "_on_Battlefield_Template_battlefield_initialized")
+	
+#	self.connect("battlefield_initialized", $"%Misc", "_on_Battlefield_Template_battlefield_initialized")
+	emit_signal("battlefield_initialized")
 
 func _input(event):
 	if isVictorious:
 		if event.is_action_pressed("interact"):
-			close_scene()
+			$"%Misc".close_scene()
 	if not party_node.isPartyDead and not party_node.isAttacking: #disable interacting while mid animation
 		###targeting
 		if isPlayersTurn:
@@ -179,7 +198,7 @@ func _input(event):
 					enable_selector()
 		###testing
 		if event.is_action_pressed("test_key"):
-				close_scene()
+				$"%Misc".close_scene()
 
 
 
@@ -256,7 +275,7 @@ func process_command(): #which action occurs when space is pressed: (process_inp
 					get_item_effect()
 				elif current_selection == 3: #flee
 					isSelectingCommand = false
-					close_scene()
+					$"%Misc".close_scene()
 
 func change_command(direction):
 	get_card_nodes()
@@ -446,12 +465,12 @@ func get_command():
 
 
 ###other
-func close_scene():
-	get_node("../Party").isBattling = false
-	main_node.switch_scene('battle', 'overworld')
-	player_node.reset_battle_check()
-	current_selection = 0
-	isVictorious = false
+#func close_scene():
+#	get_node("../Party").isBattling = false
+#	main_node.switch_scene('battle', 'overworld')
+#	player_node.reset_battle_check()
+#	current_selection = 0
+#	isVictorious = false
 
 
 ###updating UI
