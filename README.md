@@ -2,7 +2,7 @@
 
 A retro turn-based JRPG prototype built in **Godot 3.5 LTS**. Created to evaluate and test core JRPG engine architecture, overworld party movement, dynamic menus, and speed-ordered turn-based combat.
 
-🎮 **Play in Browser:** [Simple RPG on itch.io](https://btssam.itch.io/simple-rpg)
+**Play in Browser:** [Simple RPG on itch.io](https://btssam.itch.io/simple-rpg)
 
 ---
 
